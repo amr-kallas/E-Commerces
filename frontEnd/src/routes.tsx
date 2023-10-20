@@ -1,32 +1,35 @@
 import {
-  Outlet,
   Route,
   createBrowserRouter,
   createRoutesFromElements,
-} from "react-router-dom";
-import HomePage from "./pages/website/HomePage";
-import { Signup, Login } from "./features/auth";
-import NotAuth from "./components/routes/NotAuth";
-import Auth from "./components/routes/Auth";
-import Users from "./features/user";
+} from 'react-router-dom'
+import { Signup, Login, GoogleCallBack } from './features/auth'
+import NotAuth from './components/routes/NotAuth'
+import Auth from './components/routes/Auth'
+import { Layout } from './features/layout'
+import HomePage from './pages/website/HomePage'
+import User from './pages/user'
 export default createBrowserRouter(
   createRoutesFromElements(
-      <Route path="/" element={<WithScroll />}>
-        <Route element={<NotAuth />}>
-          <Route path="signup" element={<Signup />} />
-          <Route path="login" element={<Login />} />
-        </Route>
-        <Route element={<Auth/>}>
-        <Route index element={<HomePage />} />
-        <Route path="users" element={<Users />} />
+    <Route path="/">
+      <Route element={<NotAuth />}>
+        <Route path="register" element={<Signup />} />
+        <Route path="login" element={<Login />} />
+      </Route>
+      <Route element={<Auth />}>
+        <Route element={<Layout />}>
+          <Route path="" element={<HomePage />} />
+          <Route path="users" element={<User />} />
         </Route>
       </Route>
+      <Route path="auth/google/callback" element={<GoogleCallBack />} />
+    </Route>
   )
-);
-function WithScroll() {
-  return (
-    <>
-      <Outlet />
-    </>
-  );
-}
+)
+// function WithScroll() {
+//   return (
+//     <>
+//       <Outlet />
+//     </>
+//   );
+// }

@@ -2,11 +2,14 @@ let API_ROUTES={
     SIGN:{
         root:'',
         REGISTER:'register',
-        LOGIN:'login'
+        LOGIN:'login',
+        GOOGLE:'auth/google/callback'
     },
     USERS:{
         root:'',
-        USER:'users'
+        ALL:'users',
+        USER:'user',
+        LOGOUT:'logout'
     }
 }
 export default API_ROUTES

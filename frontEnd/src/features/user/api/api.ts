@@ -1,10 +1,18 @@
-import axios from "axios";
-import API_ROUTES from "../../../constants/apiRoutes";
+import API_ROUTES from '../../../constants/apiRoutes'
+import axios from '../../../lib/axios'
 
 const API = {
-  get: async () => {
-    const { data } = await axios.get(API_ROUTES.USERS.USER);
-    return data;
+  getAllUsers: async () => {
+    const { data } = await axios.get(API_ROUTES.USERS.ALL)
+    return data
   },
-};
-export default API;
+  getUser:async()=>{
+    const {data}=await axios.get(API_ROUTES.USERS.USER)
+    return data 
+  },
+  logout: async () => {
+    const { data } = await axios.get(API_ROUTES.USERS.LOGOUT)
+    return data
+  },
+}
+export default API

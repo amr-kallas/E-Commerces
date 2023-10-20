@@ -1,20 +1,32 @@
-import ax from 'axios'
-import { API_BASE_URL } from '../constants/domain'
-const axios=ax.create({
-    baseURL:API_BASE_URL
+import ax from "axios";
+import { API_BASE_URL } from "../constants/domain";
+import Storage from "../utils/storage";
+let token = Storage.getToken();
+window.addEventListener("tokenChange",()=>{
+    token=Storage.getToken()
 })
-axios.interceptors.request.use(function (config) {
+const axios = ax.create({
+  baseURL: API_BASE_URL,
+});
+axios.interceptors.request.use(
+  function (config) {
     // Do something before request is sent
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
-  }, function (error) {
+  },
+  function (error) {
     return Promise.reject(error);
-  });
+  }
+);
 
 // Add a response interceptor
-axios.interceptors.response.use(function (response) {
+axios.interceptors.response.use(
+  function (response) {
     return response;
-  }, function (error) {
+  },
+  function (error) {
     return Promise.reject(error);
-  });
+  }
+);
 
-export default axios
+export default axios;
