@@ -7,8 +7,12 @@ export const keys = createQueryKeys('store', {
     queryFn: API.getAllUsers,
     queryKey: [''],
   },
-  user: {
-    queryFn: API.getUser,
+  user:(id:string)=>({
+    queryFn:()=>API.getUser(id),
+    queryKey:[id]
+  }),
+  me: {
+    queryFn: API.getMe,
     queryKey: [''],
   },
   logout: {
@@ -18,6 +22,9 @@ export const keys = createQueryKeys('store', {
 })
 export const queries = {
   useUsers: () => useQuery(keys.users),
-  useUser: () => useQuery(keys.user),
+  useUser: (id:string) => useQuery(keys.user(id)),
+  useMe: () => useQuery(keys.me),
+  useEdit:()=>useMutation(API.edit),
+  useDelete:()=>useMutation(API.delete),
   useLogout: () => useMutation(API.logout),
 }

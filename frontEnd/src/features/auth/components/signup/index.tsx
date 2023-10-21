@@ -28,7 +28,6 @@ export const Signup = () => {
       onSuccess: (data) => {
         Storage.setToken(data.token)
         queryClient.setQueriesData([''], data.user)
-        console.log(data)
         navigate('/users')
       },
       onError: (error: any) => {

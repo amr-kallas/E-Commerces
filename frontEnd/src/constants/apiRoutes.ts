@@ -8,8 +8,12 @@ let API_ROUTES={
     USERS:{
         root:'',
         ALL:'users',
-        USER:'user',
-        LOGOUT:'logout'
+        ME:'user',
+        LOGOUT:'logout',
+        GET:(id:string)=>`user/${id}`,
+        EDIT:(id:string)=>`user/edit/${id}`,
+        DELETE:(id:string)=>`user/${id}`,
+
     }
 }
 export default API_ROUTES

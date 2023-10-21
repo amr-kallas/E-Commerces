@@ -14,23 +14,34 @@ import { useState } from 'react'
 import PaginationTable from './PaginationTable'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { queries } from '../api/queries'
+import { keys, queries } from '../api/queries'
 import useEventSearchParams from '../../../hooks/useEventSearchParams'
+import Skeletons from './Skeletons'
+import { useQueryClient } from '@tanstack/react-query'
 
 type user = {
   id: string
   name: string
   email: string
 }
+
 export const UserTable = () => {
-  const {edit}=useEventSearchParams()
- 
+  const { edit } = useEventSearchParams()
+
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const { data, isLoading } = queries.useUsers()
-  if (isLoading) return
-  const handleDelete=(_id: string)=> {
-   
+  const remove = queries.useDelete()
+  const queryClient = useQueryClient()
+  const handleDelete = (id: string) => {
+    remove.mutate(id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(keys.users._def)
+      },
+      onError: (err) => {
+        console.log(err)
+      },
+    })
   }
 
   return (
@@ -45,7 +56,15 @@ export const UserTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item: user, index: number) => (
+          {isLoading && (
+            <>
+              <Skeletons />
+              <Skeletons />
+              <Skeletons />
+              <Skeletons />
+            </>
+          )}
+          {data?.map((item: user, index: number) => (
             <TableRow key={item.id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell align="center">{item.name}</TableCell>
@@ -59,11 +78,11 @@ export const UserTable = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  <IconButton onClick={()=>edit(item.id)}>
-                    <EditIcon sx={{color:'#1976d2'}} />
+                  <IconButton onClick={() => edit(item.id)}>
+                    <EditIcon sx={{ color: '#1976d2' }} />
                   </IconButton>
-                  <IconButton onClick={()=>handleDelete(item.id)}>
-                    <DeleteIcon  sx={{color:'red'}} />
+                  <IconButton onClick={() => handleDelete(item.id)}>
+                    <DeleteIcon sx={{ color: 'red' }} />
                   </IconButton>
                 </Box>
               </TableCell>
@@ -77,7 +96,7 @@ export const UserTable = () => {
               rowsPerPage={rowsPerPage}
               setPage={setPage}
               setRowsPerPage={setRowsPerPage}
-              rows={data.length}
+              rows={data?.length ?? 0}
             />
           </TableRow>
         </TableFooter>
