@@ -29,11 +29,13 @@ class UsersContoller extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'role' => 'required',
         ]);
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role = $request->role;
         $user->save();
     }
 

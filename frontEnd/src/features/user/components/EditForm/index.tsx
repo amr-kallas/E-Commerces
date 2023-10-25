@@ -3,13 +3,17 @@ import {
   Container,
   Dialog,
   DialogTitle,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Skeleton,
   Stack,
 } from '@mui/material'
 import useEditSearchParams from '../../../../hooks/useEditSearchParams'
 import NameInput from '../../../auth/components/NameInput'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import Submit from '../../../../components/buttons/Submit'
 import { z } from 'zod'
 import editSchema, { userEditType } from './validation'
@@ -27,6 +31,10 @@ export const EditForm = () => {
   } = useForm<z.infer<typeof editSchema>>({
     resolver: zodResolver(editSchema),
   })
+  // const { control, handleSubmit } = useForm<z.infer<typeof userSignupSchema>>({
+  //   resolver: zodResolver(userSignupSchema),
+  //   defaultValues: signupDefault,
+  // })
   const [error, setErrors] = useState('')
   const queryClient = useQueryClient()
   const { id, isActive, clearSearchParams } = useEditSearchParams()
@@ -36,6 +44,7 @@ export const EditForm = () => {
     reset({
       name: isLoading ? '' : data.name,
       email: isLoading ? '' : data.email,
+      role: isLoading ? '' : Number(data.role),
     })
   }, [data])
 
@@ -101,6 +110,27 @@ export const EditForm = () => {
                 helperText={error && 'the email has already been token'}
                 error={Boolean(error) ?? errors}
               />
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                <Controller
+                  name="role"
+                  control={control}
+                  // defaultValue={Number(data.role)}
+                  // rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="role"
+                    >
+                      <MenuItem value={1995}>Admin</MenuItem>
+                      <MenuItem value={2001}>User</MenuItem>
+                      <MenuItem value={1996}>Writter</MenuItem>
+                    </Select>
+                  )}
+                />
+              </FormControl>
             </>
           ) : (
             <>
@@ -121,9 +151,11 @@ export const EditForm = () => {
                 Edit
               </Submit>
             ) : (
-              <Skeleton variant='text' sx={{fontSize:'3rem', width:150,m:'auto'}} />
+              <Skeleton
+                variant="text"
+                sx={{ fontSize: '3rem', width: 150, m: 'auto' }}
+              />
             )}
-
           </Box>
         </Stack>
       </Container>

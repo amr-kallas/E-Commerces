@@ -6,9 +6,12 @@ import {
 import { Signup, Login, GoogleCallBack } from './features/auth'
 import NotAuth from './components/routes/NotAuth'
 import Auth from './components/routes/Auth'
-import { Layout } from './features/layout'
+// import { Layout } from './features/layout'
 import HomePage from './pages/website/HomePage'
 import User from './pages/user'
+import { lazy } from 'react'
+const Layout = lazy(() => import("./features/layout"));
+
 export default createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">

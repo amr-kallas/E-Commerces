@@ -1,23 +1,23 @@
-import { Skeleton, TableCell, TableRow } from '@mui/material'
-const skeletonStyle = {
-  fontSize: '2rem',
-  width: 80,
-  margin: 'auto',
-}
+import { TableCell, TableRow } from '@mui/material'
+import { Skeleton } from '../../../components/feedback/Skeleton'
+
 const Skeletons = () => {
   return (
     <TableRow>
       <TableCell padding="normal">
-        <Skeleton variant="text" sx={{ fontSize: '1.5rem', width: 25 }} />
+        <Skeleton
+          widthRange={{ min: 20, max: 40 }}
+          sx={{ fontSize: '1.5rem' }}
+        />
       </TableCell>
       <TableCell align="right">
-        <Skeleton variant="text" sx={skeletonStyle} />
+        <Skeleton widthRange={{ min: 20, max: 40 }} sx={{ margin: 'auto' }} />
       </TableCell>
       <TableCell align="center">
-        <Skeleton variant="text" sx={skeletonStyle} />
+        <Skeleton widthRange={{ min: 20, max: 40 }} sx={{ margin: 'auto' }} />
       </TableCell>
       <TableCell align="center">
-        <Skeleton variant="text" sx={skeletonStyle} />
+        <Skeleton widthRange={{ min: 20, max: 40 }} sx={{ margin: 'auto' }} />
       </TableCell>
     </TableRow>
   )
