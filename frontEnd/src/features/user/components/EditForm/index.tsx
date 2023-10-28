@@ -49,7 +49,6 @@ export const EditForm = () => {
   }, [data])
 
   const onSubmit = async (data: userEditType) => {
-    console.log(data)
     edit.mutate(
       { id, ...data },
       {
@@ -108,15 +107,13 @@ export const EditForm = () => {
                 control={control}
                 name="email"
                 helperText={error && 'the email has already been token'}
-                error={Boolean(error) ?? errors}
+                error={!!error ?? errors.email}
               />
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Role</InputLabel>
                 <Controller
                   name="role"
                   control={control}
-                  // defaultValue={Number(data.role)}
-                  // rules={{ required: true }}
                   render={({ field }) => (
                     <Select
                       {...field}

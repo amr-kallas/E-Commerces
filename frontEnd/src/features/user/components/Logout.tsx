@@ -1,21 +1,16 @@
-import { Button } from '@mui/material'
 import { queries } from '../api/queries'
 import { useNavigate } from 'react-router-dom'
 import Storage from '../../../utils/storage'
 
-const Logout = () => {
-  // const logout = queries.useLogout()
+const logout = () => {
+  const logout = queries.useLogout()
   const navigate = useNavigate()
-  const handleClick = () => {
-    // logout.mutateAsync()
-    // Storage.removeToken()
-    // navigate('/login')
+  const LogoutUser = () => {
+    logout.mutateAsync()
+    Storage.removeToken()
+    navigate('/login')
   }
-  return (
-    <Button variant="contained" onClick={handleClick}>
-      Logout
-    </Button>
-  )
+  return {LogoutUser}
 }
 
-export default Logout
+export default logout

@@ -47,10 +47,6 @@ export const UserTable = () => {
       },
     })
   }
-  const filterUser =
-    !isLoading && !me.isLoading
-      ? data.filter((user: { id: string }) => me.data.id !== user.id)
-      : []
   return (
     <>
       <TableContainer component={Paper}>
@@ -65,7 +61,7 @@ export const UserTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {isLoading && (
+            {isLoading && me.isLoading && (
               <>
                 <Skeletons />
                 <Skeletons />
@@ -73,36 +69,68 @@ export const UserTable = () => {
                 <Skeletons />
               </>
             )}
+            <TableRow>
+              <TableCell>1</TableCell>
+              <TableCell align="center">{me.data?.name + ' (You)'}</TableCell>
+              <TableCell align="center">{me.data?.email}</TableCell>
+              <TableCell align="center">
+                {me.data?.role == 1995
+                  ? 'Admin'
+                  : me.data?.role == 2001
+                  ? 'User'
+                  : 'Writter'}
+              </TableCell>
+              <TableCell align="center">
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    justifyContent: 'center',
+                  }}
+                >
+                  <IconButton onClick={() => edit(me.data?.id)}>
+                    <EditIcon sx={{ color: '#1976d2' }} />
+                  </IconButton>
+                </Box>
+              </TableCell>
+            </TableRow>
 
-            {filterUser?.map((item: user, index: number) => (
+            {data?.map((item: user, index:1) => (
               <TableRow key={item.id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell align="center">{item.name}</TableCell>
-                <TableCell align="center">{item.email}</TableCell>
-                <TableCell align="center">
-                  {item.role == 1995
-                    ? 'Admin'
-                    : item.role == 2001
-                    ? 'User'
-                    : 'Writter'}
-                </TableCell>
-                <TableCell align="center">
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <IconButton onClick={() => edit(item.id)}>
-                      <EditIcon sx={{ color: '#1976d2' }} />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(item.id)}>
-                      <DeleteIcon sx={{ color: 'red' }} />
-                    </IconButton>
-                  </Box>
-                </TableCell>
+                {item.id != me.data.id && (
+                  <>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell align="center">{item.name}</TableCell>
+                    <TableCell align="center">{item.email}</TableCell>
+                    <TableCell align="center">
+                      {item.role == 1995
+                        ? 'Admin'
+                        : item.role == 2001
+                        ? 'User'
+                        : 'Writter'}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1,
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <IconButton onClick={() => edit(item.id)}>
+                          <EditIcon sx={{ color: '#1976d2' }} />
+                        </IconButton>
+                        {item.id != me.data.id && (
+                          <IconButton onClick={() => handleDelete(item.id)}>
+                            <DeleteIcon sx={{ color: 'red' }} />
+                          </IconButton>
+                        )}
+                      </Box>
+                    </TableCell>
+                  </>
+                )}
               </TableRow>
             ))}
           </TableBody>
@@ -119,7 +147,7 @@ export const UserTable = () => {
                 rowsPerPage={rowsPerPage}
                 setPage={setPage}
                 setRowsPerPage={setRowsPerPage}
-                rows={filterUser?.length ?? 0}
+                rows={data?.length ?? 0}
               />
             </TableRow>
           </TableFooter>

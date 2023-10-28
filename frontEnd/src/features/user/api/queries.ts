@@ -26,5 +26,6 @@ export const queries = {
   useMe: () => useQuery(keys.me),
   useEdit:()=>useMutation(API.edit),
   useDelete:()=>useMutation(API.delete),
+  useAdd:()=>useMutation(API.add),
   useLogout: () => useMutation(API.logout),
 }

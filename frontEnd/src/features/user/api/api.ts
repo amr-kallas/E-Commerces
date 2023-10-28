@@ -23,6 +23,10 @@ const API = {
     const { data } = await axios.delete(API_ROUTES.USERS.DELETE(id))
     return data
   },
+  add: async (body:any) => {
+    const { data } = await axios.post(API_ROUTES.USERS.ADD,body)
+    return data
+  },
   logout: async () => {
     const { data } = await axios.get(API_ROUTES.USERS.LOGOUT)
     return data

@@ -13,6 +13,7 @@ let API_ROUTES={
         GET:(id:string)=>`user/${id}`,
         EDIT:(id:string)=>`user/edit/${id}`,
         DELETE:(id:string)=>`user/${id}`,
+        ADD:'user/add'
 
     }
 }

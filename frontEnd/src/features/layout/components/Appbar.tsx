@@ -1,10 +1,9 @@
-import Toolbar from '@mui/material/Toolbar'
 import MenuIcon from '@mui/icons-material/Menu'
 import * as React from 'react'
 import { styled } from '@mui/material/styles'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
+import { Toolbar, Stack,IconButton,Typography } from '@mui/material'
+import UserMenu from './UserMenu'
 const drawerWidth = 240
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean
@@ -22,7 +21,7 @@ const AppBar = styled(MuiAppBar, {
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-  zIndex: theme.zIndex.drawer - 1,
+    zIndex: theme.zIndex.drawer - 1,
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
@@ -37,22 +36,30 @@ const Appbar = ({ open, setOpen }: AppBarDialog) => {
   }
   return (
     <AppBar position="fixed" open={open}>
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerOpen}
-          edge="start"
-          sx={{
-            marginRight: 5,
-            ...(open && { display: 'none' }),
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          Mini variant drawer
-        </Typography>
+      <Toolbar
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Stack direction="row" alignItems="center">
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{
+              marginRight: 5,
+              ...(open && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Mini variant drawer
+          </Typography>
+        </Stack>
+        <UserMenu/>
       </Toolbar>
     </AppBar>
   )

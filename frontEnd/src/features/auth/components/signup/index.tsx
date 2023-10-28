@@ -1,4 +1,4 @@
-import { Alert, Container, Paper, Stack, Typography } from '@mui/material'
+import { Alert, Container, Paper, Slide, Stack, Typography } from '@mui/material'
 import greenland from '../../../../assets/geranimo-WJkc3xZjSXw-unsplash.jpg'
 import NameInput from '../NameInput'
 import PasswordInput from '../PasswordInput'
@@ -36,6 +36,7 @@ export const Signup = () => {
     })
   }
   return (
+    <Slide in dir='up' timeout={500}>
     <Container>
       <Stack
         direction="row"
@@ -90,5 +91,6 @@ export const Signup = () => {
         </Paper>
       </Stack>
     </Container>
+    </Slide>
   )
 }
