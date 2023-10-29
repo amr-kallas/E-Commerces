@@ -2,8 +2,11 @@ import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
+import HomeIcon from '@mui/icons-material/Home'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits'
+import ImportContactsIcon from '@mui/icons-material/ImportContacts'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -12,6 +15,7 @@ import MuiDrawer from '@mui/material/Drawer'
 import { NavLink, useLocation } from 'react-router-dom'
 import PersonIcon from '@mui/icons-material/Person'
 import { Drawer, Typography } from '@mui/material'
+import { queries } from '../../user/api/queries'
 interface AppBarDialog {
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -66,18 +70,34 @@ const PermanentDrawer = styled(MuiDrawer, {
 }))
 const items = [
   {
-    text: 'users',
-    icon: <PersonIcon />,
-    path: '/users',
+    text: 'Home',
+    icon: <HomeIcon />,
+    path: '/',
+    role: ['1995', '1996', '1999', '2001'],
   },
   {
-    text: 'products',
+    text: 'Users',
     icon: <PersonIcon />,
-    path: '/',
+    path: '/users',
+    role: ['1995'],
+  },
+
+  {
+    text: 'Writter',
+    icon: <ImportContactsIcon />,
+    path: '/writter',
+    role: ['1995', '1996'],
+  },
+  {
+    text: 'Products',
+    icon: <ProductionQuantityLimitsIcon />,
+    path: '/product',
+    role: ['1995', '1999'],
   },
 ]
 
 const Sidebar = ({ open, setOpen }: AppBarDialog) => {
+  const me = queries.useMe()
   const location = useLocation()
   const theme = useTheme()
 
@@ -112,57 +132,60 @@ const Sidebar = ({ open, setOpen }: AppBarDialog) => {
           margin: open ? '0 10px' : '0',
         }}
       >
-        {items.map((item) => (
-          <NavLink
-            to={item.path}
-            style={{ textDecoration: 'none', color: '#8282ad' }}
-            key={item.text}
-          >
-            <ListItem
-              disablePadding
-              sx={{
-                display: 'block',
-                '.Mui-selected': {
-                  bgcolor: '#f3f2fe',
-                  '.MuiListItemIcon-root': {
-                    color: '#0b90dc',
-                  },
-                  '.MuiTypography-root': {
-                    color: '#0b90dc',
-                  },
-                },
-              }}
-            >
-              <ListItemButton
-                selected={location.pathname == item.path}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                  borderRadius: '6px',
-                }}
+        {items.map(
+          (item) =>
+            item.role.includes(me.data?.role) && (
+              <NavLink
+                to={item.path}
+                style={{ textDecoration: 'none', color: '#8282ad' }}
+                key={item.text}
               >
-                <ListItemIcon
+                <ListItem
+                  disablePadding
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 1 : 'auto',
-                    justifyContent: 'center',
+                    display: 'block',
+                    '.Mui-selected': {
+                      bgcolor: '#f3f2fe',
+                      '.MuiListItemIcon-root': {
+                        color: '#0b90dc',
+                      },
+                      '.MuiTypography-root': {
+                        color: '#0b90dc',
+                      },
+                    },
                   }}
                 >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  sx={{
-                    opacity: open ? 1 : 0,
-                    fontSize: 15,
-                    textTransform: 'capitalize',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </NavLink>
-        ))}
+                  <ListItemButton
+                    selected={location.pathname == item.path}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                      borderRadius: '6px',
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 1 : 'auto',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.text}
+                      sx={{
+                        opacity: open ? 1 : 0,
+                        fontSize: 15,
+                        textTransform: 'capitalize',
+                      }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </NavLink>
+            )
+        )}
       </List>
     </>
   )
@@ -184,9 +207,9 @@ const Sidebar = ({ open, setOpen }: AppBarDialog) => {
         onClick={handleDrawerClose}
         sx={{
           display: { xs: 'block', sm: 'none' },
-          ".MuiDrawer-paper":{
-            width:240
-          }
+          '.MuiDrawer-paper': {
+            width: 240,
+          },
         }}
       >
         {drawerDetail}

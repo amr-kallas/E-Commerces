@@ -76,6 +76,8 @@ export const UserTable = () => {
               <TableCell align="center">
                 {me.data?.role == 1995
                   ? 'Admin'
+                  : me.data?.role == 1999
+                  ? 'Product'
                   : me.data?.role == 2001
                   ? 'User'
                   : 'Writter'}
@@ -96,7 +98,7 @@ export const UserTable = () => {
               </TableCell>
             </TableRow>
 
-            {data?.map((item: user, index:1) => (
+            {data?.map((item: user, index: 1) => (
               <TableRow key={item.id}>
                 {item.id != me.data.id && (
                   <>
@@ -106,6 +108,8 @@ export const UserTable = () => {
                     <TableCell align="center">
                       {item.role == 1995
                         ? 'Admin'
+                        : item.role == 1999
+                        ? 'Product'
                         : item.role == 2001
                         ? 'User'
                         : 'Writter'}

@@ -34,7 +34,7 @@ export const Login = () => {
       onSuccess: (data) => {
         queryClient.setQueryData([''], data.user)
         Storage.setToken(data.token)
-        navigate('/users')
+        navigate('/')
       },
       onError: (error) => {
         console.log(error)

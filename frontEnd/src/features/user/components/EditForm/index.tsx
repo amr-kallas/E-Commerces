@@ -22,6 +22,9 @@ import CloseIcon from '@mui/icons-material/Close'
 import { keys, queries } from '../../api/queries'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
+import { Navigate } from 'react-router-dom'
+import SomethingWentWrong from '../../../../components/feedback/SomethingWentWrong'
+
 export const EditForm = () => {
   const {
     control,
@@ -31,14 +34,10 @@ export const EditForm = () => {
   } = useForm<z.infer<typeof editSchema>>({
     resolver: zodResolver(editSchema),
   })
-  // const { control, handleSubmit } = useForm<z.infer<typeof userSignupSchema>>({
-  //   resolver: zodResolver(userSignupSchema),
-  //   defaultValues: signupDefault,
-  // })
   const [error, setErrors] = useState('')
   const queryClient = useQueryClient()
   const { id, isActive, clearSearchParams } = useEditSearchParams()
-  const { data, isLoading } = queries.useUser(id)
+  const { data, isLoading, error: err } = queries.useUser(id)
   const edit = queries.useEdit()
   useEffect(() => {
     reset({
@@ -68,7 +67,9 @@ export const EditForm = () => {
     clearSearchParams()
     setErrors('')
   }
-
+  if ((err as any)?.response?.status == '404') {
+    return <Navigate to={'error404'} replace={true} />
+  }
   return (
     <Dialog
       open={isActive}
@@ -89,73 +90,83 @@ export const EditForm = () => {
       >
         <CloseIcon />
       </IconButton>
-      <Container>
-        <DialogTitle
-          sx={{
-            textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: '33px',
-          }}
-        >
-          Edit User
-        </DialogTitle>
-        <Stack spacing={4} component={'form'} onSubmit={handleSubmit(onSubmit)}>
-          {!isLoading ? (
-            <>
-              <NameInput control={control} name="name" />
-              <NameInput
-                control={control}
-                name="email"
-                helperText={error && 'the email has already been token'}
-                error={!!error ?? errors.email}
-              />
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Role</InputLabel>
-                <Controller
-                  name="role"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      label="role"
-                    >
-                      <MenuItem value={1995}>Admin</MenuItem>
-                      <MenuItem value={2001}>User</MenuItem>
-                      <MenuItem value={1996}>Writter</MenuItem>
-                    </Select>
-                  )}
-                />
-              </FormControl>
-            </>
-          ) : (
-            <>
-              <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
-              <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
-            </>
-          )}
-
-          <Box
+      {(err as any)?.response.status == '500' ? (
+        <SomethingWentWrong text="axios error" />
+      ) : (
+        <Container>
+          <DialogTitle
             sx={{
               textAlign: 'center',
-              mt: 2,
-              mb: '24px !important',
+              fontWeight: 'bold',
+              fontSize: '33px',
             }}
           >
+            Edit User
+          </DialogTitle>
+          <Stack
+            spacing={4}
+            component={'form'}
+            onSubmit={handleSubmit(onSubmit)}
+          >
             {!isLoading ? (
-              <Submit isLoading={edit.isLoading} sx={{ width: 150 }}>
-                Edit
-              </Submit>
+              <>
+                <NameInput control={control} name="name" />
+                <NameInput
+                  control={control}
+                  name="email"
+                  helperText={
+                    error == '500' && 'the email has already been token'
+                  }
+                  error={!!error || !!errors.email}
+                />
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                  <Controller
+                    name="role"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="role"
+                      >
+                        <MenuItem value={1995}>Admin</MenuItem>
+                        <MenuItem value={2001}>User</MenuItem>
+                        <MenuItem value={1996}>Writter</MenuItem>
+                        <MenuItem value={1999}>Product Manager</MenuItem>
+                      </Select>
+                    )}
+                  />
+                </FormControl>
+              </>
             ) : (
-              <Skeleton
-                variant="text"
-                sx={{ fontSize: '3rem', width: 150, m: 'auto' }}
-              />
+              <>
+                <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+                <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
+              </>
             )}
-          </Box>
-        </Stack>
-      </Container>
+            <Box
+              sx={{
+                textAlign: 'center',
+                mt: 2,
+                mb: '24px !important',
+              }}
+            >
+              {!isLoading ? (
+                <Submit isLoading={edit.isLoading} sx={{ width: 150 }}>
+                  Edit
+                </Submit>
+              ) : (
+                <Skeleton
+                  variant="text"
+                  sx={{ fontSize: '3rem', width: 150, m: 'auto' }}
+                />
+              )}
+            </Box>
+          </Stack>
+        </Container>
+      )}
     </Dialog>
   )
 }
