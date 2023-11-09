@@ -15,6 +15,13 @@ let API_ROUTES={
         DELETE:(id:string)=>`user/${id}`,
         ADD:'user/add'
 
+    },
+    CATEGORY:{
+        ALL:'categories',
+        ADD:'category/add',
+        GET:(id:string)=>`category/${id}`,
+        EDIT:(id:string)=>`category/edit/${id}`,
+        DELETE:(id:string)=>`category/${id}`,
     }
 }
 export default API_ROUTES

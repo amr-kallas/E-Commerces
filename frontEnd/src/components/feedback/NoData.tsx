@@ -1,7 +1,7 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { Stack, Typography, useTheme } from "@mui/material";
 
-const NoData = () => {
+const NoData = ({message}:{message:string}) => {
     const theme=useTheme()
   return (
     <Stack sx={{
@@ -16,7 +16,7 @@ const NoData = () => {
             fontSize:'2rem',
             fontWeight:'bold',
             pt:2
-        }}>No Users Found</Typography>
+        }}>{message}</Typography>
     </Stack>
   )
 }

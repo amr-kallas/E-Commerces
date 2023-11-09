@@ -40,11 +40,7 @@ export const EditForm = () => {
   const { data, isLoading, error: err } = queries.useUser(id)
   const edit = queries.useEdit()
   useEffect(() => {
-    reset({
-      name: isLoading ? '' : data.name,
-      email: isLoading ? '' : data.email,
-      role: isLoading ? '' : Number(data.role),
-    })
+    if(data) reset(data)
   }, [data])
 
   const onSubmit = async (data: userEditType) => {
@@ -131,10 +127,10 @@ export const EditForm = () => {
                         id="demo-simple-select"
                         label="role"
                       >
-                        <MenuItem value={1995}>Admin</MenuItem>
-                        <MenuItem value={2001}>User</MenuItem>
-                        <MenuItem value={1996}>Writter</MenuItem>
-                        <MenuItem value={1999}>Product Manager</MenuItem>
+                        <MenuItem value={'1995'}>Admin</MenuItem>
+                        <MenuItem value={'2001'}>User</MenuItem>
+                        <MenuItem value={'1996'}>Writter</MenuItem>
+                        <MenuItem value={'1999'}>Product Manager</MenuItem>
                       </Select>
                     )}
                   />

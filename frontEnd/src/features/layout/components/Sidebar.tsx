@@ -89,9 +89,9 @@ const items = [
     role: ['1995', '1996'],
   },
   {
-    text: 'Products',
+    text: 'Category',
     icon: <ProductionQuantityLimitsIcon />,
-    path: '/product',
+    path: '/category',
     role: ['1995', '1999'],
   },
 ]

@@ -7,7 +7,7 @@ import { Signup, Login, GoogleCallBack } from './features/auth'
 import NotAuth from './components/routes/NotAuth'
 import Auth from './components/routes/Auth'
 import { lazy } from 'react'
-import { Product, Home, User } from './pages'
+import { Category, Home, User } from './pages'
 import { Writter } from './features/writter'
 import Error404 from './components/feedback/Error404'
 const Layout = lazy(() => import('./features/layout'))
@@ -26,7 +26,7 @@ export default createBrowserRouter(
             <Route path="users" element={<User />} />
           </Route>
           <Route element={<Auth AllowedRole={['1995', '1999']} />}>
-            <Route path="product" element={<Product />} />
+            <Route path="category" element={<Category />} />
           </Route>
           <Route element={<Auth AllowedRole={['1995', '1996']} />}>
             <Route path="writter" element={<Writter />} />

@@ -22,7 +22,7 @@ export const keys = createQueryKeys('store', {
 })
 export const queries = {
   useUsers: () => useQuery(keys.users),
-  useUser: (id:string) => useQuery(keys.user(id)),
+  useUser: (id:string) => useQuery({...keys.user(id),enabled:!!id}),
   useMe: () => useQuery(keys.me),
   useEdit:()=>useMutation(API.edit),
   useDelete:()=>useMutation(API.delete),
