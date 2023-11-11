@@ -94,6 +94,12 @@ const items = [
     path: '/category',
     role: ['1995', '1999'],
   },
+  {
+    text: 'Product',
+    icon: <ProductionQuantityLimitsIcon />,
+    path: '/product',
+    role: ['1995', '1999'],
+  },
 ]
 
 const Sidebar = ({ open, setOpen }: AppBarDialog) => {

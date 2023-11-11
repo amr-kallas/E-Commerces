@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import useEventSearchParams from '../../../hooks/useEventSearchParams'
 import { useQueryClient } from '@tanstack/react-query'
 import NoData from '../../../components/feedback/NoData'
+import { categoryBody } from '../api/type'
 const TableCategory = () => {
   const { edit } = useEventSearchParams()
   const useAll = queries.useAll()
@@ -18,8 +19,7 @@ const TableCategory = () => {
   const tableHeader = TableHeader()
   const handleDelete = (id: string) => {
     useDelete.mutate(id, {
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: () => {
         queryClient.invalidateQueries(keys.getAll._def)
       },
       onError: (error) => {
@@ -30,7 +30,7 @@ const TableCategory = () => {
   return (
     <>
       <Tables header={tableHeader} skeleton={useAll.isLoading}>
-        {reversedData.map((item: any, index: number) => (
+        {reversedData.map((item: categoryBody, index: number) => (
           <TableRow key={item.id}>
             <TableCell align="left">{index + 1}</TableCell>
             <TableCell

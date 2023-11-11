@@ -1,13 +1,14 @@
 import API_ROUTES from '../../../constants/apiRoutes'
 import axios from '../../../lib/axios'
-import { loginBody, userBody } from './type'
+import { AuthBody, loginBody, userBody } from './type'
 const API = {
   signup: async (body: userBody) => {
-    const { data } = await axios.post(API_ROUTES.SIGN.REGISTER, body)
+    const { data } = await axios.post<AuthBody>(API_ROUTES.SIGN.REGISTER, body)
     return data
   },
   login: async (body: loginBody) => {
-    const { data } = await axios.post(API_ROUTES.SIGN.LOGIN, body)
+    const { data } = await axios.post<AuthBody>(API_ROUTES.SIGN.LOGIN, body)
+    console.log(data)
     return data
   },
   google: async () => {

@@ -8,7 +8,7 @@ export const defaultValues = {
   title: '',
   image: undefined,
 }
-const MAX_FILE_SIZE = 500000
+const MAX_FILE_SIZE = 5000000
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/jpg',

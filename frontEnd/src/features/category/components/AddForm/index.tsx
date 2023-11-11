@@ -17,9 +17,12 @@ import schemaAddCategory, { defaultValues } from './validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { keys, queries } from '../../api/queries'
 import { useQueryClient } from '@tanstack/react-query'
+// type addCategory={
+//   title:string,
+//   image:File
+// }
 const AddCategory = () => {
   const {
-    // getValues,
     control,
     handleSubmit,
     reset,
@@ -37,7 +40,8 @@ const AddCategory = () => {
   }
   const queryClient = useQueryClient()
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data:any) => {
+    console.log(data)
     const form = new FormData()
     form.append('image', data.image)
     form.append('title', data.title)
