@@ -10,18 +10,19 @@ import UploadIcon from '@mui/icons-material/Upload'
 import { ChangeEvent, useState } from 'react'
 type imgHelpers = {
   name: string
-  error: string | undefined
-  onUpload: (files: File) => void
+  error: string | undefined,
+  multiple:boolean,
+  onUpload: (files: File|File[]) => void
   cancel: () => void,
   url:string|undefined
 }
-const ImageUpload = ({ name, error, onUpload, cancel,url }: imgHelpers) => {
+const ImageUpload = ({ name, error,multiple, onUpload, cancel,url }: imgHelpers) => {
   const initialImage=url?[url]:[]
   const [upload, setUpload] = useState<string[]>(initialImage)
   const handleSelectImg = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files)
-      onUpload(e.target.files[0])
+      onUpload(files.length==1? e.target.files[0]:files)
       const fileURLs = files.map((file) => URL.createObjectURL(file))
       setUpload(fileURLs)
     }
@@ -103,7 +104,7 @@ const ImageUpload = ({ name, error, onUpload, cancel,url }: imgHelpers) => {
 
       <input
         type="file"
-        multiple
+        multiple={multiple}
         onChange={handleSelectImg}
         id={name as string}
         hidden

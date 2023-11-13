@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export type addCategoryType = {
   title: string
-  image?: File|string
+  image?: File|string|File[]
 }
 export const defaultValues = {
   title: '',

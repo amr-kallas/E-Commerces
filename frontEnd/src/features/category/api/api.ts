@@ -1,5 +1,6 @@
 import API_ROUTES from '../../../constants/apiRoutes'
 import axios from '../../../lib/axios'
+import { objectToFormData } from '../../../utils/transform'
 import { Edit, categoryBody } from './type'
 
 const API = {
@@ -12,11 +13,11 @@ const API = {
     return data
   },
   add: async (body: FormData) => {
-    const data = await axios.post(API_ROUTES.CATEGORY.ADD, body)
+    const data = await axios.post(API_ROUTES.CATEGORY.ADD, objectToFormData(body))
     return data
   },
   edit: async ({id,body}:Edit) => {
-    const data = await axios.post(API_ROUTES.CATEGORY.EDIT(id),body)
+    const data = await axios.post(API_ROUTES.CATEGORY.EDIT(id),objectToFormData(body))
     return data
   },
   delete: async (id: string) => {

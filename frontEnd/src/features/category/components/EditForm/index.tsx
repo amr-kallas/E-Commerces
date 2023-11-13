@@ -11,11 +11,9 @@ import {
 import NameInput from '../../../auth/components/NameInput'
 import Submit from '../../../../components/buttons/Submit'
 import CloseIcon from '@mui/icons-material/Close'
-import ImageUpload from '../AddForm/imageUpload'
+import ImageUpload from '../../../../components/inputs/imageUpload'
 import { useForm } from 'react-hook-form'
-import schemaAddCategory, {
-  defaultValues,
-} from '../AddForm/validation'
+import schemaAddCategory, { defaultValues } from '../AddForm/validation'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { keys, queries } from '../../api/queries'
@@ -44,25 +42,27 @@ const EditCategory = () => {
     reset(defaultValues)
     clearSearchParams()
   }
-  const handleUploadImage = (files: File) => {
+  const handleUploadImage = (files: File|File[]) => {
     setValue('image', files)
   }
   const handleCancelImage = () => {
     setValue('image', undefined)
   }
-  const onSubmit = (bodys: any) => {
-    const body = new FormData()
-    body.append('title',bodys.title)
-    body.append('image',bodys.image)
-    edit.mutate({id,body},{
+  const onSubmit = (body: any) => {
+    // const body = new FormData()
+    // body.append('title', bodys.title)
+    // body.append('image', bodys.image)
+    edit.mutate(
+      { id, body },
+      {
         onSuccess: () => {
           queryClient.invalidateQueries(keys.getAll._def)
           queryClient.invalidateQueries(keys.get._def)
           handleClose()
         },
-        onError:(error)=>{
+        onError: (error) => {
           console.log(error)
-        }
+        },
       }
     )
   }
@@ -105,6 +105,7 @@ const EditCategory = () => {
             <NameInput control={control} name="title" />
             <ImageUpload
               name="image"
+              multiple={false}
               error={errors.image?.message}
               onUpload={handleUploadImage}
               cancel={handleCancelImage}

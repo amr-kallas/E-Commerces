@@ -15,28 +15,44 @@ import CloseIcon from '@mui/icons-material/Close'
 import useAddSearchParams from '../../../../hooks/useAddSearchParams'
 import { Controller, useForm } from 'react-hook-form'
 import { queries as categoryQuery } from '../../../category/api/queries'
-import { queries as productQuery } from '../../api/queries'
+import { keys, queries as productQuery } from '../../api/queries'
 import NameInput from '../../../auth/components/NameInput'
 import Submit from '../../../../components/buttons/Submit'
 import { zodResolver } from '@hookform/resolvers/zod'
 import schemaAddProduct, { defaultProductValue } from './validation'
+import { useQueryClient } from '@tanstack/react-query'
+import ImageUpload from '../../../../components/inputs/imageUpload'
 const AddProduct = () => {
-  const { handleSubmit, control, reset } = useForm({
+  const {
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm({
     defaultValues: defaultProductValue,
     resolver: zodResolver(schemaAddProduct),
   })
   const { data: categoryData } = categoryQuery.useAll()
   const add = productQuery.useAdd()
+  const queryClient = useQueryClient()
   const { isActive, clearSearchParams } = useAddSearchParams()
   const handleClose = () => {
     clearSearchParams()
     reset()
   }
+  const handleUploadImage = (files: File | File[] | any) => {
+    setValue('images', files)
+  }
+  const handleCancelImage = () => {
+    setValue('images', [])
+  }
+
   const onSubmit = (data: any) => {
-    console.log(data)
     add.mutate(data, {
-      onSuccess: (d) => {
-        console.log(d)
+      onSuccess: () => {
+        queryClient.invalidateQueries(keys.getAll._def)
+        handleClose()
       },
       onError: (error) => {
         console.log(error)
@@ -106,6 +122,14 @@ const AddProduct = () => {
           <NameInput control={control} name="price" type="number" />
           <NameInput control={control} name="discount" type="number" />
           <NameInput control={control} name="About" />
+          <ImageUpload
+            name="images"
+            error={errors.images?.message}
+            multiple
+            onUpload={handleUploadImage}
+            cancel={handleCancelImage}
+            url={undefined}
+          />
           <Box
             sx={{
               textAlign: 'center',
