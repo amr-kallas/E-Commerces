@@ -3,6 +3,7 @@ import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import HomeIcon from '@mui/icons-material/Home'
+import FeedIcon from '@mui/icons-material/Feed';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits'
@@ -96,7 +97,7 @@ const items = [
   },
   {
     text: 'Product',
-    icon: <ProductionQuantityLimitsIcon />,
+    icon: <FeedIcon />,
     path: '/product',
     role: ['1995', '1999'],
   },

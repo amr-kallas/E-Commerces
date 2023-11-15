@@ -42,7 +42,7 @@ const EditCategory = () => {
     reset(defaultValues)
     clearSearchParams()
   }
-  const handleUploadImage = (files: File|File[]) => {
+  const handleUploadImage = (files: File | File[]) => {
     setValue('image', files)
   }
   const handleCancelImage = () => {
@@ -110,6 +110,8 @@ const EditCategory = () => {
               onUpload={handleUploadImage}
               cancel={handleCancelImage}
               url={data?.image}
+              isProduct={false}
+              disabled={false}
             />
             <Box
               sx={{

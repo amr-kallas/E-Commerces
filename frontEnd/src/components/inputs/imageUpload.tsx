@@ -10,19 +10,30 @@ import UploadIcon from '@mui/icons-material/Upload'
 import { ChangeEvent, useState } from 'react'
 type imgHelpers = {
   name: string
-  error: string | undefined,
-  multiple:boolean,
-  onUpload: (files: File|File[]) => void
-  cancel: () => void,
-  url:string|undefined
+  error: string | undefined
+  multiple: boolean
+  onUpload: (files: File | File[]) => void
+  cancel: () => void
+  url: string | undefined
+  disabled: Boolean
+  isProduct: Boolean
 }
-const ImageUpload = ({ name, error,multiple, onUpload, cancel,url }: imgHelpers) => {
-  const initialImage=url?[url]:[]
+const ImageUpload = ({
+  name,
+  error,
+  multiple,
+  onUpload,
+  cancel,
+  url,
+  disabled,
+  isProduct = false,
+}: imgHelpers) => {
+  const initialImage = url ? [url] : []
   const [upload, setUpload] = useState<string[]>(initialImage)
   const handleSelectImg = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files)
-      onUpload(files.length==1? e.target.files[0]:files)
+      onUpload(files.length == 1 ? e.target.files[0] : files)
       const fileURLs = files.map((file) => URL.createObjectURL(file))
       setUpload(fileURLs)
     }
@@ -48,6 +59,7 @@ const ImageUpload = ({ name, error,multiple, onUpload, cancel,url }: imgHelpers)
             padding: '16px',
             borderRadius: '12px',
             cursor: 'pointer',
+            pointerEvents: disabled ? 'none' : 'unset',
             ':hover': {
               border: '1px solid #1976d2',
             },
@@ -57,53 +69,56 @@ const ImageUpload = ({ name, error,multiple, onUpload, cancel,url }: imgHelpers)
           <UploadIcon fontSize="small" color="primary" />
         </Box>
       ) : (
-        <Box
-          sx={{
-            border: '1px solid rgba(0, 0, 0, 0.23)',
-            minHeight: '56px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '16px',
-            borderRadius: '12px',
-            ':hover': {
-              border: '1px solid #1976d2',
-            },
-          }}
-        >
+        !isProduct && (
           <Box
             sx={{
+              border: '1px solid rgba(0, 0, 0, 0.23)',
+              minHeight: '56px',
               display: 'flex',
-              flexWrap: 'wrap',
-              'img:first-of-type': {
-                width: '100%',
-                flex: 1,
-              },
-              'img:not(:first-of-type)': {
-                width: '30%',
-                flex: 1,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '16px',
+              borderRadius: '12px',
+              ':hover': {
+                border: '1px solid #1976d2',
               },
             }}
           >
-            <IconButton
+            <Box
               sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
+                display: 'flex',
+                flexWrap: 'wrap',
+                'img:first-of-type': {
+                  width: '100%',
+                  flex: 1,
+                },
+                'img:not(:first-of-type)': {
+                  width: '30%',
+                  flex: 1,
+                },
               }}
-              onClick={cancelImg}
             >
-              <CancelIcon fontSize="small" color="error" />
-            </IconButton>
-            {upload.map((src, index) => (
-              <img key={index} src={src} />
-            ))}
+              <IconButton
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                }}
+                onClick={cancelImg}
+              >
+                <CancelIcon fontSize="small" color="error" />
+              </IconButton>
+              {upload.map((src, index) => (
+                <img key={index} src={src} />
+              ))}
+            </Box>
           </Box>
-        </Box>
+        )
       )}
 
       <input
         type="file"
+        disabled={!!disabled}
         multiple={multiple}
         onChange={handleSelectImg}
         id={name as string}

@@ -12,5 +12,6 @@ export const keys=createQueryKeys('product',{
 export const queries={
     useAll:()=>useQuery(keys.getAll),
     useAdd:()=>useMutation(API.Add),
+    useEdit:()=>useMutation(API.Edit),
     useDelete:()=>useMutation(API.Delete),
 }

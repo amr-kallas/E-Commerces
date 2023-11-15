@@ -19,15 +19,17 @@ import { keys, queries as productQuery } from '../../api/queries'
 import NameInput from '../../../auth/components/NameInput'
 import Submit from '../../../../components/buttons/Submit'
 import { zodResolver } from '@hookform/resolvers/zod'
-import schemaAddProduct, { defaultProductValue } from './validation'
+import schemaAddProduct, { defaultProductValue, dummyData } from './validation'
 import { useQueryClient } from '@tanstack/react-query'
 import ImageUpload from '../../../../components/inputs/imageUpload'
+import { useState } from 'react'
 const AddProduct = () => {
   const {
     handleSubmit,
     control,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: defaultProductValue,
@@ -35,11 +37,16 @@ const AddProduct = () => {
   })
   const { data: categoryData } = categoryQuery.useAll()
   const add = productQuery.useAdd()
+  const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
   const { isActive, clearSearchParams } = useAddSearchParams()
+  const [sendReq, setSendReq] = useState(false)
+  const [id, setId] = useState('')
+  const disabledInput = watch('category')
   const handleClose = () => {
     clearSearchParams()
     reset()
+    setSendReq(false)
   }
   const handleUploadImage = (files: File | File[] | any) => {
     setValue('images', files)
@@ -47,9 +54,20 @@ const AddProduct = () => {
   const handleCancelImage = () => {
     setValue('images', [])
   }
-
-  const onSubmit = (data: any) => {
-    add.mutate(data, {
+  const sendCategory = () => {
+    const categoryInput = watch('category')
+    dummyData.category = categoryInput
+    setSendReq(true)
+    if (!sendReq) {
+      add.mutate(dummyData, {
+        onSuccess: (data) => {
+          setId(data.id)
+        },
+      })
+    }
+  }
+  const onSubmit = (body: any) => {
+    edit.mutate({id,body}, {
       onSuccess: () => {
         queryClient.invalidateQueries(keys.getAll._def)
         handleClose()
@@ -103,6 +121,7 @@ const AddProduct = () => {
                     id="demo-simple-select"
                     label="Category"
                     error={!!error}
+                    onClick={sendCategory}
                   >
                     {categoryData?.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
@@ -117,11 +136,25 @@ const AddProduct = () => {
               )}
             />
           </FormControl>
-          <NameInput control={control} name="title" />
-          <NameInput control={control} name="description" />
-          <NameInput control={control} name="price" type="number" />
-          <NameInput control={control} name="discount" type="number" />
-          <NameInput control={control} name="About" />
+          <NameInput control={control} name="title" disabled={!disabledInput} />
+          <NameInput
+            control={control}
+            name="description"
+            disabled={!disabledInput}
+          />
+          <NameInput
+            control={control}
+            name="price"
+            type="number"
+            disabled={!disabledInput}
+          />
+          <NameInput
+            control={control}
+            name="discount"
+            type="number"
+            disabled={!disabledInput}
+          />
+          <NameInput control={control} name="About" disabled={!disabledInput} />
           <ImageUpload
             name="images"
             error={errors.images?.message}
@@ -129,6 +162,8 @@ const AddProduct = () => {
             onUpload={handleUploadImage}
             cancel={handleCancelImage}
             url={undefined}
+            disabled={!disabledInput}
+            isProduct={true}
           />
           <Box
             sx={{

@@ -11,6 +11,7 @@ const NameInput = ({ control ,name,...props}:Input) => {
       label={name}
       fullWidth
       {...props}
+      
     />
   );
 };

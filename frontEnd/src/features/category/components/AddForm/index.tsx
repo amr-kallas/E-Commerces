@@ -96,6 +96,8 @@ const AddCategory = () => {
             cancel={handleCancelImage}
             url={undefined}
             multiple={false}
+            disabled={false}
+            isProduct={false}
           />
           <Box
             sx={{
