@@ -25,6 +25,7 @@ let API_ROUTES = {
   PRODUCT: {
     ALL: 'products',
     ADD: 'product/add',
+    ADD_IMG: 'product-img/add',
     GET: (id: string) => `product/${id}`,
     EDIT: (id: string) => `product/edit/${id}`,
     DELETE: (id: string) => `product/${id}`,

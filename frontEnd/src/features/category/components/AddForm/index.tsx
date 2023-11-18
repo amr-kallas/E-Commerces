@@ -17,10 +17,6 @@ import schemaAddCategory, { defaultValues } from './validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { keys, queries } from '../../api/queries'
 import { useQueryClient } from '@tanstack/react-query'
-// type addCategory={
-//   title:string,
-//   image:File
-// }
 const AddCategory = () => {
   const {
     control,
@@ -51,7 +47,7 @@ const AddCategory = () => {
       },
     })
   }
-  const handleUploadImage = (files: File | File[]) => {
+  const handleUploadImage = (files: File| File[]) => {
     setValue('image', files)
   }
   const handleCancelImage = () => {

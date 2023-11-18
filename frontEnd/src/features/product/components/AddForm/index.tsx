@@ -19,10 +19,15 @@ import { keys, queries as productQuery } from '../../api/queries'
 import NameInput from '../../../auth/components/NameInput'
 import Submit from '../../../../components/buttons/Submit'
 import { zodResolver } from '@hookform/resolvers/zod'
-import schemaAddProduct, { defaultProductValue, dummyData } from './validation'
+import schemaAddProduct, {
+  defaultProductValue,
+  dummyData,
+  imgUpload,
+} from './validation'
 import { useQueryClient } from '@tanstack/react-query'
 import ImageUpload from '../../../../components/inputs/imageUpload'
 import { useState } from 'react'
+import { useProgressContext } from '../../../../context/ProgressContext'
 const AddProduct = () => {
   const {
     handleSubmit,
@@ -37,6 +42,7 @@ const AddProduct = () => {
   })
   const { data: categoryData } = categoryQuery.useAll()
   const add = productQuery.useAdd()
+  const addImg = productQuery.useAddImg()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
   const { isActive, clearSearchParams } = useAddSearchParams()
@@ -48,12 +54,33 @@ const AddProduct = () => {
     reset()
     setSendReq(false)
   }
-  const handleUploadImage = (files: File | File[] | any) => {
-    setValue('images', files)
+  const handleUploadImage = async (files: File | File[] | any) => {
+    // setValue('images', files)
+    let imgs: File[] 
+    if(Array.from(files).length>=1){
+      imgs= Array.from(files)
+    }else{
+      imgs=[files]
+    }
+    for (const element of imgs) {
+      setValue('image', element)
+      imgUpload.image = element
+      imgUpload.product_id = id
+      const body=imgUpload
+      await addImg.mutateAsync(body, {
+        onSuccess: () => {
+        },
+        onError: (error) => {
+          console.log(error)
+        },
+      }
+      )
+    }
   }
   const handleCancelImage = () => {
-    setValue('images', [])
+    setValue('image', undefined)
   }
+
   const sendCategory = () => {
     const categoryInput = watch('category')
     dummyData.category = categoryInput
@@ -67,15 +94,18 @@ const AddProduct = () => {
     }
   }
   const onSubmit = (body: any) => {
-    edit.mutate({id,body}, {
-      onSuccess: () => {
-        queryClient.invalidateQueries(keys.getAll._def)
-        handleClose()
-      },
-      onError: (error) => {
-        console.log(error)
-      },
-    })
+    edit.mutate(
+      { id, body },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(keys.getAll._def)
+          handleClose()
+        },
+        onError: (error) => {
+          console.log(error)
+        },
+      }
+    )
   }
   return (
     <Dialog
@@ -157,7 +187,7 @@ const AddProduct = () => {
           <NameInput control={control} name="About" disabled={!disabledInput} />
           <ImageUpload
             name="images"
-            error={errors.images?.message}
+            error={errors.image?.message}
             multiple
             onUpload={handleUploadImage}
             cancel={handleCancelImage}

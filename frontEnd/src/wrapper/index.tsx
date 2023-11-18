@@ -1,16 +1,19 @@
-import React from "react";
-import QueryClients from "./QueryClient";
-import { CssBaseline } from "@mui/material";
+import React from 'react'
+import QueryClients from './QueryClient'
+import { CssBaseline } from '@mui/material'
+import Progress from './Progress'
 type child = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 const index = ({ children }: child) => {
   return (
     <QueryClients>
-      <CssBaseline />
-      {children}
+      <Progress>
+        <CssBaseline />
+        {children}
+      </Progress>
     </QueryClients>
-  );
-};
+  )
+}
 
-export default index;
+export default index
