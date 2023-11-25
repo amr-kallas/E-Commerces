@@ -1,4 +1,5 @@
-import { z } from 'zod'
+import  z  from '../../../../lib/zod'
+import i18n from '../../../../lib/i18n'
 
 export type addCategoryType = {
   title: string
@@ -15,11 +16,11 @@ const schemaAddCategory: z.ZodType<addCategoryType> = z.object({
   image: z.union([
     z
       .any()
-      .refine((file) => file != undefined, 'required')
-      .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+      .refine((file) => file != undefined, i18n.t('validation:required'))
+      .refine((file) => file?.size <= MAX_FILE_SIZE, i18n.t('validation:maxSize'))
       .refine(
         (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        'Only .jpg, .jpeg, .png formats are supported.'
+        i18n.t('validation:support')
       ),
     z.string().url(),
   ]),

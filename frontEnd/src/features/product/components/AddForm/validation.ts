@@ -1,4 +1,5 @@
-import { z } from 'zod'
+import i18n from '../../../../lib/i18n'
+import  z  from '../../../../lib/zod'
 
 export type AddProdcut = {
   category: number |string
@@ -51,7 +52,6 @@ export const body: AddImgs = {
   image: new File([], 'default.txt'),
 }
 
-// const MAX_FILE_SIZE = 5000000
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 const schemaAddProduct: z.ZodType<AddProdcut> = z.object({
   category: z.number(),
@@ -62,10 +62,10 @@ const schemaAddProduct: z.ZodType<AddProdcut> = z.object({
   About: z.string().min(5),
   image: z
     .any()
-    .refine((file) => file != undefined, 'required')
+    .refine((file) => file != undefined, i18n.t("validation:required"))
     .refine(
       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      'Only .jpg, .jpeg, .png formats are supported.'
+      i18n.t("validation:support")
     ),
 })
 export default schemaAddProduct

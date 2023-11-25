@@ -1,10 +1,5 @@
 {
-    "required": "Field is required",
-    "minStr": "must be at least {{value}} charachters",
-    "maxStr": "must be at most {{value}} charachters",
-    "minArr": "choose at least {{value}} items",
-    "maxArr": "choose at most {{value}} items",
-  
-    "mobileNumber": "must be a mobile number"
-  }
-  
+  "required": "Field is required",
+  "maxSize": "Max image size is 5MB",
+  "support": "Only .jpg, .jpeg, .png formats are supported."
+}
