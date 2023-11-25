@@ -1,0 +1,27 @@
+{
+  "table": {
+    "id": "id",
+    "title": "Title",
+    "description": "Description",
+    "images": "Images",
+    "price": "Price",
+    "rating": "Rating",
+    "action": "Options"
+  },
+  "add": {
+    "addProduct": "Add Product",
+    "category": "Category",
+    "title": "Title",
+    "description": "Description",
+    "price": "Price",
+    "discount": "Discount",
+    "about": "About",
+    "add": "Add"
+  },
+  "message": {
+    "add": "The product has been added successfully",
+    "edit": "The product has been edited successfully",
+    "remove": "The product has been removed successfully",
+    "data":"No Product Found"
+  }
+}

@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogTitle,
   FormControl,
+  FormHelperText,
   IconButton,
   InputLabel,
   MenuItem,
@@ -16,7 +17,7 @@ import NameInput from '../../../auth/components/NameInput'
 import { Controller, useForm } from 'react-hook-form'
 import Submit from '../../../../components/buttons/Submit'
 import { z } from 'zod'
-import editSchema, { userEditType } from './validation'
+import editSchema, { defaultvalues } from './validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CloseIcon from '@mui/icons-material/Close'
 import { keys, queries } from '../../api/queries'
@@ -24,8 +25,13 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import SomethingWentWrong from '../../../../components/feedback/SomethingWentWrong'
+import { User } from '../../api/type'
+import { useTranslation } from 'react-i18next'
+import { useSnackbarContext } from '../../../../context/SnackbarContext'
 
 export const EditForm = () => {
+  const snackbar=useSnackbarContext()
+  const { t } = useTranslation('user')
   const {
     control,
     handleSubmit,
@@ -33,6 +39,7 @@ export const EditForm = () => {
     formState: { errors },
   } = useForm<z.infer<typeof editSchema>>({
     resolver: zodResolver(editSchema),
+    defaultValues: defaultvalues,
   })
   const [error, setErrors] = useState('')
   const queryClient = useQueryClient()
@@ -40,16 +47,20 @@ export const EditForm = () => {
   const { data, isLoading, error: err } = queries.useUser(id)
   const edit = queries.useEdit()
   useEffect(() => {
-    if(data) reset(data)
+    if (data) reset(data)
   }, [data])
 
-  const onSubmit = async (data: userEditType) => {
+  const onSubmit = async (body: User) => {
     edit.mutate(
-      { id, ...data },
+      { id, body },
       {
         onSuccess: () => {
           queryClient.invalidateQueries(keys.users._def)
           handleClose()
+          snackbar({
+            message:t("message.edit"),
+            severity:'success'
+          })
         },
         onError: (error: any) => {
           setErrors(error.response.status)
@@ -97,7 +108,7 @@ export const EditForm = () => {
               fontSize: '33px',
             }}
           >
-            Edit User
+            {t('edit.editUser')}
           </DialogTitle>
           <Stack
             spacing={4}
@@ -106,9 +117,10 @@ export const EditForm = () => {
           >
             {!isLoading ? (
               <>
-                <NameInput control={control} name="name" />
+                <NameInput control={control} label={t('edit.name')} name="name" />
                 <NameInput
                   control={control}
+                  label={t('edit.email')}
                   name="email"
                   helperText={
                     error == '500' && 'the email has already been token'
@@ -116,22 +128,27 @@ export const EditForm = () => {
                   error={!!error || !!errors.email}
                 />
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    {t('edit.role')}
+                  </InputLabel>
                   <Controller
                     name="role"
                     control={control}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="role"
-                      >
-                        <MenuItem value={'1995'}>Admin</MenuItem>
-                        <MenuItem value={'2001'}>User</MenuItem>
-                        <MenuItem value={'1996'}>Writter</MenuItem>
-                        <MenuItem value={'1999'}>Product Manager</MenuItem>
-                      </Select>
+                    render={({ field, fieldState: { error } }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          label="roles"
+                        >
+                          <MenuItem value={'1995'}>Admin</MenuItem>
+                          <MenuItem value={'2001'}>User</MenuItem>
+                          <MenuItem value={'1996'}>Writter</MenuItem>
+                          <MenuItem value={'1999'}>Product Manager</MenuItem>
+                        </Select>
+                        <FormHelperText error>{error?.message}</FormHelperText>
+                      </>
                     )}
                   />
                 </FormControl>
@@ -151,7 +168,7 @@ export const EditForm = () => {
             >
               {!isLoading ? (
                 <Submit isLoading={edit.isLoading} sx={{ width: 150 }}>
-                  Edit
+                  {t("edit.edit")}
                 </Submit>
               ) : (
                 <Skeleton

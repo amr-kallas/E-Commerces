@@ -33,7 +33,7 @@ const UserMenu = () => {
           },
         }}
       >
-        {!isLoading && data.name}
+        {!isLoading && data!.name}
       </Button>
       <Menu
         id="basic-menu"

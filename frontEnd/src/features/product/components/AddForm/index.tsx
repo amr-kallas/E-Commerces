@@ -22,13 +22,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import schemaAddProduct, {
   defaultProductValue,
   dummyData,
-  imgUpload,
+  body,
 } from './validation'
 import { useQueryClient } from '@tanstack/react-query'
 import ImageUpload from '../../../../components/inputs/imageUpload'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useProgressContext } from '../../../../context/ProgressContext'
+import { useTranslation } from 'react-i18next'
+import { useSnackbarContext } from '../../../../context/SnackbarContext'
 const AddProduct = () => {
+  const snackbar = useSnackbarContext()
+  const { t } = useTranslation('product')
   const {
     handleSubmit,
     control,
@@ -48,39 +52,66 @@ const AddProduct = () => {
   const { isActive, clearSearchParams } = useAddSearchParams()
   const [sendReq, setSendReq] = useState(false)
   const [id, setId] = useState('')
+  const { setPercentage, indexRef } = useProgressContext()
   const disabledInput = watch('category')
   const handleClose = () => {
     clearSearchParams()
     reset()
     setSendReq(false)
+    setPercentage([])
+    indexRef.current = -1
   }
   const handleUploadImage = async (files: File | File[] | any) => {
-    // setValue('images', files)
-    let imgs: File[] 
-    if(Array.from(files).length>=1){
-      imgs= Array.from(files)
-    }else{
-      imgs=[files]
+    let imgs: File[]
+    if (Array.from(files).length >= 1) {
+      imgs = Array.from(files)
+    } else {
+      imgs = [files]
     }
-    for (const element of imgs) {
-      setValue('image', element)
-      imgUpload.image = element
-      imgUpload.product_id = id
-      const body=imgUpload
-      await addImg.mutateAsync(body, {
-        onSuccess: () => {
-        },
-        onError: (error) => {
-          console.log(error)
-        },
+    let c = 0
+    for (const [index, element] of imgs.entries()) {
+      if (index == c) {
+        indexRef.current++
+        c++
       }
-      )
+      const changePercentageAtIndex = (newValue: number) => {
+        setPercentage((oldArray: any) => {
+          const newArray = [...oldArray]
+          newArray[indexRef.current] = { id: '1f', num: newValue }
+          return newArray
+        })
+      }
+      setValue('image', element)
+      body.image = element
+      body.product_id = id
+      if (files.length != 0)
+        await addImg.mutateAsync(
+          { body, changePercentageAtIndex },
+          {
+            onSuccess: (data) => {
+              setPercentage((oldArray: any) => {
+                const newArray = [...oldArray]
+                newArray[indexRef.current] = {
+                  ...oldArray[indexRef.current],
+                  id: data.id,
+                }
+                return newArray
+              })
+            },
+            onError: (error) => {
+              console.log(error)
+            },
+          }
+        )
     }
   }
   const handleCancelImage = () => {
     setValue('image', undefined)
+    setPercentage([])
   }
-
+  useEffect(() => {
+    indexRef.current == -1 && setValue('image', undefined)
+  }, [indexRef.current])
   const sendCategory = () => {
     const categoryInput = watch('category')
     dummyData.category = categoryInput
@@ -100,6 +131,10 @@ const AddProduct = () => {
         onSuccess: () => {
           queryClient.invalidateQueries(keys.getAll._def)
           handleClose()
+          snackbar({
+            message: t('message.add'),
+            severity: 'success',
+          })
         },
         onError: (error) => {
           console.log(error)
@@ -135,11 +170,13 @@ const AddProduct = () => {
             fontSize: '33px',
           }}
         >
-          Add Product
+          {t('add.addProduct')}
         </DialogTitle>
         <Stack spacing={3} component={'form'} onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Category</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t('add.category')}
+            </InputLabel>
             <Controller
               name="category"
               control={control}
@@ -166,25 +203,38 @@ const AddProduct = () => {
               )}
             />
           </FormControl>
-          <NameInput control={control} name="title" disabled={!disabledInput} />
+          <NameInput
+            control={control}
+            name="title"
+            label={t('add.title')}
+            disabled={!disabledInput}
+          />
           <NameInput
             control={control}
             name="description"
+            label={t('add.description')}
             disabled={!disabledInput}
           />
           <NameInput
             control={control}
             name="price"
+            label={t('add.price')}
             type="number"
             disabled={!disabledInput}
           />
           <NameInput
             control={control}
             name="discount"
+            label={t('add.discount')}
             type="number"
             disabled={!disabledInput}
           />
-          <NameInput control={control} name="About" disabled={!disabledInput} />
+          <NameInput
+            control={control}
+            name="About"
+            label={t('add.about')}
+            disabled={!disabledInput}
+          />
           <ImageUpload
             name="images"
             error={errors.image?.message}
@@ -202,8 +252,8 @@ const AddProduct = () => {
               mb: '24px !important',
             }}
           >
-            <Submit sx={{ width: 150 }} isLoading={add.isLoading}>
-              Add
+            <Submit sx={{ width: 150 }} isLoading={edit.isLoading}>
+              {t('add.add')}
             </Submit>
           </Box>
         </Stack>

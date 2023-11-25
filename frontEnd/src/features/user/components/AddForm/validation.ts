@@ -1,11 +1,11 @@
-import { z } from 'zod'
+import z from '../../../../lib/zod'
 import { emailSchema, passwordSchema } from '../../../../utils/validation'
 
 export type userAddType = {
   name: string
   email: string
   password: string
-  role: string | number
+  role: string
 }
 export const defaultValues = {
   name: '',
@@ -18,6 +18,6 @@ const addSchema: z.ZodType<userAddType> = z.object({
   name: z.string().min(1),
   email: emailSchema,
   password: passwordSchema,
-  role: z.number(),
+  role: z.string().refine((arg) => arg != '', { message: 'Required' }),
 })
 export default addSchema

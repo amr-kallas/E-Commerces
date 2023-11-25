@@ -7,7 +7,7 @@ export type AddProdcut = {
   price: number
   discount: number
   About: string
-  image?: File | undefined
+  image?: File
 }
 export type DummyProdcut = {
   category: number |string
@@ -16,10 +16,18 @@ export type DummyProdcut = {
   price: number
   discount: number
   About: string
+
 }
 export type AddImgs = {
   product_id: string
-  image?: File | undefined
+  image: File 
+}
+export type AddProductBody = {
+  title: string
+  About: string
+  description: string
+  price: number
+  discount: number
 }
 export const defaultProductValue: AddProdcut = {
   category: '',
@@ -38,10 +46,11 @@ export const dummyData:DummyProdcut = {
   discount: 0,
   About: 'dummy',
 }
-export const imgUpload: AddImgs = {
+export const body: AddImgs = {
   product_id: '',
-  image: undefined,
+  image: new File([], 'default.txt'),
 }
+
 // const MAX_FILE_SIZE = 5000000
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 const schemaAddProduct: z.ZodType<AddProdcut> = z.object({

@@ -17,7 +17,11 @@ import schemaAddCategory, { defaultValues } from './validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { keys, queries } from '../../api/queries'
 import { useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
+import { useSnackbarContext } from '../../../../context/SnackbarContext'
 const AddCategory = () => {
+  const snackbar = useSnackbarContext()
+  const { t } = useTranslation('category')
   const {
     control,
     handleSubmit,
@@ -41,13 +45,17 @@ const AddCategory = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(keys.getAll._def)
         handleClose()
+        snackbar({
+          message: t('message.add'),
+          severity: 'success',
+        })
       },
       onError: (error: any) => {
         console.log(error)
       },
     })
   }
-  const handleUploadImage = (files: File| File[]) => {
+  const handleUploadImage = (files: File | File[]) => {
     setValue('image', files)
   }
   const handleCancelImage = () => {
@@ -81,10 +89,10 @@ const AddCategory = () => {
             fontSize: '33px',
           }}
         >
-          Add Category
+          {t('addCategory')}
         </DialogTitle>
         <Stack spacing={4} component={'form'} onSubmit={handleSubmit(onSubmit)}>
-          <NameInput control={control} name="title" />
+          <NameInput control={control} name="title" label={t('add.title')} />
           <ImageUpload
             name="image"
             error={errors.image?.message}
@@ -103,7 +111,7 @@ const AddCategory = () => {
             }}
           >
             <Submit sx={{ width: 150 }} isLoading={add.isLoading}>
-              Add
+              {t('add.add')}
             </Submit>
           </Box>
         </Stack>

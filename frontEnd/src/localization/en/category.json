@@ -1,0 +1,27 @@
+{
+  "table": {
+    "id": "id",
+    "title": "Title",
+    "image": "Image",
+    "action": "Options"
+  },
+  "edit": {
+    "editCategory": "Edit Category",
+    "title": "Title",
+    "image": "img",
+    "edit": "Edit"
+  },
+  "add": {
+    "addCategory": "Add Category",
+    "title": "Title",
+    "image": "img",
+    "add": "Add"
+  },
+  "message": {
+    "add": "The category has been added successfully",
+    "edit": "The category has been edited successfully",
+    "remove": "The category has been removed successfully",
+    "data":"No Category Found"
+
+  }
+}

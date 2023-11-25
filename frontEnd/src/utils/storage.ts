@@ -1,14 +1,20 @@
-const tokenChangeEvent = new Event("tokenChange")
+const tokenChangeEvent = new Event('tokenChange')
 const Storage = {
   setToken: (token: string) => {
-    localStorage.setItem("token", token);
+    localStorage.setItem('token', token)
     window.dispatchEvent(tokenChangeEvent)
   },
-  getToken:()=>{
+  getToken: () => {
     return localStorage.getItem('token')
   },
-  removeToken:()=>{
+  removeToken: () => {
     return localStorage.removeItem('token')
-  }
-};
+  },
+  setLanguage: (lang: string) => {
+    localStorage.setItem('lang', lang)
+  },
+  getLanguage: () => {
+    return localStorage.getItem('lang')
+  },
+}
 export default Storage

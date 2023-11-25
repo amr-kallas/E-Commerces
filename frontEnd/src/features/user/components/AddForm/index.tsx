@@ -9,7 +9,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  // Skeleton,
   Stack,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
@@ -24,7 +23,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { keys, queries } from '../../api/queries'
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { AddUser } from '../../api/type'
+import { useTranslation } from 'react-i18next'
+import { useSnackbarContext } from '../../../../context/SnackbarContext'
 const AddForm = () => {
+  const { t } = useTranslation('user')
+  const snackbar = useSnackbarContext()
   const {
     control,
     handleSubmit,
@@ -43,11 +47,15 @@ const AddForm = () => {
     clearSearchParams()
     setErr('')
   }
-  const onSubmit = (data: any) => {
-    addUser.mutate(data, {
+  const onSubmit = (body: AddUser) => {
+    addUser.mutate(body, {
       onSuccess: () => {
         queryClient.invalidateQueries(keys.users._def)
         handleClose()
+        snackbar({
+          message: t("message.add"),
+          severity: 'success',
+        })
       },
       onError: (error: any) => {
         setErr(error?.response.status)
@@ -82,19 +90,20 @@ const AddForm = () => {
             fontSize: '33px',
           }}
         >
-          Add User
+          {t('add.addUser')}
         </DialogTitle>
         <Stack spacing={4} component={'form'} onSubmit={handleSubmit(onSubmit)}>
-          <NameInput control={control} name="name" />
+          <NameInput control={control} name="name" label={t('add.name')} />
           <NameInput
             control={control}
             name="email"
+            label={t('add.email')}
             helperText={err == '422' && 'the email has already been token'}
             error={!!errors.email || err == '422'}
           />
-          <TextField control={control} label="Password" name="password" />
+          <TextField control={control} name="password" label={t('add.password')} />
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Role</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t('add.role')}</InputLabel>
             <Controller
               name="role"
               control={control}
@@ -107,14 +116,12 @@ const AddForm = () => {
                     label="role"
                     error={!!error}
                   >
-                    <MenuItem value={1995}>Admin</MenuItem>
-                    <MenuItem value={2001}>User</MenuItem>
-                    <MenuItem value={1996}>Writter</MenuItem>
-                    <MenuItem value={1999}>Product Manager</MenuItem>
+                    <MenuItem value={'1995'}>Admin</MenuItem>
+                    <MenuItem value={'2001'}>User</MenuItem>
+                    <MenuItem value={'1996'}>Writter</MenuItem>
+                    <MenuItem value={'1999'}>Product Manager</MenuItem>
                   </Select>
-                  <FormHelperText error>
-                    {error ? 'Requierd' : ''}
-                  </FormHelperText>
+                  <FormHelperText error>{error?.message}</FormHelperText>
                 </>
               )}
             />
@@ -128,7 +135,7 @@ const AddForm = () => {
             }}
           >
             <Submit sx={{ width: 150 }} isLoading={addUser.isLoading}>
-              Add
+              {t('add.add')}
             </Submit>
           </Box>
         </Stack>

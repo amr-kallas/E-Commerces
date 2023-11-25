@@ -1,0 +1,31 @@
+{
+  "table": {
+    "id": "id",
+    "name": "userName",
+    "email": "Email",
+    "role": "Role",
+    "action": "Options",
+    "rows": "Rows per page",
+    "of": "of"
+  },
+  "edit": {
+    "editUser": "Edit User",
+    "name": "name",
+    "email": "email",
+    "role": "Role",
+    "edit": "Edit"
+  },
+  "add": {
+    "addUser": "Add User",
+    "name": "name",
+    "email": "email",
+    "password": "password",
+    "role": "Role",
+    "add": "Add"
+  },
+  "message": {
+    "add": "The user has been added successfully",
+    "edit": "The user has been edited successfully",
+    "remove": "The user has been removed successfully"
+  }
+}

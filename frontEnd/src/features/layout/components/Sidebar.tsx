@@ -3,7 +3,7 @@ import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import HomeIcon from '@mui/icons-material/Home'
-import FeedIcon from '@mui/icons-material/Feed';
+import FeedIcon from '@mui/icons-material/Feed'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits'
@@ -15,8 +15,9 @@ import ListItemText from '@mui/material/ListItemText'
 import MuiDrawer from '@mui/material/Drawer'
 import { NavLink, useLocation } from 'react-router-dom'
 import PersonIcon from '@mui/icons-material/Person'
-import { Drawer, Typography } from '@mui/material'
+import { Drawer, Tooltip, Typography } from '@mui/material'
 import { queries } from '../../user/api/queries'
+import { useTranslation } from 'react-i18next'
 interface AppBarDialog {
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -69,41 +70,9 @@ const PermanentDrawer = styled(MuiDrawer, {
     '& .MuiDrawer-paper': closedMixin(theme),
   }),
 }))
-const items = [
-  {
-    text: 'Home',
-    icon: <HomeIcon />,
-    path: '/',
-    role: ['1995', '1996', '1999', '2001'],
-  },
-  {
-    text: 'Users',
-    icon: <PersonIcon />,
-    path: '/users',
-    role: ['1995'],
-  },
-
-  {
-    text: 'Writter',
-    icon: <ImportContactsIcon />,
-    path: '/writter',
-    role: ['1995', '1996'],
-  },
-  {
-    text: 'Category',
-    icon: <ProductionQuantityLimitsIcon />,
-    path: '/category',
-    role: ['1995', '1999'],
-  },
-  {
-    text: 'Product',
-    icon: <FeedIcon />,
-    path: '/product',
-    role: ['1995', '1999'],
-  },
-]
 
 const Sidebar = ({ open, setOpen }: AppBarDialog) => {
+  const { t } = useTranslation('layout')
   const me = queries.useMe()
   const location = useLocation()
   const theme = useTheme()
@@ -111,6 +80,39 @@ const Sidebar = ({ open, setOpen }: AppBarDialog) => {
   const handleDrawerClose = () => {
     setOpen(false)
   }
+  const items = [
+    {
+      text: t('home'),
+      icon: <HomeIcon />,
+      path: '/',
+      role: ['1995', '1996', '1999', '2001'],
+    },
+    {
+      text: t('users'),
+      icon: <PersonIcon />,
+      path: '/users',
+      role: ['1995'],
+    },
+
+    {
+      text: t('writter'),
+      icon: <ImportContactsIcon />,
+      path: '/writter',
+      role: ['1995', '1996'],
+    },
+    {
+      text: t('category'),
+      icon: <ProductionQuantityLimitsIcon />,
+      path: '/category',
+      role: ['1995', '1999'],
+    },
+    {
+      text: t('product'),
+      icon: <FeedIcon />,
+      path: '/product',
+      role: ['1995', '1999'],
+    },
+  ]
   const drawerDetail = (
     <>
       <DrawerHeader>
@@ -123,7 +125,7 @@ const Sidebar = ({ open, setOpen }: AppBarDialog) => {
             fontWeight: 'bold',
           }}
         >
-          E-Commerce
+          {t('ecommerce')}
         </Typography>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === 'rtl' ? (
@@ -141,12 +143,13 @@ const Sidebar = ({ open, setOpen }: AppBarDialog) => {
       >
         {items.map(
           (item) =>
-            item.role.includes(me.data?.role) && (
+            item.role.includes(me.data!.role) && (
               <NavLink
                 to={item.path}
                 style={{ textDecoration: 'none', color: '#8282ad' }}
                 key={item.text}
               >
+                <Tooltip title={!open?item.text:undefined} placement='right-start'>
                 <ListItem
                   disablePadding
                   sx={{
@@ -190,6 +193,7 @@ const Sidebar = ({ open, setOpen }: AppBarDialog) => {
                     />
                   </ListItemButton>
                 </ListItem>
+                </Tooltip>
               </NavLink>
             )
         )}

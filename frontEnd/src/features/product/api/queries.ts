@@ -15,4 +15,5 @@ export const queries={
     useAddImg:()=>useMutation(API.AddImg),
     useEdit:()=>useMutation(API.Edit),
     useDelete:()=>useMutation(API.Delete),
+    useDeleteImg:()=>useMutation(API.DeleteImg),
 }

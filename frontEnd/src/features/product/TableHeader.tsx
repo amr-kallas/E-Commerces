@@ -1,6 +1,16 @@
+import { useTranslation } from 'react-i18next'
 
 const TableHeader = () => {
-  return ['id','Title','Description','Images','Price','Rating','Action']
+  const { t } = useTranslation('product', { keyPrefix: 'table' })
+  return [
+    t('id'),
+    t('title'),
+    t('description'),
+    t('images'),
+    t('price'),
+    t('rating'),
+    t('action'),
+  ]
 }
 
 export default TableHeader

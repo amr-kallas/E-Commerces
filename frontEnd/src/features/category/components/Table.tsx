@@ -8,7 +8,11 @@ import useEventSearchParams from '../../../hooks/useEventSearchParams'
 import { useQueryClient } from '@tanstack/react-query'
 import NoData from '../../../components/feedback/NoData'
 import { categoryBody } from '../api/type'
+import { useTranslation } from 'react-i18next'
+import { useSnackbarContext } from '../../../context/SnackbarContext'
 const TableCategory = () => {
+  const snackbar = useSnackbarContext()
+  const { t } = useTranslation('category')
   const { edit } = useEventSearchParams()
   const useAll = queries.useAll()
   const useDelete = queries.useDelete()
@@ -21,6 +25,10 @@ const TableCategory = () => {
     useDelete.mutate(id, {
       onSuccess: () => {
         queryClient.invalidateQueries(keys.getAll._def)
+        snackbar({
+          message: t('message.remove'),
+          severity: 'success',
+        })
       },
       onError: (error) => {
         console.log(error)
@@ -71,7 +79,7 @@ const TableCategory = () => {
           </TableRow>
         ))}
       </Tables>
-      {useAll.data?.length == 0 && <NoData message="No Category Found" />}
+      {useAll.data?.length == 0 && <NoData message={t("message.data")} />}
     </>
   )
 }

@@ -19,8 +19,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { keys, queries } from '../../api/queries'
 import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
+import { useSnackbarContext } from '../../../../context/SnackbarContext'
 
 const EditCategory = () => {
+  const snackbar = useSnackbarContext()
+  const { t } = useTranslation('category')
   const { id, isActive, clearSearchParams } = useEditSearchParams()
   const { data, isLoading } = queries.useCategory(id)
   const edit = queries.useEdit()
@@ -49,9 +53,6 @@ const EditCategory = () => {
     setValue('image', undefined)
   }
   const onSubmit = (body: any) => {
-    // const body = new FormData()
-    // body.append('title', bodys.title)
-    // body.append('image', bodys.image)
     edit.mutate(
       { id, body },
       {
@@ -59,6 +60,10 @@ const EditCategory = () => {
           queryClient.invalidateQueries(keys.getAll._def)
           queryClient.invalidateQueries(keys.get._def)
           handleClose()
+          snackbar({
+            message: t('message.edit'),
+            severity: 'success',
+          })
         },
         onError: (error) => {
           console.log(error)
@@ -94,7 +99,7 @@ const EditCategory = () => {
             fontSize: '33px',
           }}
         >
-          Edit Category
+          {t('edit.editCategory')}
         </DialogTitle>
         {!isLoading ? (
           <Stack
@@ -102,7 +107,7 @@ const EditCategory = () => {
             component={'form'}
             onSubmit={handleSubmit(onSubmit)}
           >
-            <NameInput control={control} name="title" />
+            <NameInput control={control} name="title" label={t('edit.title')} />
             <ImageUpload
               name="image"
               multiple={false}
@@ -121,7 +126,7 @@ const EditCategory = () => {
               }}
             >
               <Submit sx={{ width: 150 }} isLoading={edit.isLoading}>
-                Add
+                {t('edit.edit')}
               </Submit>
             </Box>
           </Stack>

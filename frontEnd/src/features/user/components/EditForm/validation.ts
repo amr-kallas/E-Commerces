@@ -6,11 +6,15 @@ export type userEditType = {
   email: string
   role:string
 }
-
+export const defaultvalues={
+  name:'',
+  email:'',
+  role:''
+}
 const editSchema: z.ZodType<userEditType> = z.object({
   name: z.string().min(1),
   email: emailSchema,
-  role:z.string()
+  role:z.string().min(1)
   
 })
 export default editSchema

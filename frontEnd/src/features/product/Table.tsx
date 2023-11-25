@@ -7,7 +7,11 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useQueryClient } from '@tanstack/react-query'
 import NoData from '../../components/feedback/NoData'
+import { useTranslation } from 'react-i18next'
+import { useSnackbarContext } from '../../context/SnackbarContext'
 const Table = () => {
+  const { t } = useTranslation("product")
+  const snackbar=useSnackbarContext()
   const tableHeader = TableHeader()
   const { edit } = useEventSearchParams()
   const { data, isLoading } = queries.useAll()
@@ -17,6 +21,10 @@ const Table = () => {
     Delete.mutate(id, {
       onSuccess: () => {
         queryClient.invalidateQueries(keys.getAll._def)
+        snackbar({
+          message: t('message.remove'),
+          severity: 'success',
+        })
       },
       onError: (error) => {
         console.log(error)
@@ -38,7 +46,7 @@ const Table = () => {
                   justifyContent: 'center',
                   position: 'relative',
                   width: 120,
-                  m:'auto',
+                  m: 'auto',
                   'img:not(:first-of-type)': {
                     marginLeft: '-10px',
                   },
@@ -96,7 +104,7 @@ const Table = () => {
           </TableRow>
         ))}
       </Tables>
-      {data?.length == 0 && <NoData message="No Products Found" />}
+      {data?.length == 0 && <NoData message={t("message.data")} />}
     </>
   )
 }

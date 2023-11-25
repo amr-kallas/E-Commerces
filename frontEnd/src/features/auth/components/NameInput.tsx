@@ -8,7 +8,6 @@ const NameInput = ({ control ,name,...props}:Input) => {
       name={name}
       variant="outlined"
       control={control}
-      label={name}
       fullWidth
       {...props}
       

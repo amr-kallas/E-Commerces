@@ -3,14 +3,14 @@ import {
   FormControl,
   FormHelperText,
   IconButton,
-  Stack,
   Typography,
 } from '@mui/material'
 import CancelIcon from '@mui/icons-material/Cancel'
 import UploadIcon from '@mui/icons-material/Upload'
 import { ChangeEvent, useState } from 'react'
-import Progress from '../feedback/Progress'
-import { useProgressContext } from '../../context/ProgressContext'
+import ProductImgae from '../../features/product/components/AddForm/ProductImgae'
+import { useTranslation } from 'react-i18next'
+
 type imgHelpers = {
   name: string
   error: string | undefined
@@ -31,25 +31,25 @@ const ImageUpload = ({
   disabled,
   isProduct = false,
 }: imgHelpers) => {
+  const {t}=useTranslation("category",{keyPrefix:"add"})
   const initialImage = url ? [url] : []
   const [upload, setUpload] = useState<string[]>(initialImage)
-  const [uploadProduct, setUploadProduct] = useState<File[]>()
-  const {progressPercentage}=useProgressContext()
-  console.log(progressPercentage)
+  const [uploadProduct, setUploadProduct] = useState<File[]>([])
   const handleSelectImg = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files)
-      onUpload(files.length==1?e.target.files[0]:files)
+      onUpload(files.length == 1 ? e.target.files[0] : files)
       const fileURLs = files.map((file) => URL.createObjectURL(file))
       setUpload(fileURLs)
-      setUploadProduct(files)
+      setUploadProduct((prevFiles: any) => [...prevFiles, ...files])
     }
   }
   const cancelImg = () => {
     setUpload([])
-    setUploadProduct(undefined)
+    setUploadProduct([])
     cancel()
   }
+
   return (
     <FormControl>
       {!isProduct ? (
@@ -74,7 +74,7 @@ const ImageUpload = ({
               },
             }}
           >
-            <Typography color="#777">img</Typography>
+            <Typography color="#777">{t("image")}</Typography>
             <UploadIcon fontSize="small" color="primary" />
           </Box>
         ) : (
@@ -123,63 +123,13 @@ const ImageUpload = ({
           </Box>
         )
       ) : (
-        <FormControl>
-          <Box
-            component="label"
-            htmlFor={name as string}
-            sx={{
-              border: error
-                ? '1px solid #d32f2f'
-                : '1px solid rgba(0, 0, 0, 0.23)',
-              minHeight: '56px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '16px',
-              borderRadius: '12px',
-              cursor: 'pointer',
-              pointerEvents: disabled ? 'none' : 'unset',
-              ':hover': {
-                border: '1px solid #1976d2',
-              },
-            }}
-          >
-            <Typography color="#777">img</Typography>
-            <UploadIcon fontSize="small" color="primary" />
-          </Box>
-          <Stack  spacing={3}>
-            {uploadProduct?.map((img, index) => (
-              <Stack
-                spacing={1.5}
-                key={index}
-                direction="row"
-                sx={{ border: '1px solid rgba(0, 0, 0, 0.3)', p: 0.5 ,flexWrap:'wrap',m:'20px 0 0 !important'}}
-              >
-                <Box sx={{ width: 70, height: 70 }}>
-                  <img
-                    src={URL.createObjectURL(img)}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: '4px',
-                    }}
-                  />
-                </Box>
-                <Box sx={{flex:1}}>
-                  <Typography sx={{ fontSize: 16 }}>{img.name}</Typography>
-                  <Typography sx={{ fontSize: 12 }}>
-                    {img.size / 1024 < 1000
-                      ? `${(img.size / 1024).toFixed(1)}KB`
-                      : `${(img.size / (1024 * 1024)).toFixed(1)}MB`}
-                  </Typography>
-                </Box>
-                <Box width="100%" ml='2px !important' ref={(e:any)=>console.log(e)}>
-                  <Progress value={50} ref={(e:never)=>console.log(e)} />
-                </Box>
-              </Stack>
-            ))}
-          </Stack>
-        </FormControl>
+        <ProductImgae
+          name={name}
+          error={error}
+          disabled={disabled}
+          uploadProduct={uploadProduct}
+          setUploadProduct={setUploadProduct}
+        />
       )}
       <input
         type="file"

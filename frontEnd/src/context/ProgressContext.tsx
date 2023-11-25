@@ -1,12 +1,22 @@
 import { createContext, useContext } from 'react'
-
+type MyObject = {
+  id: string
+  num?: number
+}
 type prog = {
- progressPercentage: React.MutableRefObject<never[]>
+  percentage: MyObject[]
+  setPercentage: React.Dispatch<React.SetStateAction<MyObject[]>>
+  indexRef:React.MutableRefObject<number>
 }
 
-const progress = createContext<prog>({ progressPercentage: { current: [] } });
+const initialValue = {
+  percentage: [],
+  setPercentage: () => {},
+  indexRef:{current:-1}
+}
 
-export const useProgressContext = () => useContext(progress);
+const progress = createContext<prog>(initialValue)
 
-export default progress;
+export const useProgressContext = () => useContext(progress)
 
+export default progress

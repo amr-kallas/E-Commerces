@@ -2,8 +2,19 @@ import MenuIcon from '@mui/icons-material/Menu'
 import * as React from 'react'
 import { styled } from '@mui/material/styles'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
-import { Toolbar, Stack,IconButton,Typography } from '@mui/material'
+import {
+  Toolbar,
+  Stack,
+  IconButton,
+  Typography,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from '@mui/material'
 import UserMenu from './UserMenu'
+import { changeLanguage } from '../../../lib/i18n'
+import { useTranslation } from 'react-i18next'
+import { useLanguageContext } from '../../../context/LanguageContext'
 const drawerWidth = 240
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean
@@ -31,8 +42,14 @@ const AppBar = styled(MuiAppBar, {
   }),
 }))
 const Appbar = ({ open, setOpen }: AppBarDialog) => {
+  const { t } = useTranslation('layout')
+  const { lang, setLang } = useLanguageContext()
   const handleDrawerOpen = () => {
     setOpen(true)
+  }
+  const handleChange = (event: SelectChangeEvent) => {
+    changeLanguage(event.target.value)
+    setLang(event.target.value)
   }
   return (
     <AppBar position="fixed" open={open}>
@@ -55,11 +72,37 @@ const Appbar = ({ open, setOpen }: AppBarDialog) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ fontWeight: 'bold', fontSize: 24 }}
+          >
+            {t('dashbord')}
           </Typography>
         </Stack>
-        <UserMenu/>
+        <Stack direction="row" spacing={1.2} alignItems="center">
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Ages"
+            size="small"
+            value={lang ?? 'en'}
+            sx={{
+              color: 'white',
+              svg: { color: 'white' },
+              height: 'fit-content',
+              ml: 'auto',
+              borderRadius: 6,
+              fieldset: { border: 'none' },
+            }}
+            onChange={handleChange}
+          >
+            <MenuItem value={'en'}>en</MenuItem>
+            <MenuItem value={'ar'}>ar</MenuItem>
+          </Select>
+          <UserMenu />
+        </Stack>
       </Toolbar>
     </AppBar>
   )
