@@ -1,18 +1,21 @@
 import { createContext, useContext } from 'react'
 type MyObject = {
-  id: string
   num?: number
 }
 type prog = {
   percentage: MyObject[]
   setPercentage: React.Dispatch<React.SetStateAction<MyObject[]>>
-  indexRef:React.MutableRefObject<number>
+  ids: string[]
+  setIds: React.Dispatch<React.SetStateAction<string[]>>
+  indexRef: React.MutableRefObject<number>
 }
 
 const initialValue = {
   percentage: [],
   setPercentage: () => {},
-  indexRef:{current:-1}
+  ids: [],
+  setIds: () => {},
+  indexRef: { current: -1 },
 }
 
 const progress = createContext<prog>(initialValue)

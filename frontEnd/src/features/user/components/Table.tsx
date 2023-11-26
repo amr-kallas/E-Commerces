@@ -20,7 +20,6 @@ import Tables from '../../../components/table/Table'
 import { GetUser } from '../api/type'
 import { useSnackbarContext } from '../../../context/SnackbarContext'
 import { useTranslation } from 'react-i18next'
-import i18n from '../../../lib/i18n'
 
 export const UserTable = () => {
   const snackbar = useSnackbarContext()
@@ -47,7 +46,6 @@ export const UserTable = () => {
       },
     })
   }
-  console.log(i18n.t('validation:required'))
   const tableHeader = HeaderTable()
   return (
     <>

@@ -4,16 +4,15 @@ import {
   Dialog,
   DialogTitle,
   FormControl,
-  FormHelperText,
   IconButton,
   InputLabel,
   MenuItem,
-  Select,
   Stack,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import NameInput from '../../../auth/components/NameInput'
-import { Controller, useForm } from 'react-hook-form'
+import Select from '../../../../components/inputs/Select'
+import { useForm } from 'react-hook-form'
 import Submit from '../../../../components/buttons/Submit'
 import useAddSearchParams from '../../../../hooks/useAddSearchParams'
 import TextField from '../../../../components/inputs/TextField'
@@ -53,7 +52,7 @@ const AddForm = () => {
         queryClient.invalidateQueries(keys.users._def)
         handleClose()
         snackbar({
-          message: t("message.add"),
+          message: t('message.add'),
           severity: 'success',
         })
       },
@@ -101,30 +100,21 @@ const AddForm = () => {
             helperText={err == '422' && 'the email has already been token'}
             error={!!errors.email || err == '422'}
           />
-          <TextField control={control} name="password" label={t('add.password')} />
+          <TextField
+            control={control}
+            name="password"
+            label={t('add.password')}
+          />
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">{t('add.role')}</InputLabel>
-            <Controller
-              name="role"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <>
-                  <Select
-                    {...field}
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="role"
-                    error={!!error}
-                  >
-                    <MenuItem value={'1995'}>Admin</MenuItem>
-                    <MenuItem value={'2001'}>User</MenuItem>
-                    <MenuItem value={'1996'}>Writter</MenuItem>
-                    <MenuItem value={'1999'}>Product Manager</MenuItem>
-                  </Select>
-                  <FormHelperText error>{error?.message}</FormHelperText>
-                </>
-              )}
-            />
+            <InputLabel id="demo-simple-select-label">
+              {t('add.role')}
+            </InputLabel>
+            <Select name="role" control={control} label="role" message={null}>
+              <MenuItem value={'1995'}>Admin</MenuItem>
+              <MenuItem value={'2001'}>User</MenuItem>
+              <MenuItem value={'1996'}>Writter</MenuItem>
+              <MenuItem value={'1999'}>Product Manager</MenuItem>
+            </Select>
           </FormControl>
 
           <Box

@@ -1,14 +1,16 @@
 import { useRef, useState } from 'react'
 import progress from '../context/ProgressContext'
-type MyObject={
-  id:string,
-  num?:number
+type MyObject = {
+  num?: number
 }
 const Progress = ({ children }: { children: React.ReactNode }) => {
-  const [percentage, setPercentage] = useState<MyObject[]>([]);
-  const indexRef=useRef<number>(-1)
+  const [percentage, setPercentage] = useState<MyObject[]>([])
+  const [ids, setIds] = useState<string[]>([])
+  const indexRef = useRef<number>(-1)
   return (
-    <progress.Provider value={{ percentage, setPercentage,indexRef }}>
+    <progress.Provider
+      value={{ ids, setIds, percentage, setPercentage, indexRef }}
+    >
       {children}
     </progress.Provider>
   )

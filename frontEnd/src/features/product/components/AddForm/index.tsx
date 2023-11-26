@@ -4,16 +4,15 @@ import {
   Dialog,
   DialogTitle,
   FormControl,
-  FormHelperText,
   IconButton,
   InputLabel,
   MenuItem,
-  Select,
   Stack,
 } from '@mui/material'
+import Select from '../../../../components/inputs/Select'
 import CloseIcon from '@mui/icons-material/Close'
 import useAddSearchParams from '../../../../hooks/useAddSearchParams'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { queries as categoryQuery } from '../../../category/api/queries'
 import { keys, queries as productQuery } from '../../api/queries'
 import NameInput from '../../../auth/components/NameInput'
@@ -53,7 +52,7 @@ const AddProduct = () => {
   const { isActive, clearSearchParams } = useAddSearchParams()
   const [sendReq, setSendReq] = useState(false)
   const [id, setId] = useState('')
-  const { setPercentage, indexRef } = useProgressContext()
+  const { setPercentage, indexRef, setIds } = useProgressContext()
   const disabledInput = watch('category')
   const handleClose = () => {
     clearSearchParams()
@@ -78,7 +77,7 @@ const AddProduct = () => {
       const changePercentageAtIndex = (newValue: number) => {
         setPercentage((oldArray: any) => {
           const newArray = [...oldArray]
-          newArray[indexRef.current] = { id: '1f', num: newValue }
+          newArray[indexRef.current] = { num: newValue }
           return newArray
         })
       }
@@ -90,14 +89,7 @@ const AddProduct = () => {
           { body, changePercentageAtIndex },
           {
             onSuccess: (data) => {
-              setPercentage((oldArray: any) => {
-                const newArray = [...oldArray]
-                newArray[indexRef.current] = {
-                  ...oldArray[indexRef.current],
-                  id: data.id,
-                }
-                return newArray
-              })
+              setIds((prev) => [...prev, data.id])
             },
             onError: (error) => {
               console.log(error)
@@ -109,6 +101,7 @@ const AddProduct = () => {
   const handleCancelImage = () => {
     setValue('image', undefined)
     setPercentage([])
+    setIds([])
   }
   useEffect(() => {
     indexRef.current == -1 && setValue('image', undefined)
@@ -178,7 +171,7 @@ const AddProduct = () => {
             <InputLabel id="demo-simple-select-label">
               {t('add.category')}
             </InputLabel>
-            <Controller
+            {/* <Controller
               name="category"
               control={control}
               render={({ field, fieldState: { error } }) => (
@@ -198,11 +191,24 @@ const AddProduct = () => {
                     ))}
                   </Select>
                   <FormHelperText error>
-                    {error ? i18n.t("validation:required") : ''}
+                    {error ? i18n.t('validation:required') : ''}
                   </FormHelperText>
                 </>
               )}
-            />
+            /> */}
+            <Select
+              name="category"
+              control={control}
+              label="Category"
+              message={i18n.t('validation:required')}
+              onClick={sendCategory}
+            >
+              {categoryData?.map((item) => (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.title}
+                </MenuItem>
+              ))}
+            </Select>
           </FormControl>
           <NameInput
             control={control}

@@ -19,12 +19,12 @@ const ProductImgae = ({
   setUploadProduct,
 }: imgHelpers) => {
   const DeleteImg = queries.useDeleteImg()
-  const { percentage, setPercentage, indexRef: ref } = useProgressContext()
+  const { percentage, indexRef: ref, ids, setIds } = useProgressContext()
   const handleDelete = (id: number) => {
-    let imgID = percentage[id].id
+    let imgID = ids[id]
     DeleteImg.mutate(imgID, {
       onSuccess: () => {
-        setPercentage((prev) => prev.filter((item) => item.id != imgID))
+        setIds((prev) => prev.filter((item) => item != imgID))
         setUploadProduct((prev) => prev.filter((_item, index) => index != id))
       },
       onError: (error) => {
