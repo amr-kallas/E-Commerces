@@ -10,11 +10,18 @@ import { lazy } from 'react'
 import { Category, Home, Product, User } from './pages'
 import { Writter } from './features/writter'
 import Error404 from './components/feedback/Error404'
+import SomethingWentWrong from './components/feedback/SomethingWentWrong'
+import i18n from './lib/i18n'
 const Layout = lazy(() => import('./features/layout'))
 
 export default createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/">
+    <Route
+      path="/"
+      errorElement={
+        <SomethingWentWrong text={i18n.t('error:someThingWentWrong')} />
+      }
+    >
       <Route element={<NotAuth />}>
         <Route path="register" element={<Signup />} />
         <Route path="login" element={<Login />} />

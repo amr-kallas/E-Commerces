@@ -18,7 +18,11 @@ const i18nOptions: InitOptions = {
 }
 
 i18n.use(initReactI18next).init(i18nOptions)
+i18n.on("languageChanged", (language) => {
+  if (i18n.language !== language) i18n.changeLanguage(language);
+});
 
+console.log(i18n)
 export const changeLanguage = (lang: string) => {
   Storage.setLanguage(lang)
   const language=Storage.getLanguage()

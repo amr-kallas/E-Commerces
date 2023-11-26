@@ -4,13 +4,15 @@ import category from './category.json'
 import product from './product.json'
 import layout from './layout.json'
 import validation from './validation.json'
+import error from './error.json'
 const language = {
   zod,
   user,
   category,
   product,
   layout,
-  validation
+  validation,
+  error
 }
 
 export default language

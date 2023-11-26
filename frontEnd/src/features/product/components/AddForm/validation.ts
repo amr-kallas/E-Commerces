@@ -1,8 +1,7 @@
-import i18n from '../../../../lib/i18n'
-import  z  from '../../../../lib/zod'
+import z from '../../../../lib/zod'
 
 export type AddProdcut = {
-  category: number |string
+  category: number | string
   title: string
   description: string
   price: number
@@ -11,17 +10,16 @@ export type AddProdcut = {
   image?: File
 }
 export type DummyProdcut = {
-  category: number |string
+  category: number | string
   title: string
   description: string
   price: number
   discount: number
   About: string
-
 }
 export type AddImgs = {
   product_id: string
-  image: File 
+  image: File
 }
 export type AddProductBody = {
   title: string
@@ -39,7 +37,7 @@ export const defaultProductValue: AddProdcut = {
   About: '',
   image: undefined,
 }
-export const dummyData:DummyProdcut = {
+export const dummyData: DummyProdcut = {
   category: 0,
   title: 'dummy',
   description: 'dummy dummy dummy',
@@ -62,10 +60,9 @@ const schemaAddProduct: z.ZodType<AddProdcut> = z.object({
   About: z.string().min(5),
   image: z
     .any()
-    .refine((file) => file != undefined, i18n.t("validation:required"))
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      i18n.t("validation:support")
-    ),
+    .refine((file) => file != undefined, { params: { custom: 'required' } })
+    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type), {
+      params: { custom: 'fileType' },
+    }),
 })
 export default schemaAddProduct
