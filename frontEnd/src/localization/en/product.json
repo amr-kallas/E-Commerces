@@ -18,10 +18,21 @@
     "about": "About",
     "add": "Add"
   },
+  "edit": {
+    "editProduct": "Edit Product",
+    "category": "Category",
+    "title": "Title",
+    "description": "Description",
+    "price": "Price",
+    "discount": "Discount",
+    "about": "About",
+    "edit": "Edit"
+  },
   "message": {
     "add": "The product has been added successfully",
     "edit": "The product has been edited successfully",
     "remove": "The product has been removed successfully",
-    "data":"No Product Found"
+    "data":"No Product Found",
+    "error":"Faild to make this property"
   }
 }

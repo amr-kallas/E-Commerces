@@ -10,8 +10,8 @@ import NoData from '../../components/feedback/NoData'
 import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '../../context/SnackbarContext'
 const Table = () => {
-  const { t } = useTranslation("product")
-  const snackbar=useSnackbarContext()
+  const { t } = useTranslation('product')
+  const snackbar = useSnackbarContext()
   const tableHeader = TableHeader()
   const { edit } = useEventSearchParams()
   const { data, isLoading } = queries.useAll()
@@ -26,8 +26,11 @@ const Table = () => {
           severity: 'success',
         })
       },
-      onError: (error) => {
-        console.log(error)
+      onError: () => {
+        snackbar({
+          message: t('message.error'),
+          severity: 'error',
+        })
       },
     })
   }
@@ -38,7 +41,25 @@ const Table = () => {
           <TableRow key={item.id}>
             <TableCell>{index + 1}</TableCell>
             <TableCell align="center">{item.title}</TableCell>
-            <TableCell align="center">{item.description}</TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                overflow: 'hidden',
+                maxHeight: '4em',
+              }}
+            >
+              <span
+                style={{
+                  display: '-webkit-box',
+                  WebkitBoxOrient: 'vertical',
+                  WebkitLineClamp: 2,
+                  overflow:'hidden',
+                  direction:'ltr'
+                }}
+              >
+                {item.description}
+              </span>
+            </TableCell>
             <TableCell align="center">
               <Box
                 sx={{
@@ -104,7 +125,7 @@ const Table = () => {
           </TableRow>
         ))}
       </Tables>
-      {data?.length == 0 && <NoData message={t("message.data")} />}
+      {data?.length == 0 && <NoData message={t('message.data')} />}
     </>
   )
 }

@@ -10,7 +10,7 @@ const NameInput = ({ control ,name,...props}:Input) => {
       control={control}
       fullWidth
       {...props}
-      
+      label="email"
     />
   );
 };

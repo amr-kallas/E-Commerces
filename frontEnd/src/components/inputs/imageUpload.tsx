@@ -74,7 +74,7 @@ const ImageUpload = ({
               },
             }}
           >
-            <Typography color="#777">{t("image")}</Typography>
+            <Typography  color="#777">{t("image")}</Typography>
             <UploadIcon fontSize="small" color="primary" />
           </Box>
         ) : (
@@ -133,6 +133,7 @@ const ImageUpload = ({
       )}
       <input
         type="file"
+        accept='image/*'
         disabled={!!disabled}
         multiple={multiple}
         onChange={handleSelectImg}

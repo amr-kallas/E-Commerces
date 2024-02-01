@@ -11,127 +11,52 @@ import {
 } from '@mui/material'
 import Select from '../../../../components/inputs/Select'
 import CloseIcon from '@mui/icons-material/Close'
-import useAddSearchParams from '../../../../hooks/useAddSearchParams'
 import { useForm } from 'react-hook-form'
 import { queries as categoryQuery } from '../../../category/api/queries'
 import { keys, queries as productQuery } from '../../api/queries'
 import TextField from '../../../../components/inputs/TextField'
 import Submit from '../../../../components/buttons/Submit'
 import { zodResolver } from '@hookform/resolvers/zod'
-import schemaAddProduct, {
-  defaultProductValue,
-  dummyData,
-  body,
-} from './validation'
-import { useQueryClient } from '@tanstack/react-query'
-import ImageUpload from '../../../../components/inputs/imageUpload'
-import { useEffect, useState } from 'react'
-import { useProgressContext } from '../../../../context/ProgressContext'
 import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
-const AddProduct = () => {
+import useEditSearchParams from '../../../../hooks/useEditSearchParams'
+import { defaultProductValue, schemaEditProduct } from './validation'
+import { useEffect } from 'react'
+import { productDetails } from './helpers'
+import { useQueryClient } from '@tanstack/react-query'
+const EditProduct = () => {
+  const { id, isActive, clearSearchParams } = useEditSearchParams()
   const snackbar = useSnackbarContext()
-  const { t } = useTranslation('product')
-  const {
-    handleSubmit,
-    control,
-    reset,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm({
-    defaultValues: defaultProductValue,
-    resolver: zodResolver(schemaAddProduct),
-  })
+  const { data: productData, isSuccess } = productQuery.useProduct(id)
   const { data: categoryData } = categoryQuery.useAll()
-  const add = productQuery.useAdd()
-  const addImg = productQuery.useAddImg()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
-  const { isActive, clearSearchParams } = useAddSearchParams()
-  const [sendReq, setSendReq] = useState(false)
-  const [id, setId] = useState('')
-  const { setPercentage, indexRef, setIds } = useProgressContext()
+  const { t } = useTranslation('product')
+  const { handleSubmit, control, watch, reset } = useForm({
+    defaultValues: isSuccess
+      ? productDetails(productData[0])
+      : defaultProductValue,
+    resolver: zodResolver(schemaEditProduct),
+  })
   const disabledInput = watch('category')
   const handleClose = () => {
     clearSearchParams()
-    reset()
-    setSendReq(false)
-    setPercentage([])
-    indexRef.current = -1
-  }
-  const handleUploadImage = async (files: File | File[] | any) => {
-    let imgs: File[]
-    if (Array.from(files).length >= 1) {
-      imgs = Array.from(files)
-    } else {
-      imgs = [files]
-    }
-    let c = 0
-    for (const [index, element] of imgs.entries()) {
-      if (index == c) {
-        indexRef.current++
-        c++
-      }
-      const changePercentageAtIndex = (newValue: number) => {
-        setPercentage((oldArray: any) => {
-          const newArray = [...oldArray]
-          newArray[indexRef.current] = { num: newValue }
-          return newArray
-        })
-      }
-      setValue('image', element)
-      body.image = element
-      body.product_id = id
-      if (files.length != 0)
-        await addImg.mutateAsync(
-          { body, changePercentageAtIndex },
-          {
-            onSuccess: (data) => {
-              setIds((prev) => [...prev, data.id])
-            },
-            onError: (error) => {
-              console.log(error)
-            },
-          }
-        )
-    }
-  }
-  const handleCancelImage = () => {
-    setValue('image', undefined)
-    setPercentage([])
-    setIds([])
   }
   useEffect(() => {
-    indexRef.current == -1 && setValue('image', undefined)
-  }, [indexRef.current])
-  const sendCategory = () => {
-    const categoryInput = watch('category')
-    dummyData.category = categoryInput
-    setSendReq(true)
-    if (!sendReq) {
-      add.mutate(dummyData, {
-        onSuccess: (data) => {
-          setId(data.id)
-        },
-      })
-    }
-  }
+    if (productData) reset(productDetails(productData[0]))
+  }, [productData, id])
   const onSubmit = (body: any) => {
     edit.mutate(
       { id, body },
       {
         onSuccess: () => {
+          snackbar({ message: t('message.edit'), severity: 'success' })
           queryClient.invalidateQueries(keys.getAll._def)
           handleClose()
-          snackbar({
-            message: t('message.add'),
-            severity: 'success',
-          })
         },
-        onError: (error) => {
-          console.log(error)
+        onError: () => {
+          snackbar({ message: t('message.error'), severity: 'error' })
         },
       }
     )
@@ -164,19 +89,18 @@ const AddProduct = () => {
             fontSize: '33px',
           }}
         >
-          {t('add.addProduct')}
+          {t('edit.editProduct')}
         </DialogTitle>
         <Stack spacing={3} component={'form'} onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">
-              {t('add.category')}
+              {t('edit.category')}
             </InputLabel>
             <Select
               name="category"
               control={control}
               label="Category"
               message={i18n.t('validation:required')}
-              onClick={sendCategory}
             >
               {categoryData?.map((item) => (
                 <MenuItem key={item.id} value={item.id}>
@@ -188,44 +112,34 @@ const AddProduct = () => {
           <TextField
             control={control}
             name="title"
-            label={t('add.title')}
+            label={t('edit.title')}
             disabled={!disabledInput}
           />
           <TextField
             control={control}
             name="description"
-            label={t('add.description')}
+            label={t('edit.description')}
             disabled={!disabledInput}
           />
           <TextField
             control={control}
             name="price"
-            label={t('add.price')}
+            label={t('edit.price')}
             type="number"
             disabled={!disabledInput}
           />
           <TextField
             control={control}
             name="discount"
-            label={t('add.discount')}
+            label={t('edit.discount')}
             type="number"
             disabled={!disabledInput}
           />
           <TextField
             control={control}
             name="About"
-            label={t('add.about')}
+            label={t('edit.about')}
             disabled={!disabledInput}
-          />
-          <ImageUpload
-            name="images"
-            error={errors.image?.message}
-            multiple
-            onUpload={handleUploadImage}
-            cancel={handleCancelImage}
-            url={undefined}
-            disabled={!disabledInput}
-            isProduct={true}
           />
           <Box
             sx={{
@@ -235,7 +149,7 @@ const AddProduct = () => {
             }}
           >
             <Submit sx={{ width: 150 }} isLoading={edit.isLoading}>
-              {t('add.add')}
+              {t('edit.edit')}
             </Submit>
           </Box>
         </Stack>
@@ -244,4 +158,4 @@ const AddProduct = () => {
   )
 }
 
-export default AddProduct
+export default EditProduct

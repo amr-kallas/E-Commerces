@@ -55,18 +55,16 @@ const Appbar = ({ open, setOpen }: AppBarDialog) => {
     <AppBar position="fixed" open={open}>
       <Toolbar
         sx={{
-          justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <Stack direction="row" alignItems="center">
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
             sx={{
-              marginRight: 5,
+              marginRight: 1.5,
               ...(open && { display: 'none' }),
             }}
           >
@@ -80,8 +78,7 @@ const Appbar = ({ open, setOpen }: AppBarDialog) => {
           >
             {t('dashbord')}
           </Typography>
-        </Stack>
-        <Stack direction="row" spacing={1.2} alignItems="center">
+        <Stack direction="row" spacing={1.2} alignItems="center" marginLeft='auto'>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"

@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material";
 
 const theme=(language:string)=>createTheme({
-    direction:language=='ar'?'rtl':'ltr',
+    direction:'rtl',
 })
 export default theme

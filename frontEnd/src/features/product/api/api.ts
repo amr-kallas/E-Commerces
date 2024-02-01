@@ -8,6 +8,10 @@ const API = {
     const { data } = await axios.get<AllProduct>(API_ROUTES.PRODUCT.ALL)
     return data
   },
+  get: async (id:string) => {
+    const { data } = await axios.get<AllProduct>(API_ROUTES.PRODUCT.GET(id))
+    return data
+  },
   Add: async (body: AddProductBody) => {
     const { data } = await axios.post<AddProduct>(
       API_ROUTES.PRODUCT.ADD,
