@@ -21,10 +21,11 @@ import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
 import useEditSearchParams from '../../../../hooks/useEditSearchParams'
-import { defaultProductValue, schemaEditProduct } from './validation'
+import { defaultProductValue, product, schemaEditProduct } from './validation'
 import { useEffect } from 'react'
 import { productDetails } from './helpers'
 import { useQueryClient } from '@tanstack/react-query'
+import ImageUpload from '../../../../components/inputs/imageUpload'
 const EditProduct = () => {
   const { id, isActive, clearSearchParams } = useEditSearchParams()
   const snackbar = useSnackbarContext()
@@ -33,19 +34,38 @@ const EditProduct = () => {
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
   const { t } = useTranslation('product')
-  const { handleSubmit, control, watch, reset } = useForm({
+  const {
+    handleSubmit,
+    control,
+    watch,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<product>({
     defaultValues: isSuccess
       ? productDetails(productData[0])
       : defaultProductValue,
     resolver: zodResolver(schemaEditProduct),
   })
+  const imgsURL = productData?.[0].images.map((img) => {
+    return img.image
+  })
+  const handleUploadImage = (files: string[] | File | File[]) => {
+    setValue('images', files)
+  }
+
+  const handleCancelImage = () => {
+    setValue('images', [])
+  }
   const disabledInput = watch('category')
   const handleClose = () => {
     clearSearchParams()
   }
+
   useEffect(() => {
     if (productData) reset(productDetails(productData[0]))
   }, [productData, id])
+
   const onSubmit = (body: any) => {
     edit.mutate(
       { id, body },
@@ -140,6 +160,17 @@ const EditProduct = () => {
             name="About"
             label={t('edit.about')}
             disabled={!disabledInput}
+          />
+          <ImageUpload
+            key={imgsURL?.join()}
+            name="images"
+            error={errors.images?.message}
+            multiple
+            onUpload={handleUploadImage}
+            cancel={handleCancelImage}
+            url={imgsURL}
+            disabled={!disabledInput}
+            isProduct={false}
           />
           <Box
             sx={{

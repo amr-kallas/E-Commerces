@@ -58,6 +58,7 @@ const AddProduct = () => {
     clearSearchParams()
     reset()
     setSendReq(false)
+    setIds([])
     setPercentage([])
     indexRef.current = -1
   }
@@ -81,7 +82,7 @@ const AddProduct = () => {
           return newArray
         })
       }
-      setValue('image', element)
+      setValue('image', imgs)
       body.image = element
       body.product_id = id
       if (files.length != 0)

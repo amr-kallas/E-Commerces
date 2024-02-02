@@ -15,9 +15,9 @@ type imgHelpers = {
   name: string
   error: string | undefined
   multiple: boolean
-  onUpload: (files: File | File[]) => void
+  onUpload: (files: string[] | File | File[]) => void 
   cancel: () => void
-  url: string | undefined
+  url: string | string[] | undefined
   disabled: Boolean
   isProduct: Boolean
 }
@@ -31,8 +31,8 @@ const ImageUpload = ({
   disabled,
   isProduct = false,
 }: imgHelpers) => {
-  const {t}=useTranslation("category",{keyPrefix:"add"})
-  const initialImage = url ? [url] : []
+  const { t } = useTranslation('category', { keyPrefix: 'add' })
+  const initialImage = typeof url == 'string' ? [url] : url ?? []
   const [upload, setUpload] = useState<string[]>(initialImage)
   const [uploadProduct, setUploadProduct] = useState<File[]>([])
   const handleSelectImg = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +74,7 @@ const ImageUpload = ({
               },
             }}
           >
-            <Typography  color="#777">{t("image")}</Typography>
+            <Typography color="#777">{t('image')}</Typography>
             <UploadIcon fontSize="small" color="primary" />
           </Box>
         ) : (
@@ -96,9 +96,12 @@ const ImageUpload = ({
               sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
+                gap: 0.5,
                 'img:first-of-type': {
                   width: '100%',
                   flex: 1,
+                  minHeight: 200,
+                  maxHeight:250
                 },
                 'img:not(:first-of-type)': {
                   width: '30%',
@@ -116,9 +119,9 @@ const ImageUpload = ({
               >
                 <CancelIcon fontSize="small" color="error" />
               </IconButton>
-              {upload.map((src, index) => (
-                <img key={index} src={src} />
-              ))}
+              {upload.map((src, index) => {
+                return <img key={index} src={src} />
+              })}
             </Box>
           </Box>
         )
@@ -133,7 +136,7 @@ const ImageUpload = ({
       )}
       <input
         type="file"
-        accept='image/*'
+        accept="image/*"
         disabled={!!disabled}
         multiple={multiple}
         onChange={handleSelectImg}
