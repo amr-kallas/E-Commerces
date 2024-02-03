@@ -22,10 +22,11 @@ import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
 import useEditSearchParams from '../../../../hooks/useEditSearchParams'
 import { defaultProductValue, product, schemaEditProduct } from './validation'
-import { useEffect } from 'react'
+import { SetStateAction, useEffect } from 'react'
 import { productDetails } from './helpers'
 import { useQueryClient } from '@tanstack/react-query'
 import ImageUpload from '../../../../components/inputs/imageUpload'
+import ProductImage from '../../ProductImage'
 const EditProduct = () => {
   const { id, isActive, clearSearchParams } = useEditSearchParams()
   const snackbar = useSnackbarContext()
@@ -48,6 +49,7 @@ const EditProduct = () => {
     resolver: zodResolver(schemaEditProduct),
   })
   const imgsURL = productData?.[0].images.map((img) => {
+    // console.log(img)
     return img.image
   })
   const handleUploadImage = (files: string[] | File | File[]) => {
@@ -161,16 +163,25 @@ const EditProduct = () => {
             label={t('edit.about')}
             disabled={!disabledInput}
           />
-          <ImageUpload
-            key={imgsURL?.join()}
+          {/* <ImageUpload
+            key={productData?.[0].images?.join()}
             name="images"
             error={errors.images?.message}
             multiple
             onUpload={handleUploadImage}
             cancel={handleCancelImage}
-            url={imgsURL}
+            url={productData?.[0].images}
             disabled={!disabledInput}
-            isProduct={false}
+            isProduct={true}
+          /> */}
+          <ProductImage
+            name="images"
+            error={undefined}
+            disabled={false}
+            uploadProduct={[]}
+            setUploadProduct={function (value: SetStateAction<File[]>): void {
+              throw new Error('Function not implemented.')
+            }}
           />
           <Box
             sx={{

@@ -8,14 +8,14 @@ import {
 import CancelIcon from '@mui/icons-material/Cancel'
 import UploadIcon from '@mui/icons-material/Upload'
 import { ChangeEvent, useState } from 'react'
-import ProductImgae from '../../features/product/components/AddForm/ProductImgae'
+import ProductImage from '../../features/product/ProductImage'
 import { useTranslation } from 'react-i18next'
 
 type imgHelpers = {
   name: string
   error: string | undefined
   multiple: boolean
-  onUpload: (files: string[] | File | File[]) => void 
+  onUpload: (files: string[] | File | File[]) => void
   cancel: () => void
   url: string | string[] | undefined
   disabled: Boolean
@@ -52,7 +52,7 @@ const ImageUpload = ({
 
   return (
     <FormControl>
-      {!isProduct ? (
+      {
         upload.length == 0 ? (
           <Box
             component="label"
@@ -97,11 +97,13 @@ const ImageUpload = ({
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: 0.5,
+                flex: 1,
                 'img:first-of-type': {
                   width: '100%',
                   flex: 1,
                   minHeight: 200,
-                  maxHeight:250
+                  maxHeight: 250,
+                  objectFit: 'cover',
                 },
                 'img:not(:first-of-type)': {
                   width: '30%',
@@ -125,15 +127,14 @@ const ImageUpload = ({
             </Box>
           </Box>
         )
-      ) : (
-        <ProductImgae
-          name={name}
-          error={error}
-          disabled={disabled}
-          uploadProduct={uploadProduct}
-          setUploadProduct={setUploadProduct}
-        />
-      )}
+        // <ProductImage
+        //   name={name}
+        //   error={error}
+        //   disabled={disabled}
+        //   uploadProduct={uploadProduct}
+        //   setUploadProduct={setUploadProduct}
+        // />
+      }
       <input
         type="file"
         accept="image/*"

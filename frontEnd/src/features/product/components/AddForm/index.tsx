@@ -18,18 +18,14 @@ import { keys, queries as productQuery } from '../../api/queries'
 import TextField from '../../../../components/inputs/TextField'
 import Submit from '../../../../components/buttons/Submit'
 import { zodResolver } from '@hookform/resolvers/zod'
-import schemaAddProduct, {
-  defaultProductValue,
-  dummyData,
-  body,
-} from './validation'
+import schemaAddProduct, { defaultProductValue, dummyData } from './validation'
 import { useQueryClient } from '@tanstack/react-query'
-import ImageUpload from '../../../../components/inputs/imageUpload'
 import { useEffect, useState } from 'react'
 import { useProgressContext } from '../../../../context/ProgressContext'
 import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
+import ProductImage from '../../ProductImage'
 const AddProduct = () => {
   const snackbar = useSnackbarContext()
   const { t } = useTranslation('product')
@@ -49,6 +45,7 @@ const AddProduct = () => {
   const addImg = productQuery.useAddImg()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
+  const [send, setSend] = useState(true)
   const { isActive, clearSearchParams } = useAddSearchParams()
   const [sendReq, setSendReq] = useState(false)
   const [id, setId] = useState('')
@@ -60,6 +57,7 @@ const AddProduct = () => {
     setSendReq(false)
     setIds([])
     setPercentage([])
+    setValue('image', undefined)
     indexRef.current = -1
   }
   const handleUploadImage = async (files: File | File[] | any) => {
@@ -83,13 +81,20 @@ const AddProduct = () => {
         })
       }
       setValue('image', imgs)
-      body.image = element
-      body.product_id = id
-      if (files.length != 0)
+      const currentBody = {
+        image: element,
+        product_id: id,
+      }
+
+      if (files.length != 0 && send == true) {
+        setSend(false)
         await addImg.mutateAsync(
-          { body, changePercentageAtIndex },
+          { body: currentBody, changePercentageAtIndex },
           {
             onSuccess: (data) => {
+              console.log({ currentBody })
+              console.log({ data })
+              setSend(true)
               setIds((prev) => [...prev, data.id])
             },
             onError: (error) => {
@@ -97,13 +102,15 @@ const AddProduct = () => {
             },
           }
         )
+      }
+      console.log('first')
     }
   }
-  const handleCancelImage = () => {
-    setValue('image', undefined)
-    setPercentage([])
-    setIds([])
-  }
+  // const handleCancelImage = () => {
+  //   setValue('image', undefined)
+  //   setPercentage([])
+  //   setIds([])
+  // }
   useEffect(() => {
     indexRef.current == -1 && setValue('image', undefined)
   }, [indexRef.current])
@@ -120,6 +127,7 @@ const AddProduct = () => {
     }
   }
   const onSubmit = (body: any) => {
+    console.log(body)
     edit.mutate(
       { id, body },
       {
@@ -218,7 +226,7 @@ const AddProduct = () => {
             label={t('add.about')}
             disabled={!disabledInput}
           />
-          <ImageUpload
+          {/* <ImageUpload
             name="images"
             error={errors.image?.message}
             multiple
@@ -227,6 +235,17 @@ const AddProduct = () => {
             url={undefined}
             disabled={!disabledInput}
             isProduct={true}
+          /> */}
+          <ProductImage
+            name="images"
+            error={errors.image?.message}
+            onUpload={handleUploadImage}
+            disabled={!disabledInput}
+            url={undefined}
+            // uploadProduct={[]}
+            // setUploadProduct={function (value: SetStateAction<File[]>): void {
+            //   throw new Error('Function not implemented.')
+            // }}
           />
           <Box
             sx={{

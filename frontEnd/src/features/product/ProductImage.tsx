@@ -1,25 +1,47 @@
-import { Box, FormControl, IconButton, Stack, Typography } from '@mui/material'
-import Progress from '../../../../components/feedback/Progress'
+import { Box, FormControl, FormHelperText, IconButton, Stack, Typography } from '@mui/material'
+import Progress from '../../components/feedback/Progress'
 import CancelIcon from '@mui/icons-material/Cancel'
 import UploadIcon from '@mui/icons-material/Upload'
-import { queries } from '../../api/queries'
-import { useProgressContext } from '../../../../context/ProgressContext'
+import { queries } from './api/queries'
+import { useProgressContext } from '../../context/ProgressContext'
+import { ChangeEvent, useState } from 'react'
 type imgHelpers = {
   name: string
   error: string | undefined
   disabled: Boolean
-  uploadProduct: File[]
-  setUploadProduct: React.Dispatch<React.SetStateAction<File[]>>
+  // uploadProduct: File[]
+  // setUploadProduct: React.Dispatch<React.SetStateAction<File[]>>
+  onUpload: (files: string[] | File | File[]) => void
+  url: string | string[] | undefined
 }
-const ProductImgae = ({
+const ProductImage = ({
   name,
   error,
   disabled,
-  uploadProduct,
-  setUploadProduct,
-}: imgHelpers) => {
+  onUpload,
+  url,
+}: // uploadProduct,
+// setUploadProduct,
+imgHelpers) => {
+  const initialImage = typeof url == 'string' ? [url] : url ?? []
+  const [upload, setUpload] = useState<string[]>(initialImage)
+  const [uploadProduct, setUploadProduct] = useState<File[]>([])
   const DeleteImg = queries.useDeleteImg()
   const { percentage, indexRef: ref, ids, setIds } = useProgressContext()
+  const handleSelectImg = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files)
+      onUpload(files.length == 1 ? e.target.files[0] : files)
+      const fileURLs = files.map((file) => URL.createObjectURL(file))
+      setUpload(fileURLs)
+      setUploadProduct((prevFiles: any) => [...prevFiles, ...files])
+    }
+  }
+  // const cancelImg = () => {
+  //   setUpload([])
+  //   setUploadProduct([])
+  //   cancel()
+  // }
   const handleDelete = (id: number) => {
     let imgID = ids[id]
     DeleteImg.mutate(imgID, {
@@ -106,8 +128,18 @@ const ProductImgae = ({
           </Stack>
         ))}
       </Stack>
+      <input
+        type="file"
+        accept="image/*"
+        disabled={!!disabled}
+        multiple
+        onChange={handleSelectImg}
+        id={name as string}
+        hidden
+      />
+      <FormHelperText sx={{ color: 'error.main' }}>{error}</FormHelperText>
     </FormControl>
   )
 }
 
-export default ProductImgae
+export default ProductImage
