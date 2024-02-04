@@ -55,7 +55,6 @@ const AddProduct = () => {
     clearSearchParams()
     reset()
     setSendReq(false)
-    setIds([])
     setPercentage([])
     setValue('image', undefined)
     indexRef.current = -1
@@ -80,14 +79,10 @@ const AddProduct = () => {
           return newArray
         })
       }
-      setValue('image', imgs)
-      const currentBody = {
-        image: element,
-        product_id: id,
-      }
-
-      if (files.length != 0 && send == true) {
-        setSend(false)
+      setValue('image', element)
+      body.image = element
+      body.product_id = id
+      if (files.length != 0)
         await addImg.mutateAsync(
           { body: currentBody, changePercentageAtIndex },
           {

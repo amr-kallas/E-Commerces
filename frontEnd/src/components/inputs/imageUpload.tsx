@@ -17,7 +17,7 @@ type imgHelpers = {
   multiple: boolean
   onUpload: (files: string[] | File | File[]) => void
   cancel: () => void
-  url: string | string[] | undefined
+  url: string | undefined
   disabled: Boolean
   isProduct: Boolean
 }
@@ -31,8 +31,8 @@ const ImageUpload = ({
   disabled,
   isProduct = false,
 }: imgHelpers) => {
-  const { t } = useTranslation('category', { keyPrefix: 'add' })
-  const initialImage = typeof url == 'string' ? [url] : url ?? []
+  const {t}=useTranslation("category",{keyPrefix:"add"})
+  const initialImage = url ? [url] : []
   const [upload, setUpload] = useState<string[]>(initialImage)
   const [uploadProduct, setUploadProduct] = useState<File[]>([])
   const handleSelectImg = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +74,7 @@ const ImageUpload = ({
               },
             }}
           >
-            <Typography color="#777">{t('image')}</Typography>
+            <Typography  color="#777">{t("image")}</Typography>
             <UploadIcon fontSize="small" color="primary" />
           </Box>
         ) : (
@@ -121,9 +121,9 @@ const ImageUpload = ({
               >
                 <CancelIcon fontSize="small" color="error" />
               </IconButton>
-              {upload.map((src, index) => {
-                return <img key={index} src={src} />
-              })}
+              {upload.map((src, index) => (
+                <img key={index} src={src} />
+              ))}
             </Box>
           </Box>
         )
@@ -137,7 +137,7 @@ const ImageUpload = ({
       }
       <input
         type="file"
-        accept="image/*"
+        accept='image/*'
         disabled={!!disabled}
         multiple={multiple}
         onChange={handleSelectImg}

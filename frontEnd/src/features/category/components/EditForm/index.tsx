@@ -46,7 +46,7 @@ const EditCategory = () => {
     reset(defaultValues)
     clearSearchParams()
   }
-  const handleUploadImage = (files:string| File | File[]) => {
+  const handleUploadImage = (files: File | File[]) => {
     setValue('image', files)
   }
   const handleCancelImage = () => {

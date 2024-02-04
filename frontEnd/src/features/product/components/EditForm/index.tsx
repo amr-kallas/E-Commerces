@@ -21,12 +21,19 @@ import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
 import useEditSearchParams from '../../../../hooks/useEditSearchParams'
+<<<<<<< HEAD
 import { defaultProductValue, product, schemaEditProduct } from './validation'
 import { SetStateAction, useEffect } from 'react'
 import { productDetails } from './helpers'
 import { useQueryClient } from '@tanstack/react-query'
 import ImageUpload from '../../../../components/inputs/imageUpload'
 import ProductImage from '../../ProductImage'
+=======
+import { defaultProductValue, schemaEditProduct } from './validation'
+import { useEffect } from 'react'
+import { productDetails } from './helpers'
+import { useQueryClient } from '@tanstack/react-query'
+>>>>>>> parent of 312c017 (add img to edit product)
 const EditProduct = () => {
   const { id, isActive, clearSearchParams } = useEditSearchParams()
   const snackbar = useSnackbarContext()
@@ -35,19 +42,13 @@ const EditProduct = () => {
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
   const { t } = useTranslation('product')
-  const {
-    handleSubmit,
-    control,
-    watch,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<product>({
+  const { handleSubmit, control, watch, reset } = useForm({
     defaultValues: isSuccess
       ? productDetails(productData[0])
       : defaultProductValue,
     resolver: zodResolver(schemaEditProduct),
   })
+<<<<<<< HEAD
   const imgsURL = productData?.[0].images.map((img) => {
     // console.log(img)
     return img.image
@@ -59,15 +60,15 @@ const EditProduct = () => {
   const handleCancelImage = () => {
     setValue('images', [])
   }
+=======
+>>>>>>> parent of 312c017 (add img to edit product)
   const disabledInput = watch('category')
   const handleClose = () => {
     clearSearchParams()
   }
-
   useEffect(() => {
     if (productData) reset(productDetails(productData[0]))
   }, [productData, id])
-
   const onSubmit = (body: any) => {
     edit.mutate(
       { id, body },
@@ -163,6 +164,7 @@ const EditProduct = () => {
             label={t('edit.about')}
             disabled={!disabledInput}
           />
+<<<<<<< HEAD
           {/* <ImageUpload
             key={productData?.[0].images?.join()}
             name="images"
@@ -183,6 +185,8 @@ const EditProduct = () => {
               throw new Error('Function not implemented.')
             }}
           />
+=======
+>>>>>>> parent of 312c017 (add img to edit product)
           <Box
             sx={{
               textAlign: 'center',
