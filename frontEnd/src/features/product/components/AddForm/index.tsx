@@ -45,7 +45,6 @@ const AddProduct = () => {
   const addImg = productQuery.useAddImg()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
-  const [send, setSend] = useState(true)
   const { isActive, clearSearchParams } = useAddSearchParams()
   const [sendReq, setSendReq] = useState(false)
   const [id, setId] = useState('')
@@ -85,16 +84,12 @@ const AddProduct = () => {
         image: element,
         product_id: id,
       }
-
-      if (files.length != 0 && send == true) {
-        setSend(false)
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      if (files.length != 0) {
         await addImg.mutateAsync(
           { body: currentBody, changePercentageAtIndex },
           {
             onSuccess: (data) => {
-              console.log({ currentBody })
-              console.log({ data })
-              setSend(true)
               setIds((prev) => [...prev, data.id])
             },
             onError: (error) => {
@@ -103,14 +98,8 @@ const AddProduct = () => {
           }
         )
       }
-      console.log('first')
     }
   }
-  // const handleCancelImage = () => {
-  //   setValue('image', undefined)
-  //   setPercentage([])
-  //   setIds([])
-  // }
   useEffect(() => {
     indexRef.current == -1 && setValue('image', undefined)
   }, [indexRef.current])
@@ -127,7 +116,6 @@ const AddProduct = () => {
     }
   }
   const onSubmit = (body: any) => {
-    console.log(body)
     edit.mutate(
       { id, body },
       {
@@ -226,26 +214,13 @@ const AddProduct = () => {
             label={t('add.about')}
             disabled={!disabledInput}
           />
-          {/* <ImageUpload
-            name="images"
-            error={errors.image?.message}
-            multiple
-            onUpload={handleUploadImage}
-            cancel={handleCancelImage}
-            url={undefined}
-            disabled={!disabledInput}
-            isProduct={true}
-          /> */}
           <ProductImage
             name="images"
             error={errors.image?.message}
             onUpload={handleUploadImage}
             disabled={!disabledInput}
             url={undefined}
-            // uploadProduct={[]}
-            // setUploadProduct={function (value: SetStateAction<File[]>): void {
-            //   throw new Error('Function not implemented.')
-            // }}
+            deletedImg={() => {}}
           />
           <Box
             sx={{

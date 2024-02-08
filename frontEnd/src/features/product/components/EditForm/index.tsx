@@ -22,11 +22,11 @@ import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
 import useEditSearchParams from '../../../../hooks/useEditSearchParams'
 import { defaultProductValue, product, schemaEditProduct } from './validation'
-import { SetStateAction, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { productDetails } from './helpers'
 import { useQueryClient } from '@tanstack/react-query'
-import ImageUpload from '../../../../components/inputs/imageUpload'
 import ProductImage from '../../ProductImage'
+import { useProgressContext } from '../../../../context/ProgressContext'
 const EditProduct = () => {
   const { id, isActive, clearSearchParams } = useEditSearchParams()
   const snackbar = useSnackbarContext()
@@ -48,27 +48,86 @@ const EditProduct = () => {
       : defaultProductValue,
     resolver: zodResolver(schemaEditProduct),
   })
+  const { setPercentage, indexRef, setIds } = useProgressContext()
+  const addImg = productQuery.useAddImg()
+  const DeleteImg = productQuery.useDeleteImg()
+  const [deletedImg, setDeletedImg] = useState<number[]>([])
   const imgsURL = productData?.[0].images.map((img) => {
-    // console.log(img)
     return img.image
   })
-  const handleUploadImage = (files: string[] | File | File[]) => {
-    setValue('images', files)
+  const handleUploadImage = async (files: File | File[] | any) => {
+    console.log(' edit')
+    let imgs: File[]
+    if (Array.from(files).length >= 1) {
+      imgs = Array.from(files)
+    } else {
+      imgs = [files]
+    }
+    let c = 0
+    for (const [index, element] of imgs.entries()) {
+      if (index == c) {
+        indexRef.current++
+        c++
+      }
+      const changePercentageAtIndex = (newValue: number) => {
+        setPercentage((oldArray: any) => {
+          const newArray = [...oldArray]
+          newArray[indexRef.current] = { num: newValue }
+          return newArray
+        })
+      }
+      setValue('images', imgs)
+      const currentBody = {
+        image: element,
+        product_id: id,
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      if (files.length != 0) {
+        await addImg.mutateAsync(
+          { body: currentBody, changePercentageAtIndex },
+          {
+            onSuccess: (data) => {
+              console.log({ data })
+              setIds((prev) => [...prev, data.id])
+              queryClient.invalidateQueries(keys.getAll._def)
+            },
+            onError: (error) => {
+              console.log(error)
+            },
+          }
+        )
+      }
+    }
   }
-
-  const handleCancelImage = () => {
-    setValue('images', [])
+  const handleEditImg = (id: number) => {
+    setDeletedImg((prev) => [...prev, id])
   }
   const disabledInput = watch('category')
   const handleClose = () => {
+    setDeletedImg([])
     clearSearchParams()
   }
 
   useEffect(() => {
     if (productData) reset(productDetails(productData[0]))
   }, [productData, id])
-
+  useEffect(() => {
+    if (deletedImg.length == productData?.[0].images.length) {
+      setValue('images', [])
+    }
+  }, [productData, deletedImg])
   const onSubmit = (body: any) => {
+    deletedImg.forEach((id) => {
+      DeleteImg.mutateAsync(String(id), {
+        onSuccess: () => {
+          queryClient.invalidateQueries(keys.getAll._def)
+        },
+        onError: (error) => {
+          console.log(error)
+        },
+      })
+    })
+
     edit.mutate(
       { id, body },
       {
@@ -163,25 +222,14 @@ const EditProduct = () => {
             label={t('edit.about')}
             disabled={!disabledInput}
           />
-          {/* <ImageUpload
-            key={productData?.[0].images?.join()}
+          <ProductImage
+            key={imgsURL?.join()}
             name="images"
             error={errors.images?.message}
-            multiple
-            onUpload={handleUploadImage}
-            cancel={handleCancelImage}
-            url={productData?.[0].images}
             disabled={!disabledInput}
-            isProduct={true}
-          /> */}
-          <ProductImage
-            name="images"
-            error={undefined}
-            disabled={false}
-            uploadProduct={[]}
-            setUploadProduct={function (value: SetStateAction<File[]>): void {
-              throw new Error('Function not implemented.')
-            }}
+            url={productData?.[0]?.images}
+            onUpload={handleUploadImage}
+            deletedImg={handleEditImg}
           />
           <Box
             sx={{
@@ -190,7 +238,10 @@ const EditProduct = () => {
               mb: '24px !important',
             }}
           >
-            <Submit sx={{ width: 150 }} isLoading={edit.isLoading}>
+            <Submit
+              sx={{ width: 150 }}
+              isLoading={edit.isLoading || DeleteImg.isLoading}
+            >
               {t('edit.edit')}
             </Submit>
           </Box>

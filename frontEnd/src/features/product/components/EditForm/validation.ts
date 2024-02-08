@@ -17,7 +17,6 @@ export const defaultProductValue = {
   About: '',
   images: [],
 }
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 
 export const schemaEditProduct = z.object({
   category: z.number(),
@@ -27,9 +26,6 @@ export const schemaEditProduct = z.object({
   discount: z.coerce.number().nonnegative(),
   About: z.string().min(5),
   images: z
-    .any()
-    .refine((file) => file != undefined, { params: { custom: 'required' } })
-    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type), {
-      params: { custom: 'fileType' },
-    }),
+  .array(z.any())
+  .nonempty({ message: 'At least one image is required' })
 })
