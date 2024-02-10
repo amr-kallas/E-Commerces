@@ -6,7 +6,6 @@ export type product={
   price:number
   discount:number,
   About:string,
-  images:string[]|File|File[]
 }
 export const defaultProductValue = {
   category: '',
@@ -15,7 +14,6 @@ export const defaultProductValue = {
   price: 0,
   discount: 0,
   About: '',
-  images: [],
 }
 
 export const schemaEditProduct = z.object({
@@ -25,7 +23,5 @@ export const schemaEditProduct = z.object({
   price: z.coerce.number().positive(),
   discount: z.coerce.number().nonnegative(),
   About: z.string().min(5),
-  images: z
-  .array(z.any())
-  .nonempty({ message: 'At least one image is required' })
+
 })

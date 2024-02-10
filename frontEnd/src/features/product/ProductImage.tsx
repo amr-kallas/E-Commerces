@@ -20,7 +20,7 @@ type imgHelpers = {
   disabled: Boolean
   onUpload: (files: string[] | File | File[]) => void
   url: ImgProduct[] | undefined
-  deletedImg: (id: number) => void
+  deletedImg: (id: string) => void
 }
 
 const ProductImage = ({ name, error, disabled, onUpload,deletedImg, url }: imgHelpers) => {
@@ -37,17 +37,10 @@ const ProductImage = ({ name, error, disabled, onUpload,deletedImg, url }: imgHe
       setUploadProduct((prevFiles: any) => [...prevFiles, ...files])
     }
   }
-  // const cancelImg = () => {
-  //   setUpload([])
-  //   setUploadProduct([])
-  //   cancel()
-  // }
   const handleDelete = (id: number) => {
     let imgID = ids[id]
-    console.log(imgID)
     DeleteImg.mutate(imgID, {
       onSuccess: () => {
-        console.log('first')
         setIds((prev) => prev.filter((item) => item != imgID))
         setUploadProduct((prev) => prev.filter((_item, index) => index != id))
         queryClient.invalidateQueries(keys.getAll._def)
@@ -62,7 +55,7 @@ const ProductImage = ({ name, error, disabled, onUpload,deletedImg, url }: imgHe
   }
   const handleDeleteImgEdit = (id: number) => {
     setUpload((prev) => prev.filter((item) => item.id != id))
-    deletedImg(id)
+    deletedImg(String(id))
   }
   return (
     <FormControl>

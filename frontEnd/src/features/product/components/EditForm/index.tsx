@@ -22,126 +22,94 @@ import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
 import useEditSearchParams from '../../../../hooks/useEditSearchParams'
 import { defaultProductValue, product, schemaEditProduct } from './validation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { productDetails } from './helpers'
 import { useQueryClient } from '@tanstack/react-query'
 import ProductImage from '../../ProductImage'
 import { useProgressContext } from '../../../../context/ProgressContext'
+import { useCancelImages } from '../../../../hooks/product/useCancelImg'
+import useUploadImg from '../../../../hooks/product/useUploadImg'
 const EditProduct = () => {
   const { id, isActive, clearSearchParams } = useEditSearchParams()
+  const cancelImg = useCancelImages()
+  const uploadImg = useUploadImg()
   const snackbar = useSnackbarContext()
   const { data: productData, isSuccess } = productQuery.useProduct(id)
   const { data: categoryData } = categoryQuery.useAll()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
   const { t } = useTranslation('product')
-  const {
-    handleSubmit,
-    control,
-    watch,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<product>({
+  const { handleSubmit, control, watch, reset } = useForm<product>({
     defaultValues: isSuccess
       ? productDetails(productData[0])
       : defaultProductValue,
     resolver: zodResolver(schemaEditProduct),
   })
-  const { setPercentage, indexRef, setIds } = useProgressContext()
-  const addImg = productQuery.useAddImg()
+  const disabledInput = watch('category')
+  const { setIds, ids } = useProgressContext()
   const DeleteImg = productQuery.useDeleteImg()
-  const [deletedImg, setDeletedImg] = useState<number[]>([])
-  const imgsURL = productData?.[0].images.map((img) => {
-    return img.image
-  })
+  const [deletedImg, setDeletedImg] = useState<string[]>([])
+  const idsRef = useRef(ids)
+  let uniqeKey = useRef(0)
+  console.log(String(isActive))
+  const isSend =
+    deletedImg.length != productData?.[0].images.length || ids.length != 0
   const handleUploadImage = async (files: File | File[] | any) => {
-    console.log(' edit')
     let imgs: File[]
     if (Array.from(files).length >= 1) {
       imgs = Array.from(files)
     } else {
       imgs = [files]
     }
-    let c = 0
-    for (const [index, element] of imgs.entries()) {
-      if (index == c) {
-        indexRef.current++
-        c++
-      }
-      const changePercentageAtIndex = (newValue: number) => {
-        setPercentage((oldArray: any) => {
-          const newArray = [...oldArray]
-          newArray[indexRef.current] = { num: newValue }
-          return newArray
-        })
-      }
-      setValue('images', imgs)
-      const currentBody = {
-        image: element,
-        product_id: id,
-      }
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      if (files.length != 0) {
-        await addImg.mutateAsync(
-          { body: currentBody, changePercentageAtIndex },
-          {
-            onSuccess: (data) => {
-              console.log({ data })
-              setIds((prev) => [...prev, data.id])
-              queryClient.invalidateQueries(keys.getAll._def)
-            },
-            onError: (error) => {
-              console.log(error)
-            },
-          }
-        )
-      }
-    }
-  }
-  const handleEditImg = (id: number) => {
-    setDeletedImg((prev) => [...prev, id])
-  }
-  const disabledInput = watch('category')
-  const handleClose = () => {
-    setDeletedImg([])
-    clearSearchParams()
+    uploadImg(imgs)
   }
 
+  const handleEditImg = (id: string) => {
+    setDeletedImg((prev) => [...prev, id])
+  }
+
+  const handleClose = () => {
+    if (idsRef.current.length != 0) {
+      cancelImg(ids)
+    }
+    setDeletedImg([])
+    clearSearchParams()
+    setIds([])
+    uniqeKey.current+=1
+  }
+  console.log(uniqeKey.current)
   useEffect(() => {
     if (productData) reset(productDetails(productData[0]))
   }, [productData, id])
-  useEffect(() => {
-    if (deletedImg.length == productData?.[0].images.length) {
-      setValue('images', [])
-    }
-  }, [productData, deletedImg])
-  const onSubmit = (body: any) => {
-    deletedImg.forEach((id) => {
-      DeleteImg.mutateAsync(String(id), {
-        onSuccess: () => {
-          queryClient.invalidateQueries(keys.getAll._def)
-        },
-        onError: (error) => {
-          console.log(error)
-        },
-      })
-    })
 
-    edit.mutate(
-      { id, body },
-      {
-        onSuccess: () => {
-          snackbar({ message: t('message.edit'), severity: 'success' })
-          queryClient.invalidateQueries(keys.getAll._def)
-          handleClose()
-        },
-        onError: () => {
-          snackbar({ message: t('message.error'), severity: 'error' })
-        },
-      }
-    )
+  useEffect(() => {
+    idsRef.current = ids
+  }, [ids])
+
+  const onSubmit = (body: any) => {
+    if (
+      deletedImg.length != productData?.[0].images.length ||
+      ids.length != 0
+    ) {
+      cancelImg(deletedImg)
+
+      edit.mutate(
+        { id, body },
+        {
+          onSuccess: () => {
+            snackbar({ message: t('message.edit'), severity: 'success' })
+            queryClient.invalidateQueries(keys.getAll._def)
+            idsRef.current = []
+            handleClose()
+          },
+          onError: () => {
+            snackbar({ message: t('message.error'), severity: 'error' })
+          },
+        }
+      )
+    }
   }
+
   return (
     <Dialog
       open={isActive}
@@ -223,9 +191,9 @@ const EditProduct = () => {
             disabled={!disabledInput}
           />
           <ProductImage
-            key={imgsURL?.join()}
+             key={uniqeKey.current}
             name="images"
-            error={errors.images?.message}
+            error={!isSend ? 'Required' : ''}
             disabled={!disabledInput}
             url={productData?.[0]?.images}
             onUpload={handleUploadImage}

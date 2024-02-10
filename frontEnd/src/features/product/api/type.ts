@@ -13,6 +13,7 @@ export type Product = {
   discount: number
   rating: number
   images: ImgProduct[]
+  id:string
 }
 export type AllProduct=Product[]
 
