@@ -95,6 +95,7 @@ const Table = () => {
                       width: '35px',
                       height: '35px',
                       borderRadius: '50%',
+                      objectFit:'cover'
                     }}
                     src={imgs.image}
                     alt=""

@@ -1,5 +1,5 @@
 export type ImgProduct = {
-  id: string
+  id: number
   image: string
   product_id: string
 }
@@ -13,6 +13,7 @@ export type Product = {
   discount: number
   rating: number
   images: ImgProduct[]
+  id:string
 }
 export type AllProduct=Product[]
 

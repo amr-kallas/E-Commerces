@@ -21,69 +21,94 @@ import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
 import useEditSearchParams from '../../../../hooks/useEditSearchParams'
-<<<<<<< HEAD
 import { defaultProductValue, product, schemaEditProduct } from './validation'
-import { SetStateAction, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { productDetails } from './helpers'
 import { useQueryClient } from '@tanstack/react-query'
-import ImageUpload from '../../../../components/inputs/imageUpload'
 import ProductImage from '../../ProductImage'
-=======
-import { defaultProductValue, schemaEditProduct } from './validation'
-import { useEffect } from 'react'
-import { productDetails } from './helpers'
-import { useQueryClient } from '@tanstack/react-query'
->>>>>>> parent of 312c017 (add img to edit product)
+import { useProgressContext } from '../../../../context/ProgressContext'
+import { useCancelImages } from '../../../../hooks/product/useCancelImg'
+import useUploadImg from '../../../../hooks/product/useUploadImg'
 const EditProduct = () => {
   const { id, isActive, clearSearchParams } = useEditSearchParams()
+  const cancelImg = useCancelImages()
+  const uploadImg = useUploadImg()
   const snackbar = useSnackbarContext()
   const { data: productData, isSuccess } = productQuery.useProduct(id)
   const { data: categoryData } = categoryQuery.useAll()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
   const { t } = useTranslation('product')
-  const { handleSubmit, control, watch, reset } = useForm({
+  const { handleSubmit, control, watch, reset } = useForm<product>({
     defaultValues: isSuccess
       ? productDetails(productData[0])
       : defaultProductValue,
     resolver: zodResolver(schemaEditProduct),
   })
-<<<<<<< HEAD
-  const imgsURL = productData?.[0].images.map((img) => {
-    // console.log(img)
-    return img.image
-  })
-  const handleUploadImage = (files: string[] | File | File[]) => {
-    setValue('images', files)
+  const disabledInput = watch('category')
+  const { setIds, ids } = useProgressContext()
+  const DeleteImg = productQuery.useDeleteImg()
+  const [deletedImg, setDeletedImg] = useState<string[]>([])
+  const idsRef = useRef(ids)
+  let uniqeKey = useRef(0)
+  console.log(String(isActive))
+  const isSend =
+    deletedImg.length != productData?.[0].images.length || ids.length != 0
+  const handleUploadImage = async (files: File | File[] | any) => {
+    let imgs: File[]
+    if (Array.from(files).length >= 1) {
+      imgs = Array.from(files)
+    } else {
+      imgs = [files]
+    }
+    uploadImg(imgs)
   }
 
-  const handleCancelImage = () => {
-    setValue('images', [])
+  const handleEditImg = (id: string) => {
+    setDeletedImg((prev) => [...prev, id])
   }
-=======
->>>>>>> parent of 312c017 (add img to edit product)
-  const disabledInput = watch('category')
+
   const handleClose = () => {
+    if (idsRef.current.length != 0) {
+      cancelImg(ids)
+    }
+    setDeletedImg([])
     clearSearchParams()
+    setIds([])
+    uniqeKey.current+=1
   }
   useEffect(() => {
     if (productData) reset(productDetails(productData[0]))
   }, [productData, id])
+
+  useEffect(() => {
+    idsRef.current = ids
+  }, [ids])
+
   const onSubmit = (body: any) => {
-    edit.mutate(
-      { id, body },
-      {
-        onSuccess: () => {
-          snackbar({ message: t('message.edit'), severity: 'success' })
-          queryClient.invalidateQueries(keys.getAll._def)
-          handleClose()
-        },
-        onError: () => {
-          snackbar({ message: t('message.error'), severity: 'error' })
-        },
-      }
-    )
+    if (
+      deletedImg.length != productData?.[0].images.length ||
+      ids.length != 0
+    ) {
+      cancelImg(deletedImg)
+
+      edit.mutate(
+        { id, body },
+        {
+          onSuccess: () => {
+            snackbar({ message: t('message.edit'), severity: 'success' })
+            queryClient.invalidateQueries(keys.getAll._def)
+            idsRef.current = []
+            handleClose()
+          },
+          onError: () => {
+            snackbar({ message: t('message.error'), severity: 'error' })
+          },
+        }
+      )
+    }
   }
+
   return (
     <Dialog
       open={isActive}
@@ -164,29 +189,15 @@ const EditProduct = () => {
             label={t('edit.about')}
             disabled={!disabledInput}
           />
-<<<<<<< HEAD
-          {/* <ImageUpload
-            key={productData?.[0].images?.join()}
-            name="images"
-            error={errors.images?.message}
-            multiple
-            onUpload={handleUploadImage}
-            cancel={handleCancelImage}
-            url={productData?.[0].images}
-            disabled={!disabledInput}
-            isProduct={true}
-          /> */}
           <ProductImage
-            name="images"
-            error={undefined}
-            disabled={false}
-            uploadProduct={[]}
-            setUploadProduct={function (value: SetStateAction<File[]>): void {
-              throw new Error('Function not implemented.')
-            }}
-          />
-=======
->>>>>>> parent of 312c017 (add img to edit product)
+             key={uniqeKey.current}
+             name="images"
+             error={!isSend ? 'Required' : ''}
+             disabled={!disabledInput}
+             url={productData?.[0]?.images}
+             onUpload={handleUploadImage}
+             deletedImg={handleEditImg}
+          /> 
           <Box
             sx={{
               textAlign: 'center',
@@ -194,7 +205,10 @@ const EditProduct = () => {
               mb: '24px !important',
             }}
           >
-            <Submit sx={{ width: 150 }} isLoading={edit.isLoading}>
+            <Submit
+              sx={{ width: 150 }}
+              isLoading={edit.isLoading || DeleteImg.isLoading}
+            >
               {t('edit.edit')}
             </Submit>
           </Box>
