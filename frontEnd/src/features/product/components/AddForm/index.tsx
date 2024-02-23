@@ -18,7 +18,7 @@ import { keys, queries as productQuery } from '../../api/queries'
 import TextField from '../../../../components/inputs/TextField'
 import Submit from '../../../../components/buttons/Submit'
 import { zodResolver } from '@hookform/resolvers/zod'
-import schemaAddProduct, { defaultProductValue, dummyData } from './validation'
+import schemaAddProduct, {  defaultProductValue, dummyData } from './validation'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useProgressContext } from '../../../../context/ProgressContext'
@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
 import ProductImage from '../../ProductImage'
+import useUploadImg from '../../hooks/useUploadImg'
 const AddProduct = () => {
   const snackbar = useSnackbarContext()
   const { t } = useTranslation('product')
@@ -42,14 +43,14 @@ const AddProduct = () => {
   })
   const { data: categoryData } = categoryQuery.useAll()
   const add = productQuery.useAdd()
-  const addImg = productQuery.useAddImg()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
   const { isActive, clearSearchParams } = useAddSearchParams()
   const [sendReq, setSendReq] = useState(false)
   const [id, setId] = useState('')
-  const { setPercentage, indexRef, setIds } = useProgressContext()
+  const { setPercentage, indexRef } = useProgressContext()
   const disabledInput = watch('category')
+  const uploadImg = useUploadImg()
   const handleClose = () => {
     clearSearchParams()
     reset()
@@ -65,43 +66,13 @@ const AddProduct = () => {
     } else {
       imgs = [files]
     }
-    let c = 0
-    for (const [index, element] of imgs.entries()) {
-      if (index == c) {
-        indexRef.current++
-        c++
-      }
-      const changePercentageAtIndex = (newValue: number) => {
-        setPercentage((oldArray: any) => {
-          const newArray = [...oldArray]
-          newArray[indexRef.current] = { num: newValue }
-          return newArray
-        })
-      }
-      setValue('image', imgs)
-      const currentBody = {
-        image: element,
-        product_id: id,
-      }
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      if (files.length != 0) {
-        await addImg.mutateAsync(
-          { body: currentBody, changePercentageAtIndex },
-          {
-            onSuccess: (data) => {
-              setIds((prev) => [...prev, data.id])
-            },
-            onError: (error) => {
-              console.log(error)
-            },
-          }
-        )
-      }
-    }
+    setValue('image', imgs)
+    uploadImg({ imgs, id })
   }
   useEffect(() => {
     indexRef.current == -1 && setValue('image', undefined)
   }, [indexRef.current])
+
   const sendCategory = () => {
     const categoryInput = watch('category')
     dummyData.category = categoryInput
@@ -114,6 +85,7 @@ const AddProduct = () => {
       })
     }
   }
+
   const onSubmit = (body: any) => {
     edit.mutate(
       { id, body },
@@ -132,6 +104,7 @@ const AddProduct = () => {
       }
     )
   }
+
   return (
     <Dialog
       open={isActive}
@@ -174,7 +147,7 @@ const AddProduct = () => {
               message={i18n.t('validation:required')}
               onClick={sendCategory}
             >
-              {categoryData?.map((item) => (
+              {categoryData?.data?.map((item) => (
                 <MenuItem key={item.id} value={item.id}>
                   {item.title}
                 </MenuItem>

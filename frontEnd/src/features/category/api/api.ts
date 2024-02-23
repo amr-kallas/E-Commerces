@@ -1,11 +1,14 @@
 import API_ROUTES from '../../../constants/apiRoutes'
 import axios from '../../../lib/axios'
 import { objectToFormData } from '../../../utils/transform'
+import { Paginate } from '../../../utils/type'
 import { Edit, categoryBody } from './type'
 
 const API = {
-  getAll: async () => {
-    const { data } = await axios.get<categoryBody[]>(API_ROUTES.CATEGORY.ALL)
+  getAll: async ({limit,page}:Paginate) => {
+    const { data } = await axios.get<categoryBody[]>(API_ROUTES.CATEGORY.ALL,{
+      params:{limit,page}
+    })
     return data
   },
   get: async (id: string) => {

@@ -27,8 +27,8 @@ import { productDetails } from './helpers'
 import { useQueryClient } from '@tanstack/react-query'
 import ProductImage from '../../ProductImage'
 import { useProgressContext } from '../../../../context/ProgressContext'
-import { useCancelImages } from '../../../../hooks/product/useCancelImg'
-import useUploadImg from '../../../../hooks/product/useUploadImg'
+import { useCancelImages } from '../../hooks/useCancelImg'
+import useUploadImg from '../../hooks/useUploadImg'
 const EditProduct = () => {
   const { id, isActive, clearSearchParams } = useEditSearchParams()
   const cancelImg = useCancelImages()
@@ -51,7 +51,6 @@ const EditProduct = () => {
   const [deletedImg, setDeletedImg] = useState<string[]>([])
   const idsRef = useRef(ids)
   let uniqeKey = useRef(0)
-  console.log(String(isActive))
   const isSend =
     deletedImg.length != productData?.[0].images.length || ids.length != 0
   const handleUploadImage = async (files: File | File[] | any) => {
@@ -61,7 +60,7 @@ const EditProduct = () => {
     } else {
       imgs = [files]
     }
-    uploadImg(imgs)
+    uploadImg({imgs,id})
   }
 
   const handleEditImg = (id: string) => {
@@ -75,9 +74,10 @@ const EditProduct = () => {
     setDeletedImg([])
     clearSearchParams()
     setIds([])
-    uniqeKey.current+=1
+    uniqeKey.current = 0
   }
   useEffect(() => {
+    uniqeKey.current += 1
     if (productData) reset(productDetails(productData[0]))
   }, [productData, id])
 
@@ -150,7 +150,7 @@ const EditProduct = () => {
               label="Category"
               message={i18n.t('validation:required')}
             >
-              {categoryData?.map((item) => (
+              {categoryData?.data?.map((item) => (
                 <MenuItem key={item.id} value={item.id}>
                   {item.title}
                 </MenuItem>
@@ -190,14 +190,14 @@ const EditProduct = () => {
             disabled={!disabledInput}
           />
           <ProductImage
-             key={uniqeKey.current}
-             name="images"
-             error={!isSend ? 'Required' : ''}
-             disabled={!disabledInput}
-             url={productData?.[0]?.images}
-             onUpload={handleUploadImage}
-             deletedImg={handleEditImg}
-          /> 
+            key={`${productData?.[0].id}${uniqeKey.current}`}
+            name="images"
+            error={!isSend ? 'Required' : ''}
+            disabled={!disabledInput}
+            url={productData?.[0]?.images}
+            onUpload={handleUploadImage}
+            deletedImg={handleEditImg}
+          />
           <Box
             sx={{
               textAlign: 'center',

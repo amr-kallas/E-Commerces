@@ -1,15 +1,18 @@
 import API_ROUTES from '../../../constants/apiRoutes'
 import axios from '../../../lib/axios'
 import { objectToFormData } from '../../../utils/transform'
-import { AddImg, AddImgBody, AddProduct, EditProductBody, AllProduct, AddProductBody } from './type'
+import { Paginate } from '../../../utils/type'
+import { AddImg, AddImgBody, AddProduct, EditProductBody, AllProduct, AddProductBody, Product } from './type'
 let newProgress: number
 const API = {
-  getAll: async () => {
-    const { data } = await axios.get<AllProduct>(API_ROUTES.PRODUCT.ALL)
+  getAll: async ({limit,page}:Paginate) => {
+    const { data } = await axios.get<AllProduct<Product>>(API_ROUTES.PRODUCT.ALL,{
+      params:{limit,page}
+    })
     return data
   },
   get: async (id:string) => {
-    const { data } = await axios.get<AllProduct>(API_ROUTES.PRODUCT.GET(id))
+    const { data } = await axios.get<AllProduct<Product>>(API_ROUTES.PRODUCT.GET(id))
     return data
   },
   Add: async (body: AddProductBody) => {

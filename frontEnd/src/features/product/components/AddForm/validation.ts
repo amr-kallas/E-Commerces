@@ -7,7 +7,7 @@ export type AddProdcut = {
   price: number
   discount: number
   About: string
-  image?: File
+  image?: File | File[]
 }
 export type DummyProdcut = {
   category: number | string
@@ -50,7 +50,6 @@ export const body: AddImgs = {
   image: new File([], 'default.txt'),
 }
 
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 const schemaAddProduct: z.ZodType<AddProdcut> = z.object({
   category: z.number(),
   title: z.string().min(3),
@@ -60,9 +59,6 @@ const schemaAddProduct: z.ZodType<AddProdcut> = z.object({
   About: z.string().min(5),
   image: z
     .any()
-    .refine((file) => file != undefined, { params: { custom: 'required' } })
-    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type), {
-      params: { custom: 'fileType' },
-    }),
+    .refine((file) => file != undefined, { params: { custom: 'required' } }),
 })
 export default schemaAddProduct

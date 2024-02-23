@@ -16,7 +16,7 @@ const PaginationTable = ({
   setRowsPerPage,
   rows,
 }: paginationPage) => {
-  const {t}=useTranslation("user",{keyPrefix:"table"})
+  const { t } = useTranslation('user', { keyPrefix: 'table' })
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -46,9 +46,10 @@ const PaginationTable = ({
       onPageChange={handleChangePage}
       onRowsPerPageChange={handleChangeRowsPerPage}
       ActionsComponent={TablePaginationActions}
-      labelRowsPerPage={t("rows")}
-      labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${t("of")} ${count}`}
-
+      labelRowsPerPage={t('rows')}
+      labelDisplayedRows={({ from, to, count }) =>
+        `${from}-${to} ${t('of')} ${count}`
+      }
     />
   )
 }

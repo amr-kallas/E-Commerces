@@ -14,7 +14,10 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import Storage from '../../../../utils/storage'
 import GoogleButton from '../GoogleButton'
+import { useTranslation } from 'react-i18next'
 export const Signup = () => {
+  const {t}=useTranslation('auth',{keyPrefix:'sign'})
+  const {i18n} =useTranslation()
   const [error, setError] = useState('')
   const navigate = useNavigate()
   const { control, handleSubmit } = useForm<z.infer<typeof userSignupSchema>>({
@@ -50,8 +53,11 @@ export const Signup = () => {
           sx={{
             backgroundImage: {
               xs: ``,
-              sm: `linear-gradient(100deg, rgb(255, 255, 255)49.9%,transparent 50%),url(${greenland})`,
-            },
+              sm:
+              i18n.language == 'en'
+                ? `linear-gradient(100deg, rgb(255, 255, 255)49.9%,transparent 50%),url(${greenland})`
+                : `linear-gradient(260deg, rgb(255, 255, 255)49.9%,transparent 50%),url(${greenland})`,
+          },
             width: 1,
             minHeight: 450,
             borderRadius: '12px',
@@ -77,15 +83,15 @@ export const Signup = () => {
                 textAlign: { xs: 'center', sm: 'unset' },
               }}
             >
-              Register Now
+              {t('title')}
             </Typography>
-            <NameInput control={control} name="name" />
-            <NameInput control={control} name="email" />
+            <NameInput control={control} name="name" label={t('name')} />
+            <NameInput control={control} name="email" label={t('email')} />
             <PasswordInput control={control} name="password" />
             <Submit sx={{ width: '60%' }} isLoading={signup.isLoading}>
-              Submit
+              {t('submit')}
             </Submit>
-              <GoogleButton/>
+              <GoogleButton label={t('google')}/>
             {error && <Alert severity="error">{error}</Alert>}
           </Stack>
         </Paper>

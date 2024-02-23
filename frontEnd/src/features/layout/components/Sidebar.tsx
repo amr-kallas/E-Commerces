@@ -7,7 +7,6 @@ import FeedIcon from '@mui/icons-material/Feed'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits'
-import ImportContactsIcon from '@mui/icons-material/ImportContacts'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -92,13 +91,6 @@ const Sidebar = ({ open, setOpen }: AppBarDialog) => {
       icon: <PersonIcon />,
       path: '/users',
       role: ['1995'],
-    },
-
-    {
-      text: t('writter'),
-      icon: <ImportContactsIcon />,
-      path: '/writter',
-      role: ['1995', '1996'],
     },
     {
       text: t('category'),

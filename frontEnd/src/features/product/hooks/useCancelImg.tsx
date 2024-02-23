@@ -1,4 +1,4 @@
-import { queries } from '../../features/product/api/queries'
+import { queries } from '../api/queries'
 export const useCancelImages = () => {
   const DeleteImg = queries.useDeleteImg()
 

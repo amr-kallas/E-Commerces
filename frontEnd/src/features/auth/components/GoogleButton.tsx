@@ -1,7 +1,7 @@
 import { Box, Stack } from '@mui/material'
 import GoogleIcon from '@mui/icons-material/Google'
 
-const GoogleButton = () => {
+const GoogleButton = ({label}:{label:string}) => {
   return (
     <Stack
               direction="row"
@@ -13,6 +13,7 @@ const GoogleButton = () => {
                 cursor: 'pointer',
                 textDecoration: 'none',
                 margin: { xs: 'auto', sm: 0 },
+                height:50
               }}
               component="a"
               href="http://127.0.0.1:8000/login-google"
@@ -25,6 +26,8 @@ const GoogleButton = () => {
                   borderTopLeftRadius: '8px',
                   borderBottomLeftRadius: '8px',
                   display: 'flex',
+                  height:1,
+                  alignItems:'center'
                 }}
               >
                 <GoogleIcon color="error" />
@@ -35,7 +38,7 @@ const GoogleButton = () => {
                   color: 'white',
                 }}
               >
-                Sign in with Google
+                {label}
               </Box>
             </Stack>
   )

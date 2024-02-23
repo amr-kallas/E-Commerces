@@ -20,8 +20,11 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import Storage from '../../../../utils/storage'
 import GoogleButton from '../GoogleButton'
+import { useTranslation } from 'react-i18next'
 
 export const Login = () => {
+  const { t } = useTranslation('auth', { keyPrefix: 'login' })
+  const { i18n } = useTranslation()
   const { control, handleSubmit } = useForm<z.infer<typeof userLoginSchema>>({
     resolver: zodResolver(userLoginSchema),
     defaultValues: loginDefault,
@@ -42,7 +45,7 @@ export const Login = () => {
     })
   }
   return (
-    <Slide in dir='up' timeout={500}>
+    <Slide in dir="up" timeout={500}>
       <Container>
         <Stack
           direction="row"
@@ -56,7 +59,10 @@ export const Login = () => {
             sx={{
               backgroundImage: {
                 xs: ``,
-                sm: `linear-gradient(100deg, rgb(255, 255, 255)49.9%,transparent 50%),url(${greenland})`,
+                sm:
+                  i18n.language == 'en'
+                    ? `linear-gradient(100deg, rgb(255, 255, 255)49.9%,transparent 50%),url(${greenland})`
+                    : `linear-gradient(260deg, rgb(255, 255, 255)49.9%,transparent 50%),url(${greenland})`,
               },
               width: 1,
               minHeight: 450,
@@ -83,17 +89,19 @@ export const Login = () => {
                   textAlign: { xs: 'center', sm: 'unset' },
                 }}
               >
-                Login Now
+                {t('title')}
               </Typography>
-              <NameInput control={control} name="email" />
-              <PasswordInput control={control} name="password" />
+              <NameInput control={control} name="email" label={t('email')} />
+              <PasswordInput
+                control={control}
+                name="password"
+                label={t('password')}
+              />
               <Submit sx={{ width: '60%' }} isLoading={login.isLoading}>
-                Submit
+                {t('submit')}
               </Submit>
-              <GoogleButton />
-              {login.isError && (
-                <Alert severity="error">Email or Password not valid</Alert>
-              )}
+              <GoogleButton label={t('google')} />
+              {login.isError && <Alert severity="error">{t('error')}</Alert>}
             </Stack>
           </Paper>
         </Stack>

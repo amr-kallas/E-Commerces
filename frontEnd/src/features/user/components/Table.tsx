@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@mui/material'
 import { useState } from 'react'
-import PaginationTable from './PaginationTable'
+import PaginationTable from '../../../components/table/PaginationTable'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { keys, queries } from '../api/queries'
@@ -26,8 +26,11 @@ export const UserTable = () => {
   const { t } = useTranslation('user')
   const { edit } = useEventSearchParams()
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(5)
-  const { data, isLoading } = queries.useUsers()
+  const [rowsPerPage, setRowsPerPage] = useState(3)
+  const { data, isLoading } = queries.useUsers({
+    limit: rowsPerPage,
+    page: page + 1,
+  })
   const me = queries.useMe()
   const remove = queries.useDelete()
   const queryClient = useQueryClient()
@@ -79,7 +82,7 @@ export const UserTable = () => {
           </TableCell>
         </TableRow>
 
-        {data?.map((item: GetUser) => (
+        {data?.data?.map((item: GetUser) => (
           <TableRow key={item.id}>
             {item.id != me.data?.id && (
               <>
@@ -126,10 +129,10 @@ export const UserTable = () => {
             <TableRow>
               <PaginationTable
                 page={page}
-                rowsPerPage={rowsPerPage}
                 setPage={setPage}
+                rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
-                rows={data?.length ?? 0}
+                rows={data?.total ?? 0}
               />
             </TableRow>
           </TableFooter>

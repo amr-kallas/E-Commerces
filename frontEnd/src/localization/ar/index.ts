@@ -5,6 +5,7 @@ import product from './product.json'
 import layout from './layout.json'
 import validation from './validation.json'
 import error from './error.json'
+import auth from './auth.json'
 const language = {
   zod,
   user,
@@ -12,6 +13,7 @@ const language = {
   product,
   layout,
   validation,
+  auth,
   error
 }
 

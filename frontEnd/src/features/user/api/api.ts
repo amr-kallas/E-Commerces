@@ -1,10 +1,13 @@
 import API_ROUTES from '../../../constants/apiRoutes'
 import axios from '../../../lib/axios'
+import { Paginate } from '../../../utils/type'
 import { AddUser, AllUser, EditForm, GetMe, GetUser } from './type'
 
 const API = {
-  getAllUsers: async () => {
-    const { data } = await axios.get<AllUser>(API_ROUTES.USERS.ALL)
+  getAllUsers: async ({limit,page}:Paginate) => {
+    const { data } = await axios.get<AllUser<GetUser>>(API_ROUTES.USERS.ALL,{
+      params:{limit,page}
+    })
     return data
   },
   getUser: async (id: string) => {

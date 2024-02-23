@@ -1,14 +1,16 @@
-import { useProgressContext } from '../../context/ProgressContext'
-import useEditSearchParams from '../useEditSearchParams'
-import { queries } from '../../features/product/api/queries'
+import { useProgressContext } from '../../../context/ProgressContext'
+import { queries } from '../api/queries'
+type UploadImageProps = {
+  imgs: File[]
+  id: string
+}
 const useUploadImg = () => {
   const { setPercentage, indexRef, setIds } = useProgressContext()
-  const { id } = useEditSearchParams()
   const addImg = queries.useAddImg()
 
-  const uploadImage = async (files: File[]) => {
+  const uploadImage = async ({ imgs, id }: UploadImageProps) => {
     let c = 0
-    for (const [index, element] of files.entries()) {
+    for (const [index, element] of imgs.entries()) {
       if (index == c) {
         indexRef.current++
         c++
@@ -25,7 +27,7 @@ const useUploadImg = () => {
         product_id: id,
       }
       await new Promise((resolve) => setTimeout(resolve, 1000))
-      if (files.length != 0) {
+      if (imgs.length != 0) {
         await addImg.mutateAsync(
           { body: currentBody, changePercentageAtIndex },
           {

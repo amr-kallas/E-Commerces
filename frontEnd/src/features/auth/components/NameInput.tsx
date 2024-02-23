@@ -2,7 +2,7 @@ import { TextField, TextFieldProps } from "../../../components/inputs/TextField"
 
 type Input = TextFieldProps<true>;
 
-const NameInput = ({ control ,name,...props}:Input) => {
+const NameInput = ({ control ,name,label,...props}:Input) => {
   return (
     <TextField
       name={name}
@@ -10,7 +10,7 @@ const NameInput = ({ control ,name,...props}:Input) => {
       control={control}
       fullWidth
       {...props}
-      label="email"
+      label={label}
     />
   );
 };

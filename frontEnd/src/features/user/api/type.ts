@@ -1,3 +1,5 @@
+import { PaginateResponse } from '../../../utils/type'
+
 export type User = {
   email: string
   name: string
@@ -10,7 +12,9 @@ export type EditForm = {
   body: User
   id: string
 }
-export type AllUser = GetUser[]
+export type AllUser<T> = {
+  data: T[]
+} & PaginateResponse
 export type GetMe = GetUser
 export type AddUser = {
   password: string

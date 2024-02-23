@@ -8,7 +8,6 @@ import NotAuth from './components/routes/NotAuth'
 import Auth from './components/routes/Auth'
 import { lazy } from 'react'
 import { Category, Home, Product, User } from './pages'
-import { Writter } from './features/writter'
 import Error404 from './components/feedback/Error404'
 import SomethingWentWrong from './components/feedback/SomethingWentWrong'
 import i18n from './lib/i18n'
@@ -36,9 +35,6 @@ export default createBrowserRouter(
             <Route path="category" element={<Category />} />
             <Route path="product" element={<Product />} />
           </Route>
-          <Route element={<Auth AllowedRole={['1995', '1996']} />}>
-            <Route path="writter" element={<Writter />} />
-          </Route>
         </Route>
       </Route>
       <Route path="auth/google/callback" element={<GoogleCallBack />} />
@@ -46,10 +42,3 @@ export default createBrowserRouter(
     </Route>
   )
 )
-// function WithScroll() {
-//   return (
-//     <>
-//       <Outlet />
-//     </>
-//   );
-// }

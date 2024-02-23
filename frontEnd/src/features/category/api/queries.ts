@@ -1,19 +1,20 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import API from './api'
 import { createQueryKeys } from '@lukemorales/query-key-factory'
+import { Paginate } from '../../../utils/type'
 export const keys = createQueryKeys('category', {
-  getAll: {
-    queryFn: API.getAll,
-    queryKey: [''],
-  },
+  getAll: ({ limit, page }: Paginate) => ({
+    queryFn: () => API.getAll({ limit, page }),
+    queryKey: [limit, page],
+  }),
   get: (id: string) => ({
     queryFn: () => API.get(id),
     queryKey: [id],
   }),
 })
 export const queries = {
-  useAll: () => useQuery(keys.getAll),
-  useCategory: (id: string) => useQuery({...keys.get(id),enabled:!!id}),
+  useAll: ({ limit, page }: Paginate) => useQuery(keys.getAll({limit, page})),
+  useCategory: (id: string) => useQuery({ ...keys.get(id), enabled: !!id }),
   useAdd: () => useMutation(API.add),
   useEdit: () => useMutation(API.edit),
   useDelete: () => useMutation(API.delete),

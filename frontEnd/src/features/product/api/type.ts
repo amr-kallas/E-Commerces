@@ -1,3 +1,5 @@
+import { PaginateResponse } from '../../../utils/type'
+
 export type ImgProduct = {
   id: number
   image: string
@@ -8,25 +10,27 @@ export type Product = {
   title: string
   About: string
   description: string
-  category:number
+  category: number
   price: number
   discount: number
   rating: number
   images: ImgProduct[]
-  id:string
+  id: string
 }
-export type AllProduct=Product[]
+export type AllProduct<T> = {
+  data: T[]
+} & PaginateResponse
 
 export type AddProductBody = {
-    title: string
-    About: string
-    description: string
-    price: number
-    discount: number
-  }
-  export type AddProduct = {
-    id:string
-  }&AddProductBody
+  title: string
+  About: string
+  description: string
+  price: number
+  discount: number
+}
+export type AddProduct = {
+  id: string
+} & AddProductBody
 export type EditProductBody = {
   id: string
   body: {
