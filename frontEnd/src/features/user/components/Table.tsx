@@ -20,9 +20,13 @@ import Tables from '../../../components/table/Table'
 import { GetUser } from '../api/type'
 import { useSnackbarContext } from '../../../context/SnackbarContext'
 import { useTranslation } from 'react-i18next'
+import Search from '../../../components/inputs/Search'
+import useQuerySearchParams from '../../../hooks/useQuerySeachParams'
 
 export const UserTable = () => {
   const snackbar = useSnackbarContext()
+  const { q } = useQuerySearchParams()
+  const tableHeader = HeaderTable()
   const { t } = useTranslation('user')
   const { edit } = useEventSearchParams()
   const [page, setPage] = useState(0)
@@ -31,6 +35,8 @@ export const UserTable = () => {
     limit: rowsPerPage,
     page: page + 1,
   })
+  const { data: SearchData } = queries.useSearch(q)
+  const userData = q != '' ? SearchData : data?.data ?? []
   const me = queries.useMe()
   const remove = queries.useDelete()
   const queryClient = useQueryClient()
@@ -49,9 +55,9 @@ export const UserTable = () => {
       },
     })
   }
-  const tableHeader = HeaderTable()
   return (
     <>
+      <Search />
       <Tables header={tableHeader} skeleton={isLoading && me.isLoading}>
         <TableRow>
           <TableCell>1</TableCell>
@@ -82,7 +88,7 @@ export const UserTable = () => {
           </TableCell>
         </TableRow>
 
-        {data?.data?.map((item: GetUser) => (
+        {userData?.map((item: GetUser) => (
           <TableRow key={item.id}>
             {item.id != me.data?.id && (
               <>

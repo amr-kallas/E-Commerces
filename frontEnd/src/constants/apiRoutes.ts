@@ -10,6 +10,7 @@ let API_ROUTES = {
     ALL: 'users',
     ME: 'user',
     LOGOUT: 'logout',
+    SEARCH:'user/search',
     GET: (id: string) => `user/${id}`,
     EDIT: (id: string) => `user/edit/${id}`,
     DELETE: (id: string) => `user/${id}`,
@@ -18,6 +19,7 @@ let API_ROUTES = {
   CATEGORY: {
     ALL: 'categories',
     ADD: 'category/add',
+    SEARCH:'category/search',
     GET: (id: string) => `category/${id}`,
     EDIT: (id: string) => `category/edit/${id}`,
     DELETE: (id: string) => `category/${id}`,
@@ -26,6 +28,7 @@ let API_ROUTES = {
     ALL: 'products',
     ADD: 'product/add',
     ADD_IMG: 'product-img/add',
+    SEARCH:'product/search',
     GET: (id: string) => `product/${id}`,
     EDIT: (id: string) => `product/edit/${id}`,
     DELETE: (id: string) => `product/${id}`,

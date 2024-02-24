@@ -6,14 +6,14 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import Progress from '../../components/feedback/Progress'
+import Progress from '../../../components/feedback/Progress'
 import CancelIcon from '@mui/icons-material/Cancel'
 import UploadIcon from '@mui/icons-material/Upload'
-import { queries, keys } from './api/queries'
-import { useProgressContext } from '../../context/ProgressContext'
+import { queries, keys } from '../api/queries'
+import { useProgressContext } from '../../../context/ProgressContext'
 import { ChangeEvent, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { ImgProduct } from './api/type'
+import { ImgProduct } from '../api/type'
 type imgHelpers = {
   name: string
   error: string | undefined
@@ -23,7 +23,14 @@ type imgHelpers = {
   deletedImg: (id: string) => void
 }
 
-const ProductImage = ({ name, error, disabled, onUpload,deletedImg, url }: imgHelpers) => {
+const ProductImage = ({
+  name,
+  error,
+  disabled,
+  onUpload,
+  deletedImg,
+  url,
+}: imgHelpers) => {
   const initialImage = typeof url == 'string' ? [url] : url ?? []
   const [upload, setUpload] = useState(initialImage)
   const queryClient = useQueryClient()
@@ -101,7 +108,7 @@ const ProductImage = ({ name, error, disabled, onUpload,deletedImg, url }: imgHe
                 flexWrap: 'wrap',
                 m: '20px 0 0 !important',
                 position: 'relative',
-                flexBasis:'30%'
+                flexBasis: '30%',
               }}
             >
               <Box sx={{ width: 1, height: 70 }}>

@@ -46,6 +46,12 @@ const API = {
     )
     return data
   },
+  search: async (title: string) => {
+    const { data } = await axios.post(API_ROUTES.PRODUCT.SEARCH,{}, {
+      params: { title },
+    })
+    return data
+  },
   Delete: async (id: string) => {
     const { data } = await axios.delete(API_ROUTES.PRODUCT.DELETE(id))
     return data

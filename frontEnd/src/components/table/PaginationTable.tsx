@@ -23,7 +23,6 @@ const PaginationTable = ({
   ) => {
     setPage(newPage)
   }
-
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -32,14 +31,14 @@ const PaginationTable = ({
   }
   return (
     <TablePagination
-      rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+      rowsPerPageOptions={[3, 5, 10, { label: 'All', value: -1 }]}
       colSpan={3}
       count={rows}
       rowsPerPage={rowsPerPage}
       page={page}
       SelectProps={{
         inputProps: {
-          'aria-label': 'rows per pageسس',
+          'aria-label': 'rows per page',
         },
         native: true,
       }}

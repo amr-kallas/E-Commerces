@@ -2,11 +2,11 @@ import API_ROUTES from '../../../constants/apiRoutes'
 import axios from '../../../lib/axios'
 import { objectToFormData } from '../../../utils/transform'
 import { Paginate } from '../../../utils/type'
-import { Edit, categoryBody } from './type'
+import { AllCategories, Edit, categoryBody } from './type'
 
 const API = {
   getAll: async ({limit,page}:Paginate) => {
-    const { data } = await axios.get<categoryBody[]>(API_ROUTES.CATEGORY.ALL,{
+    const { data } = await axios.get<AllCategories<categoryBody>>(API_ROUTES.CATEGORY.ALL,{
       params:{limit,page}
     })
     return data
@@ -25,6 +25,12 @@ const API = {
   },
   delete: async (id: string) => {
     const data = await axios.delete(API_ROUTES.CATEGORY.DELETE(id))
+    return data
+  },
+  search: async (title: string) => {
+    const { data } = await axios.post(API_ROUTES.CATEGORY.SEARCH,{}, {
+      params: { title },
+    })
     return data
   },
 }

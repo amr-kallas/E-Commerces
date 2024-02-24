@@ -8,7 +8,7 @@ import {
 import CancelIcon from '@mui/icons-material/Cancel'
 import UploadIcon from '@mui/icons-material/Upload'
 import { ChangeEvent, useState } from 'react'
-import ProductImage from '../../features/product/ProductImage'
+import ProductImage from '../../features/product/components/ProductImage'
 import { useTranslation } from 'react-i18next'
 
 type imgHelpers = {
@@ -31,7 +31,7 @@ const ImageUpload = ({
   disabled,
   isProduct = false,
 }: imgHelpers) => {
-  const {t}=useTranslation("category",{keyPrefix:"add"})
+  const { t } = useTranslation('category', { keyPrefix: 'add' })
   const initialImage = url ? [url] : []
   const [upload, setUpload] = useState<string[]>(initialImage)
   const [uploadProduct, setUploadProduct] = useState<File[]>([])
@@ -74,7 +74,7 @@ const ImageUpload = ({
               },
             }}
           >
-            <Typography  color="#777">{t("image")}</Typography>
+            <Typography color="#777">{t('image')}</Typography>
             <UploadIcon fontSize="small" color="primary" />
           </Box>
         ) : (
@@ -137,7 +137,7 @@ const ImageUpload = ({
       }
       <input
         type="file"
-        accept='image/*'
+        accept="image/*"
         disabled={!!disabled}
         multiple={multiple}
         onChange={handleSelectImg}

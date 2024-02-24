@@ -18,14 +18,14 @@ import { keys, queries as productQuery } from '../../api/queries'
 import TextField from '../../../../components/inputs/TextField'
 import Submit from '../../../../components/buttons/Submit'
 import { zodResolver } from '@hookform/resolvers/zod'
-import schemaAddProduct, {  defaultProductValue, dummyData } from './validation'
+import schemaAddProduct, { defaultProductValue, dummyData } from './validation'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useProgressContext } from '../../../../context/ProgressContext'
 import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '../../../../context/SnackbarContext'
 import i18n from '../../../../lib/i18n'
-import ProductImage from '../../ProductImage'
+import ProductImage from '../ProductImage'
 import useUploadImg from '../../hooks/useUploadImg'
 const AddProduct = () => {
   const snackbar = useSnackbarContext()
@@ -41,7 +41,7 @@ const AddProduct = () => {
     defaultValues: defaultProductValue,
     resolver: zodResolver(schemaAddProduct),
   })
-  const { data: categoryData } = categoryQuery.useAll()
+  const { data: categoryData } = categoryQuery.useAll({ limit: 10, page: 1 })
   const add = productQuery.useAdd()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()

@@ -11,11 +11,16 @@ export const keys = createQueryKeys('category', {
     queryFn: () => API.get(id),
     queryKey: [id],
   }),
+  search: (title: string) => ({
+    queryFn: () => API.search(title),
+    queryKey: ['search', title],
+  }),
 })
 export const queries = {
-  useAll: ({ limit, page }: Paginate) => useQuery(keys.getAll({limit, page})),
+  useAll: ({ limit, page }: Paginate) => useQuery(keys.getAll({ limit, page })),
   useCategory: (id: string) => useQuery({ ...keys.get(id), enabled: !!id }),
   useAdd: () => useMutation(API.add),
   useEdit: () => useMutation(API.edit),
   useDelete: () => useMutation(API.delete),
+  useSearch: (title: string) => useQuery(keys.search(title)),
 }

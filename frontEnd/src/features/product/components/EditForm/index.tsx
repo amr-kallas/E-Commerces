@@ -25,7 +25,7 @@ import { defaultProductValue, product, schemaEditProduct } from './validation'
 import { useEffect, useRef, useState } from 'react'
 import { productDetails } from './helpers'
 import { useQueryClient } from '@tanstack/react-query'
-import ProductImage from '../../ProductImage'
+import ProductImage from '../ProductImage'
 import { useProgressContext } from '../../../../context/ProgressContext'
 import { useCancelImages } from '../../hooks/useCancelImg'
 import useUploadImg from '../../hooks/useUploadImg'
@@ -35,7 +35,7 @@ const EditProduct = () => {
   const uploadImg = useUploadImg()
   const snackbar = useSnackbarContext()
   const { data: productData, isSuccess } = productQuery.useProduct(id)
-  const { data: categoryData } = categoryQuery.useAll()
+  const { data: categoryData } = categoryQuery.useAll({ limit: 10, page: 1 })
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
   const { t } = useTranslation('product')
@@ -60,7 +60,7 @@ const EditProduct = () => {
     } else {
       imgs = [files]
     }
-    uploadImg({imgs,id})
+    uploadImg({ imgs, id })
   }
 
   const handleEditImg = (id: string) => {

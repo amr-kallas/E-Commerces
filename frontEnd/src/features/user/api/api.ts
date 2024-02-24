@@ -4,9 +4,9 @@ import { Paginate } from '../../../utils/type'
 import { AddUser, AllUser, EditForm, GetMe, GetUser } from './type'
 
 const API = {
-  getAllUsers: async ({limit,page}:Paginate) => {
-    const { data } = await axios.get<AllUser<GetUser>>(API_ROUTES.USERS.ALL,{
-      params:{limit,page}
+  getAllUsers: async ({ limit, page }: Paginate) => {
+    const { data } = await axios.get<AllUser<GetUser>>(API_ROUTES.USERS.ALL, {
+      params: { limit, page },
     })
     return data
   },
@@ -26,8 +26,14 @@ const API = {
     const { data } = await axios.delete(API_ROUTES.USERS.DELETE(id))
     return data
   },
-  add: async (body:AddUser) => {
-    const { data } = await axios.post(API_ROUTES.USERS.ADD,body)
+  add: async (body: AddUser) => {
+    const { data } = await axios.post(API_ROUTES.USERS.ADD, body)
+    return data
+  },
+  search: async (title: string) => {
+    const { data } = await axios.post(API_ROUTES.USERS.SEARCH,{}, {
+      params: { title },
+    })
     return data
   },
   logout: async () => {

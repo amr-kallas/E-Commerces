@@ -1,25 +1,42 @@
-import { Box, IconButton, Paper, Table, TableCell, TableContainer, TableFooter, TableRow } from '@mui/material'
-import Tables from '../../components/table/Table'
+import {
+  Box,
+  IconButton,
+  Paper,
+  Table,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableRow,
+} from '@mui/material'
+import Tables from '../../../components/table/Table'
 import TableHeader from './TableHeader'
-import { keys, queries } from './api/queries'
-import useEventSearchParams from '../../hooks/useEventSearchParams'
+import { keys, queries } from '../api/queries'
+import useEventSearchParams from '../../../hooks/useEventSearchParams'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useQueryClient } from '@tanstack/react-query'
-import NoData from '../../components/feedback/NoData'
+import NoData from '../../../components/feedback/NoData'
 import { useTranslation } from 'react-i18next'
-import { useSnackbarContext } from '../../context/SnackbarContext'
-import PaginationTable from '../../components/table/PaginationTable'
+import { useSnackbarContext } from '../../../context/SnackbarContext'
+import PaginationTable from '../../../components/table/PaginationTable'
 import { useState } from 'react'
+import useQuerySearchParams from '../../../hooks/useQuerySeachParams'
+import Search from '../../../components/inputs/Search'
 const ProductTable = () => {
   const { t } = useTranslation('product')
+  const { q } = useQuerySearchParams()
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(3)
   const snackbar = useSnackbarContext()
   const tableHeader = TableHeader()
   const { edit } = useEventSearchParams()
-  const { data, isLoading } = queries.useAll({limit:rowsPerPage,page:page + 1})
+  const { data, isLoading } = queries.useAll({
+    limit: rowsPerPage,
+    page: page + 1,
+  })
   const Delete = queries.useDelete()
+  const { data: SearchData } = queries.useSearch(q)
+  const productData = q != '' ? SearchData : data?.data ?? []
   const queryClient = useQueryClient()
   const handleDelete = (id: string) => {
     Delete.mutate(id, {
@@ -40,6 +57,7 @@ const ProductTable = () => {
   }
   return (
     <>
+      <Search />
       <Tables header={tableHeader} skeleton={isLoading}>
         {data?.data?.map((item: any, index: number) => (
           <TableRow key={item.id}>
@@ -57,8 +75,8 @@ const ProductTable = () => {
                   display: '-webkit-box',
                   WebkitBoxOrient: 'vertical',
                   WebkitLineClamp: 2,
-                  overflow:'hidden',
-                  direction:'ltr'
+                  overflow: 'hidden',
+                  direction: 'ltr',
                 }}
               >
                 {item.description}
@@ -99,7 +117,7 @@ const ProductTable = () => {
                       width: '35px',
                       height: '35px',
                       borderRadius: '50%',
-                      objectFit:'cover'
+                      objectFit: 'cover',
                     }}
                     src={imgs.image}
                     alt=""

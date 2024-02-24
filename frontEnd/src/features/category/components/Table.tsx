@@ -1,6 +1,15 @@
 import TableHeader from './TableHeader'
 import Tables from '../../../components/table/Table'
-import { Box, IconButton, Paper, Table, TableCell, TableContainer, TableFooter, TableRow } from '@mui/material'
+import {
+  Box,
+  IconButton,
+  Paper,
+  Table,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableRow,
+} from '@mui/material'
 import { keys, queries } from '../api/queries'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -12,22 +21,26 @@ import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '../../../context/SnackbarContext'
 import { useState } from 'react'
 import PaginationTable from '../../../components/table/PaginationTable'
+import useQuerySearchParams from '../../../hooks/useQuerySeachParams'
+import Search from '../../../components/inputs/Search'
 const TableCategory = () => {
   const { t } = useTranslation('category')
+  const { q } = useQuerySearchParams()
   const snackbar = useSnackbarContext()
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(3)
   const { edit } = useEventSearchParams()
-  const {data,isLoading} = queries.useAll({
+  const { data, isLoading } = queries.useAll({
     limit: rowsPerPage,
     page: page + 1,
   })
-  console.log(data)
-  const useDelete = queries.useDelete()
-  const queryClient = useQueryClient()
-  const reversedData = Array.isArray(data)
-    ? [...data].reverse()
+  const reversedData = Array.isArray(data?.data)
+    ? [...data?.data].reverse()
     : []
+  const useDelete = queries.useDelete()
+  const { data: SearchData } = queries.useSearch(q)
+  const categoryData = q != '' ? SearchData : reversedData ?? []
+  const queryClient = useQueryClient()
   const tableHeader = TableHeader()
   const handleDelete = (id: string) => {
     useDelete.mutate(id, {
@@ -45,8 +58,9 @@ const TableCategory = () => {
   }
   return (
     <>
+      <Search />
       <Tables header={tableHeader} skeleton={isLoading}>
-        {reversedData.map((item: categoryBody, index: number) => (
+        {categoryData?.map((item: categoryBody, index: number) => (
           <TableRow key={item.id}>
             <TableCell align="left">{index + 1}</TableCell>
             <TableCell
@@ -87,7 +101,7 @@ const TableCategory = () => {
           </TableRow>
         ))}
       </Tables>
-      {data?.length == 0 && <NoData message={t("message.data")} />}
+      {data?.data?.length == 0 && <NoData message={t('message.data')} />}
       <TableContainer component={Paper}>
         <Table>
           <TableFooter>
@@ -97,7 +111,7 @@ const TableCategory = () => {
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
-                rows={data?.data?.total ?? 0}
+                rows={data?.total ?? 0}
               />
             </TableRow>
           </TableFooter>

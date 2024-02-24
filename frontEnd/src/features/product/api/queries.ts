@@ -12,6 +12,10 @@ export const keys = createQueryKeys('product', {
     queryFn: () => API.get(id),
     queryKey: [''],
   }),
+  search: (title: string) => ({
+    queryFn: () => API.search(title),
+    queryKey: ['search',title],
+  }),
 })
 
 export const queries = {
@@ -19,6 +23,7 @@ export const queries = {
   useProduct: (id: string) => useQuery({ ...keys.get(id), enabled: !!id }),
   useAdd: () => useMutation(API.Add),
   useAddImg: () => useMutation(API.AddImg),
+  useSearch: (title: string) => useQuery(keys.search(title)),
   useEdit: () => useMutation(API.Edit),
   useDelete: () => useMutation(API.Delete),
   useDeleteImg: () => useMutation(API.DeleteImg),

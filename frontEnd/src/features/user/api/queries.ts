@@ -16,6 +16,10 @@ export const keys = createQueryKeys('store', {
     queryFn: API.getMe,
     queryKey: [''],
   },
+  search: (title: string) => ({
+    queryFn: () => API.search(title),
+    queryKey: ['search',title],
+  }),
   logout: {
     queryFn: API.logout,
     queryKey: [''],
@@ -25,6 +29,7 @@ export const queries = {
   useUsers: ({ limit, page }: Paginate) =>
     useQuery(keys.users({ limit, page })),
   useUser: (id: string) => useQuery({ ...keys.user(id), enabled: !!id }),
+  useSearch: (title: string) => useQuery(keys.search(title)),
   useMe: () => useQuery(keys.me),
   useEdit: () => useMutation(API.edit),
   useDelete: () => useMutation(API.delete),
