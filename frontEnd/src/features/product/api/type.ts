@@ -16,6 +16,8 @@ export type Product = {
   rating: number
   images: ImgProduct[]
   id: string
+  created_at: string
+  updated_at: string
 }
 export type AllProduct<T> = {
   data: T[]

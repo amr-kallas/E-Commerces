@@ -6,6 +6,8 @@
     "images": "Images",
     "price": "Price",
     "rating": "Rating",
+    "created":"created",
+    "updated":"updated",
     "action": "Options"
   },
   "add": {

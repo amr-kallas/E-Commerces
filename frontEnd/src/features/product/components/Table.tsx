@@ -2,6 +2,7 @@ import {
   Box,
   IconButton,
   Paper,
+  Stack,
   Table,
   TableCell,
   TableContainer,
@@ -22,9 +23,10 @@ import PaginationTable from '../../../components/table/PaginationTable'
 import { useState } from 'react'
 import useQuerySearchParams from '../../../hooks/useQuerySeachParams'
 import Search from '../../../components/inputs/Search'
+import SearchDate from '../../../components/inputs/SearchDate'
 const ProductTable = () => {
   const { t } = useTranslation('product')
-  const { q } = useQuerySearchParams()
+  const { q ,date} = useQuerySearchParams()
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(3)
   const snackbar = useSnackbarContext()
@@ -36,7 +38,21 @@ const ProductTable = () => {
   })
   const Delete = queries.useDelete()
   const { data: SearchData } = queries.useSearch(q)
-  const productData = q != '' ? SearchData : data?.data ?? []
+  const filterdDataByDate = data?.data.filter(
+    (item) => item.created_at?.split('T')[0] == date
+  )
+  const filterdDataByDate_Search = filterdDataByDate?.filter((item) =>
+    SearchData?.some((item2) => item2.id == item.id)
+  )
+  const productData =
+    q && date
+      ? filterdDataByDate_Search
+      : q
+      ? SearchData
+      : date
+      ? filterdDataByDate
+      : data?.data ?? []
+  // const productData = q != '' ? SearchData : data?.data ?? []
   const queryClient = useQueryClient()
   const handleDelete = (id: string) => {
     Delete.mutate(id, {
@@ -57,9 +73,12 @@ const ProductTable = () => {
   }
   return (
     <>
-      <Search />
+       <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Search />
+        <SearchDate />
+      </Stack>
       <Tables header={tableHeader} skeleton={isLoading}>
-        {data?.data?.map((item: any, index: number) => (
+        {productData?.map((item: any, index: number) => (
           <TableRow key={item.id}>
             <TableCell>{index + 1}</TableCell>
             <TableCell align="center">{item.title}</TableCell>
@@ -128,6 +147,12 @@ const ProductTable = () => {
             </TableCell>
             <TableCell align="center">{item.price}</TableCell>
             <TableCell align="center">{item.price}</TableCell>
+            <TableCell align="center">
+              {item.created_at?.split('T')[0]}
+            </TableCell>
+            <TableCell align="center">
+              {item.updated_at?.split('T')[0]}
+            </TableCell>
             <TableCell align="center">
               <Box
                 sx={{

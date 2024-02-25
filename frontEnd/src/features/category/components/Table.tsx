@@ -4,6 +4,7 @@ import {
   Box,
   IconButton,
   Paper,
+  Stack,
   Table,
   TableCell,
   TableContainer,
@@ -23,9 +24,10 @@ import { useState } from 'react'
 import PaginationTable from '../../../components/table/PaginationTable'
 import useQuerySearchParams from '../../../hooks/useQuerySeachParams'
 import Search from '../../../components/inputs/Search'
+import SearchDate from '../../../components/inputs/SearchDate'
 const TableCategory = () => {
   const { t } = useTranslation('category')
-  const { q } = useQuerySearchParams()
+  const { q, date } = useQuerySearchParams()
   const snackbar = useSnackbarContext()
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(3)
@@ -39,7 +41,20 @@ const TableCategory = () => {
     : []
   const useDelete = queries.useDelete()
   const { data: SearchData } = queries.useSearch(q)
-  const categoryData = q != '' ? SearchData : reversedData ?? []
+  const filterdDataByDate = data?.data.filter(
+    (item) => item.created_at?.split('T')[0] == date
+  )
+  const filterdDataByDate_Search = filterdDataByDate?.filter((item) =>
+    SearchData?.some((item2) => item2.id == item.id)
+  )
+  const categoryData =
+    q && date
+      ? filterdDataByDate_Search
+      : q
+      ? SearchData
+      : date
+      ? filterdDataByDate
+      : reversedData ?? []
   const queryClient = useQueryClient()
   const tableHeader = TableHeader()
   const handleDelete = (id: string) => {
@@ -58,7 +73,10 @@ const TableCategory = () => {
   }
   return (
     <>
-      <Search />
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Search />
+        <SearchDate />
+      </Stack>
       <Tables header={tableHeader} skeleton={isLoading}>
         {categoryData?.map((item: categoryBody, index: number) => (
           <TableRow key={item.id}>
@@ -80,6 +98,12 @@ const TableCategory = () => {
                   src={item.image}
                 />
               </Box>
+            </TableCell>
+            <TableCell align="center">
+              {item.created_at?.split('T')[0]}
+            </TableCell>
+            <TableCell align="center">
+              {item.updated_at?.split('T')[0]}
             </TableCell>
             <TableCell align="center">
               <Box

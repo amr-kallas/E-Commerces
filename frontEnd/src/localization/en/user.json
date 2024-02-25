@@ -3,6 +3,8 @@
     "id": "id",
     "name": "userName",
     "email": "Email",
+    "created":"created",
+    "updated":"updated",
     "role": "Role",
     "action": "Options",
     "rows": "Rows per page",

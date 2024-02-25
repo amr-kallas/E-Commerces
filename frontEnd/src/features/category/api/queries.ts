@@ -22,5 +22,5 @@ export const queries = {
   useAdd: () => useMutation(API.add),
   useEdit: () => useMutation(API.edit),
   useDelete: () => useMutation(API.delete),
-  useSearch: (title: string) => useQuery(keys.search(title)),
+  useSearch: (title: string) => useQuery({...keys.search(title),enabled:!!title}),
 }

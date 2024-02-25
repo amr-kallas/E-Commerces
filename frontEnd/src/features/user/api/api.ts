@@ -31,9 +31,13 @@ const API = {
     return data
   },
   search: async (title: string) => {
-    const { data } = await axios.post(API_ROUTES.USERS.SEARCH,{}, {
-      params: { title },
-    })
+    const { data } = await axios.post<GetUser[]>(
+      API_ROUTES.USERS.SEARCH,
+      {},
+      {
+        params: { title },
+      }
+    )
     return data
   },
   logout: async () => {

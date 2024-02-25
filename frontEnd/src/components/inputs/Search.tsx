@@ -7,7 +7,7 @@ import useQuerySearchParams from '../../hooks/useQuerySeachParams'
 import { useEffect, useState } from 'react'
 import useDebounce from '../../hooks/ useDebounce'
 const Search = () => {
-  const { q, clearSearchParams } = useQuerySearchParams()
+  const { q, date, clearSearchParams } = useQuerySearchParams()
   const [searchInput, setSearchInput] = useState('')
   const debounceSearch = useDebounce(searchInput)
   const [, setSearchParams] = useSearchParams()
@@ -15,11 +15,10 @@ const Search = () => {
     setSearchInput('')
   }
   useEffect(() => {
-    setSearchParams({ q: debounceSearch })
-    if (q.length == 0 && !debounceSearch) {
+    setSearchParams({ q: debounceSearch, date })
+    if (!q && !debounceSearch) {
       clearSearchParams()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, debounceSearch])
   return (
     <form style={{ display: 'flex', alignItems: 'center' }}>

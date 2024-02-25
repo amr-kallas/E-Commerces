@@ -2,6 +2,7 @@ import {
   Box,
   IconButton,
   Paper,
+  Stack,
   Table,
   TableCell,
   TableContainer,
@@ -17,15 +18,16 @@ import useEventSearchParams from '../../../hooks/useEventSearchParams'
 import { useQueryClient } from '@tanstack/react-query'
 import HeaderTable from './HeaderTable'
 import Tables from '../../../components/table/Table'
-import { GetUser } from '../api/type'
+import { User } from '../api/type'
 import { useSnackbarContext } from '../../../context/SnackbarContext'
 import { useTranslation } from 'react-i18next'
 import Search from '../../../components/inputs/Search'
 import useQuerySearchParams from '../../../hooks/useQuerySeachParams'
+import SearchDate from '../../../components/inputs/SearchDate'
 
 export const UserTable = () => {
   const snackbar = useSnackbarContext()
-  const { q } = useQuerySearchParams()
+  const { q, date } = useQuerySearchParams()
   const tableHeader = HeaderTable()
   const { t } = useTranslation('user')
   const { edit } = useEventSearchParams()
@@ -36,7 +38,20 @@ export const UserTable = () => {
     page: page + 1,
   })
   const { data: SearchData } = queries.useSearch(q)
-  const userData = q != '' ? SearchData : data?.data ?? []
+  const filterdDataByDate = data?.data.filter(
+    (item) => item.created_at?.split('T')[0] == date
+  )
+  const filterdDataByDate_Search = filterdDataByDate?.filter((item) =>
+    SearchData?.some((item2) => item2.id == item.id)
+  )
+  const userData =
+    q && date
+      ? filterdDataByDate_Search
+      : q
+      ? SearchData
+      : date
+      ? filterdDataByDate
+      : data?.data ?? []
   const me = queries.useMe()
   const remove = queries.useDelete()
   const queryClient = useQueryClient()
@@ -57,12 +72,21 @@ export const UserTable = () => {
   }
   return (
     <>
-      <Search />
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Search />
+        <SearchDate />
+      </Stack>
       <Tables header={tableHeader} skeleton={isLoading && me.isLoading}>
         <TableRow>
           <TableCell>1</TableCell>
           <TableCell align="center">{me.data?.name + ' (You)'}</TableCell>
           <TableCell align="center">{me.data?.email}</TableCell>
+          <TableCell align="center">
+            {me.data?.created_at.split('T')[0]}
+          </TableCell>
+          <TableCell align="center">
+            {me.data?.updated_at.split('T')[0]}
+          </TableCell>
           <TableCell align="center">
             {me.data?.role == '1995'
               ? 'Admin'
@@ -88,13 +112,19 @@ export const UserTable = () => {
           </TableCell>
         </TableRow>
 
-        {userData?.map((item: GetUser) => (
+        {userData?.map((item: User) => (
           <TableRow key={item.id}>
             {item.id != me.data?.id && (
               <>
                 <TableCell>{index++}</TableCell>
                 <TableCell align="center">{item.name}</TableCell>
                 <TableCell align="center">{item.email}</TableCell>
+                <TableCell align="center">
+                  {item.created_at?.split('T')[0]}
+                </TableCell>
+                <TableCell align="center">
+                  {item.updated_at?.split('T')[0]}
+                </TableCell>
                 <TableCell align="center">
                   {item.role == '1995'
                     ? 'Admin'

@@ -29,7 +29,7 @@ export const queries = {
   useUsers: ({ limit, page }: Paginate) =>
     useQuery(keys.users({ limit, page })),
   useUser: (id: string) => useQuery({ ...keys.user(id), enabled: !!id }),
-  useSearch: (title: string) => useQuery(keys.search(title)),
+  useSearch: (title: string) => useQuery({...keys.search(title),enabled:!!title}),
   useMe: () => useQuery(keys.me),
   useEdit: () => useMutation(API.edit),
   useDelete: () => useMutation(API.delete),

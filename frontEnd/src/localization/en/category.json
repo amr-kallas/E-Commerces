@@ -3,6 +3,8 @@
     "id": "id",
     "title": "Title",
     "image": "Image",
+    "created":"created",
+    "updated":"updated",
     "action": "Options"
   },
   "edit": {

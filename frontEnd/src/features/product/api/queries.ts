@@ -6,7 +6,7 @@ import { Paginate } from '../../../utils/type'
 export const keys = createQueryKeys('product', {
   getAll: ({ limit, page }: Paginate) => ({
     queryFn: () => API.getAll({ limit, page }),
-    queryKey: [limit,page],
+    queryKey: [limit, page],
   }),
   get: (id: string) => ({
     queryFn: () => API.get(id),
@@ -14,7 +14,7 @@ export const keys = createQueryKeys('product', {
   }),
   search: (title: string) => ({
     queryFn: () => API.search(title),
-    queryKey: ['search',title],
+    queryKey: ['search', title],
   }),
 })
 
@@ -23,7 +23,8 @@ export const queries = {
   useProduct: (id: string) => useQuery({ ...keys.get(id), enabled: !!id }),
   useAdd: () => useMutation(API.Add),
   useAddImg: () => useMutation(API.AddImg),
-  useSearch: (title: string) => useQuery(keys.search(title)),
+  useSearch: (title: string) =>
+    useQuery({ ...keys.search(title), enabled: !!title }),
   useEdit: () => useMutation(API.Edit),
   useDelete: () => useMutation(API.Delete),
   useDeleteImg: () => useMutation(API.DeleteImg),

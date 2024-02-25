@@ -28,7 +28,7 @@ const API = {
     return data
   },
   search: async (title: string) => {
-    const { data } = await axios.post(API_ROUTES.CATEGORY.SEARCH,{}, {
+    const { data } = await axios.post<categoryBody[]>(API_ROUTES.CATEGORY.SEARCH,{}, {
       params: { title },
     })
     return data

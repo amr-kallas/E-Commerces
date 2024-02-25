@@ -4,6 +4,9 @@ export type User = {
   email: string
   name: string
   role: string
+  created_at: string
+  id: string
+  updated_at: string
 }
 export type GetUser = {
   id: string
