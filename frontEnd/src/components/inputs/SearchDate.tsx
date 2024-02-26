@@ -1,18 +1,11 @@
 import TextField from './TextField'
-import { useSearchParams } from 'react-router-dom'
-import useQuerySearchParams from '../../hooks/useQuerySeachParams'
+import useQuerySearchParams from '@hooks/useQuerySeachParams'
 import { useEffect, useState } from 'react'
 const SearchDate = () => {
-  const { q, clearSearchParams } = useQuerySearchParams()
-  const [, setSearchParams] = useSearchParams()
+  const { setQueryParam } = useQuerySearchParams()
   const [dateInput, setDateInput] = useState('')
-  console.log({dateInput})
-
   useEffect(() => {
-    setSearchParams({ q, date: dateInput })
-    if (!dateInput) {
-      clearSearchParams()
-    }
+    setQueryParam('date', dateInput)
   }, [dateInput])
   return (
     <form style={{ display: 'flex', alignItems: 'center' }}>

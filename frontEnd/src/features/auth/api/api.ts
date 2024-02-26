@@ -1,5 +1,5 @@
-import API_ROUTES from '../../../constants/apiRoutes'
-import axios from '../../../lib/axios'
+import API_ROUTES from '@constants/apiRoutes'
+import axios from '@lib/axios'
 import { AuthBody, loginBody, userBody } from './type'
 const API = {
   signup: async (body: userBody) => {

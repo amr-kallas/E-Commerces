@@ -1,4 +1,4 @@
-import useEditSearchParams from '../../../../hooks/useEditSearchParams'
+import useEditSearchParams from '@hooks/useEditSearchParams'
 import {
   Box,
   Container,
@@ -8,10 +8,10 @@ import {
   Skeleton,
   Stack,
 } from '@mui/material'
-import NameInput from '../../../auth/components/NameInput'
-import Submit from '../../../../components/buttons/Submit'
+import NameInput from '@features/auth/components/NameInput'
+import Submit from '@components/buttons/Submit'
 import CloseIcon from '@mui/icons-material/Close'
-import ImageUpload from '../../../../components/inputs/imageUpload'
+import ImageUpload from '@components/inputs/imageUpload'
 import { useForm } from 'react-hook-form'
 import schemaAddCategory, { defaultValues } from '../AddForm/validation'
 import { z } from 'zod'
@@ -20,7 +20,7 @@ import { keys, queries } from '../../api/queries'
 import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { useSnackbarContext } from '../../../../context/SnackbarContext'
+import { useSnackbarContext } from '@context/SnackbarContext'
 
 const EditCategory = () => {
   const snackbar = useSnackbarContext()

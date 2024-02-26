@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { emailSchema, passwordSchema } from "../../../../utils/validation"
+import { emailSchema, passwordSchema } from "@utils/validation"
 import { loginBody } from "../../api/type"
 
 export const loginDefault:loginBody={

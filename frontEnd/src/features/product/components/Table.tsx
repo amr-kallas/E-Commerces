@@ -9,26 +9,27 @@ import {
   TableFooter,
   TableRow,
 } from '@mui/material'
-import Tables from '../../../components/table/Table'
+import Tables from '@components/table/Table'
 import TableHeader from './TableHeader'
 import { keys, queries } from '../api/queries'
-import useEventSearchParams from '../../../hooks/useEventSearchParams'
+import useEventSearchParams from '@hooks/useEventSearchParams' 
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useQueryClient } from '@tanstack/react-query'
-import NoData from '../../../components/feedback/NoData'
+import NoData from '@components/feedback/NoData'
 import { useTranslation } from 'react-i18next'
-import { useSnackbarContext } from '../../../context/SnackbarContext'
-import PaginationTable from '../../../components/table/PaginationTable'
-import { useState } from 'react'
-import useQuerySearchParams from '../../../hooks/useQuerySeachParams'
-import Search from '../../../components/inputs/Search'
-import SearchDate from '../../../components/inputs/SearchDate'
+import { useSnackbarContext } from '@context/SnackbarContext'
+import PaginationTable from '@components/table/PaginationTable'
+import { useEffect, useState } from 'react'
+import useQuerySearchParams from '@hooks/useQuerySeachParams'
+import Search from '@components/inputs/Search'
+import SearchDate from '@components/inputs/SearchDate'
 const ProductTable = () => {
   const { t } = useTranslation('product')
-  const { q ,date} = useQuerySearchParams()
+  const { q, date } = useQuerySearchParams()
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(3)
+  const [total, setTotal] = useState(0)
   const snackbar = useSnackbarContext()
   const tableHeader = TableHeader()
   const { edit } = useEventSearchParams()
@@ -52,7 +53,9 @@ const ProductTable = () => {
       : date
       ? filterdDataByDate
       : data?.data ?? []
-  // const productData = q != '' ? SearchData : data?.data ?? []
+  useEffect(() => {
+    if (data?.total) setTotal(data.total)
+  }, [data?.total])
   const queryClient = useQueryClient()
   const handleDelete = (id: string) => {
     Delete.mutate(id, {
@@ -73,7 +76,7 @@ const ProductTable = () => {
   }
   return (
     <>
-       <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Search />
         <SearchDate />
       </Stack>
@@ -146,7 +149,6 @@ const ProductTable = () => {
               </Box>
             </TableCell>
             <TableCell align="center">{item.price}</TableCell>
-            <TableCell align="center">{item.price}</TableCell>
             <TableCell align="center">
               {item.created_at?.split('T')[0]}
             </TableCell>
@@ -183,7 +185,7 @@ const ProductTable = () => {
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
-                rows={data?.total ?? 0}
+                rows={total ?? 0}
               />
             </TableRow>
           </TableFooter>

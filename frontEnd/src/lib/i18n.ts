@@ -1,8 +1,8 @@
 import i18n, { InitOptions } from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import en from '../localization/en'
-import ar from '../localization/ar'
-import Storage from '../utils/storage'
+import en from '@localization/en'
+import ar from '@localization/ar'
+import Storage from '@utils/storage'
 
 const resources = {
   en,

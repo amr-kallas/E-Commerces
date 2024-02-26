@@ -9,21 +9,21 @@ import {
   TableFooter,
   TableRow,
 } from '@mui/material'
-import { useState } from 'react'
-import PaginationTable from '../../../components/table/PaginationTable'
+import { useEffect, useState } from 'react'
+import PaginationTable from '@components/table/PaginationTable'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { keys, queries } from '../api/queries'
-import useEventSearchParams from '../../../hooks/useEventSearchParams'
+import useEventSearchParams from '@hooks/useEventSearchParams'
 import { useQueryClient } from '@tanstack/react-query'
 import HeaderTable from './HeaderTable'
-import Tables from '../../../components/table/Table'
+import Tables from '@components/table/Table'
 import { User } from '../api/type'
-import { useSnackbarContext } from '../../../context/SnackbarContext'
+import { useSnackbarContext } from '@context/SnackbarContext'
 import { useTranslation } from 'react-i18next'
-import Search from '../../../components/inputs/Search'
-import useQuerySearchParams from '../../../hooks/useQuerySeachParams'
-import SearchDate from '../../../components/inputs/SearchDate'
+import Search from '@components/inputs/Search'
+import useQuerySearchParams from '@hooks/useQuerySeachParams'
+import SearchDate from '@components/inputs/SearchDate'
 
 export const UserTable = () => {
   const snackbar = useSnackbarContext()
@@ -32,6 +32,7 @@ export const UserTable = () => {
   const { t } = useTranslation('user')
   const { edit } = useEventSearchParams()
   const [page, setPage] = useState(0)
+  const [total, setTotal] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(3)
   const { data, isLoading } = queries.useUsers({
     limit: rowsPerPage,
@@ -56,6 +57,9 @@ export const UserTable = () => {
   const remove = queries.useDelete()
   const queryClient = useQueryClient()
   let index = 2
+  useEffect(() => {
+    if (data?.total) setTotal(data.total)
+  }, [data?.total])
   const handleDelete = (id: string) => {
     remove.mutate(id, {
       onSuccess: () => {
@@ -158,7 +162,6 @@ export const UserTable = () => {
           </TableRow>
         ))}
       </Tables>
-
       <TableContainer component={Paper}>
         <Table>
           <TableFooter>
@@ -168,7 +171,7 @@ export const UserTable = () => {
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
-                rows={data?.total ?? 0}
+                rows={total ?? 0}
               />
             </TableRow>
           </TableFooter>

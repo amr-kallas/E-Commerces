@@ -6,19 +6,19 @@ import {
   IconButton,
   Stack,
 } from '@mui/material'
-import NameInput from '../../../auth/components/NameInput'
-import Submit from '../../../../components/buttons/Submit'
-import useAddSearchParams from '../../../../hooks/useAddSearchParams'
+import NameInput from '@features/auth/components/NameInput' 
+import Submit from '@components/buttons/Submit'
+import useAddSearchParams from '@hooks/useAddSearchParams'
 import { useForm } from 'react-hook-form'
 import CloseIcon from '@mui/icons-material/Close'
-import ImageUpload from '../../../../components/inputs/imageUpload'
+import ImageUpload from '@components/inputs/imageUpload'
 import { z } from 'zod'
 import schemaAddCategory, { defaultValues } from './validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { keys, queries } from '../../api/queries'
 import { useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { useSnackbarContext } from '../../../../context/SnackbarContext'
+import { useSnackbarContext } from '@context/SnackbarContext'
 const AddCategory = () => {
   const snackbar = useSnackbarContext()
   const { t } = useTranslation('category')

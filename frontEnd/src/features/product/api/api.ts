@@ -1,7 +1,7 @@
-import API_ROUTES from '../../../constants/apiRoutes'
-import axios from '../../../lib/axios'
-import { objectToFormData } from '../../../utils/transform'
-import { Paginate } from '../../../utils/type'
+import API_ROUTES from '@constants/apiRoutes'
+import axios from '@lib/axios'
+import { objectToFormData } from '@utils/transform'
+import { Paginate } from '@utils/type'
 import {
   AddImg,
   AddImgBody,
@@ -23,7 +23,7 @@ const API = {
     return data
   },
   get: async (id: string) => {
-    const { data } = await axios.get<AllProduct<Product>>(
+    const { data } = await axios.get<Product[]>(
       API_ROUTES.PRODUCT.GET(id)
     )
     return data

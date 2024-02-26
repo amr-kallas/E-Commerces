@@ -8,7 +8,7 @@ export type product={
   About:string,
 }
 export const defaultProductValue = {
-  category: 0,
+  category: '',
   title: '',
   description: '',
   price: 0,

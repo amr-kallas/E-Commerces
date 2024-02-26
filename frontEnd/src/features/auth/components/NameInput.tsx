@@ -1,4 +1,4 @@
-import { TextField, TextFieldProps } from "../../../components/inputs/TextField";
+import { TextField, TextFieldProps } from "@components/inputs/TextField";
 
 type Input = TextFieldProps<true>;
 

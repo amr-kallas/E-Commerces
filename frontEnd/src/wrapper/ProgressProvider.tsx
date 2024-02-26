@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import progress from '../context/ProgressContext'
+import progress from '@context/ProgressContext'
 type MyObject = {
   num?: number
 }

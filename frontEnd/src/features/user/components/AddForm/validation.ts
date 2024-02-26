@@ -1,5 +1,5 @@
-import z from '../../../../lib/zod'
-import { emailSchema, passwordSchema } from '../../../../utils/validation'
+import z from '@lib/zod'
+import { emailSchema, passwordSchema } from '@utils/validation'
 
 export type userAddType = {
   name: string

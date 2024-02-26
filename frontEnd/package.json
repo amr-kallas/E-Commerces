@@ -33,6 +33,7 @@
     "zod-i18n-map": "^2.21.0"
   },
   "devDependencies": {
+    "@types/node": "^20.11.20",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/stylis": "^4.2.4",

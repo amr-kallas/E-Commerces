@@ -1,8 +1,8 @@
 import { Box, Fab } from '@mui/material'
-import ProductTable from '../features/product/components/Table'
+import ProductTable from '@features/product/components/Table'
 import AddIcon from '@mui/icons-material/Add'
-import useEventSearchParams from '../hooks/useEventSearchParams'
-import { AddProduct, EditProduct } from '../features/product'
+import useEventSearchParams from '@hooks/useEventSearchParams'
+import { AddProduct, EditProduct } from '@features/product'
 
 const Product = () => {
   const { add } = useEventSearchParams()

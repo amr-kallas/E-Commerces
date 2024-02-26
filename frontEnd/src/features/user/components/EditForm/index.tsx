@@ -12,10 +12,10 @@ import {
   Skeleton,
   Stack,
 } from '@mui/material'
-import useEditSearchParams from '../../../../hooks/useEditSearchParams'
-import NameInput from '../../../auth/components/NameInput'
+import useEditSearchParams from '@hooks/useEditSearchParams'
+import NameInput from '@features/auth/components/NameInput'
 import { Controller, useForm } from 'react-hook-form'
-import Submit from '../../../../components/buttons/Submit'
+import Submit from '@components/buttons/Submit'
 import { z } from 'zod'
 import editSchema, { defaultvalues } from './validation'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -24,10 +24,10 @@ import { keys, queries } from '../../api/queries'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import SomethingWentWrong from '../../../../components/feedback/SomethingWentWrong'
+import SomethingWentWrong from '@components/feedback/SomethingWentWrong'
 import { User } from '../../api/type'
 import { useTranslation } from 'react-i18next'
-import { useSnackbarContext } from '../../../../context/SnackbarContext'
+import { useSnackbarContext } from '@context/SnackbarContext'
 
 export const EditForm = () => {
   const snackbar=useSnackbarContext()

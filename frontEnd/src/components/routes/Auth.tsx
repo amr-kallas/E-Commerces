@@ -1,5 +1,5 @@
-import { queries } from '../../features/user/api/queries'
-import Storage from '../../utils/storage'
+import { queries } from '@features/user/api/queries'
+import Storage from '@utils/storage'
 import { Navigate, Outlet } from 'react-router-dom'
 import SomethingWentWrong from '../feedback/SomethingWentWrong'
 type role = {

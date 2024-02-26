@@ -2,24 +2,19 @@ import { IconButton, InputAdornment } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import TextField from './TextField'
 import SearchIcon from '@mui/icons-material/Search'
-import { useSearchParams } from 'react-router-dom'
-import useQuerySearchParams from '../../hooks/useQuerySeachParams'
+import useQuerySearchParams from '@hooks/useQuerySeachParams'
 import { useEffect, useState } from 'react'
-import useDebounce from '../../hooks/ useDebounce'
+import useDebounce from '@hooks/ useDebounce'
 const Search = () => {
-  const { q, date, clearSearchParams } = useQuerySearchParams()
+  const { setQueryParam } = useQuerySearchParams()
   const [searchInput, setSearchInput] = useState('')
   const debounceSearch = useDebounce(searchInput)
-  const [, setSearchParams] = useSearchParams()
   const handleResetInput = () => {
     setSearchInput('')
   }
   useEffect(() => {
-    setSearchParams({ q: debounceSearch, date })
-    if (!q && !debounceSearch) {
-      clearSearchParams()
-    }
-  }, [q, debounceSearch])
+    setQueryParam('q', debounceSearch)
+  }, [debounceSearch])
   return (
     <form style={{ display: 'flex', alignItems: 'center' }}>
       <TextField

@@ -8,7 +8,6 @@ const TableHeader = () => {
     t('description'),
     t('images'),
     t('price'),
-    t('rating'),
     t('created'),
     t('updated'),
     t('action'),

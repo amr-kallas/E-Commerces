@@ -1,5 +1,5 @@
-import  z  from '../../../../lib/zod'
-import { emailSchema } from '../../../../utils/validation'
+import  z  from '@lib/zod'
+import { emailSchema } from '@utils/validation'
 
 export type userEditType = {
   name: string

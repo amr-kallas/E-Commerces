@@ -10,12 +10,12 @@ import {
   Stack,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import NameInput from '../../../auth/components/NameInput'
-import Select from '../../../../components/inputs/Select'
+import NameInput from '@features/auth/components/NameInput'
+import Select from '@components/inputs/Select'
 import { useForm } from 'react-hook-form'
-import Submit from '../../../../components/buttons/Submit'
-import useAddSearchParams from '../../../../hooks/useAddSearchParams'
-import TextField from '../../../../components/inputs/TextField'
+import Submit from '@components/buttons/Submit'
+import useAddSearchParams from '@hooks/useAddSearchParams'
+import TextField from '@components/inputs/TextField'
 import { z } from 'zod'
 import addSchema, { defaultValues } from './validation'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -24,7 +24,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { AddUser } from '../../api/type'
 import { useTranslation } from 'react-i18next'
-import { useSnackbarContext } from '../../../../context/SnackbarContext'
+import { useSnackbarContext } from '@context/SnackbarContext'
 const AddForm = () => {
   const { t } = useTranslation('user')
   const snackbar = useSnackbarContext()

@@ -1,4 +1,4 @@
-import Storage from '../../../utils/storage'
+import Storage from '@utils/storage'
 import { queries } from '../api/queries'
 
 export const GoogleCallBack = () => {

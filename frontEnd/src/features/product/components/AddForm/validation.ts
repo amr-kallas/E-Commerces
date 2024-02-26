@@ -1,4 +1,4 @@
-import z from '../../../../lib/zod'
+import z from '@lib/zod'
 
 export type AddProdcut = {
   category: number | string

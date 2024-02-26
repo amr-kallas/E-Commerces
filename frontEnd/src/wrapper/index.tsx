@@ -1,4 +1,4 @@
-import '../lib/i18n'
+import '@lib/i18n'
 import React from 'react'
 import QueryClients from './QueryClient'
 import { CssBaseline } from '@mui/material'

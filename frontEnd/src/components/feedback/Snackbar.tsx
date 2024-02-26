@@ -1,5 +1,5 @@
 import { Alert, Slide, Snackbar as Snack } from '@mui/material'
-import { AlertSeverity } from '../../context/SnackbarContext'
+import { AlertSeverity } from '@context/SnackbarContext'
 type snackbar = {
   severity: AlertSeverity
   message: string

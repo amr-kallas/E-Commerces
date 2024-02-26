@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, createContext, useContext } from 'react'
-import Storage from '../utils/storage'
+import Storage from '@utils/storage'
 type language = {
   lang: string
   setLang: Dispatch<SetStateAction<string>>

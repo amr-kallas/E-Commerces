@@ -3,15 +3,15 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom'
-import { Signup, Login, GoogleCallBack } from './features/auth'
-import NotAuth from './components/routes/NotAuth'
-import Auth from './components/routes/Auth'
+import { Signup, Login, GoogleCallBack } from '@features/auth'
+import NotAuth from '@components/routes/NotAuth'
+import Auth from '@components/routes/Auth'
 import { lazy } from 'react'
 import { Category, Home, Product, User } from './pages'
-import Error404 from './components/feedback/Error404'
-import SomethingWentWrong from './components/feedback/SomethingWentWrong'
-import i18n from './lib/i18n'
-const Layout = lazy(() => import('./features/layout'))
+import Error404 from '@components/feedback/Error404'
+import SomethingWentWrong from '@components/feedback/SomethingWentWrong'
+import i18n from '@lib/i18n'
+const Layout = lazy(() => import('@features/layout'))
 
 export default createBrowserRouter(
   createRoutesFromElements(

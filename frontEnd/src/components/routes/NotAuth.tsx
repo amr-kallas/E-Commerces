@@ -1,4 +1,4 @@
-import Storage from "../../utils/storage";
+import Storage from "@utils/storage";
 import { Navigate, Outlet } from "react-router-dom";
 
 const NotAuth = () => {

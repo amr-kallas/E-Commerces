@@ -1,6 +1,6 @@
-import API_ROUTES from '../../../constants/apiRoutes'
-import axios from '../../../lib/axios'
-import { Paginate } from '../../../utils/type'
+import API_ROUTES from '@constants/apiRoutes'
+import axios from '@lib/axios'
+import { Paginate } from '@utils/type'
 import { AddUser, AllUser, EditForm, GetMe, GetUser } from './type'
 
 const API = {

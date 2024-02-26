@@ -1,4 +1,4 @@
-import { useProgressContext } from '../../../context/ProgressContext'
+import { useProgressContext } from '@context/ProgressContext'
 import { queries } from '../api/queries'
 type UploadImageProps = {
   imgs: File[]

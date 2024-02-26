@@ -1,6 +1,6 @@
 import { queries } from '../api/queries'
 import { useNavigate } from 'react-router-dom'
-import Storage from '../../../utils/storage'
+import Storage from '@utils/storage'
 
 const logout = () => {
   const logout = queries.useLogout()

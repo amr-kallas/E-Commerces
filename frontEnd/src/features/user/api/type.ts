@@ -1,4 +1,4 @@
-import { PaginateResponse } from '../../../utils/type'
+import { PaginateResponse } from '@utils/type'
 
 export type User = {
   email: string

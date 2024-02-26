@@ -1,21 +1,25 @@
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles'
-import List from '@mui/material/List'
-import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
+import {
+  List,
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
+  Drawer,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
 import FeedIcon from '@mui/icons-material/Feed'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
 import MuiDrawer from '@mui/material/Drawer'
 import { NavLink, useLocation } from 'react-router-dom'
 import PersonIcon from '@mui/icons-material/Person'
-import { Drawer, Tooltip, Typography } from '@mui/material'
-import { queries } from '../../user/api/queries'
+import { queries } from '@features/user/api/queries'
 import { useTranslation } from 'react-i18next'
 interface AppBarDialog {
   open: boolean
@@ -141,50 +145,53 @@ const Sidebar = ({ open, setOpen }: AppBarDialog) => {
                 style={{ textDecoration: 'none', color: '#8282ad' }}
                 key={item.text}
               >
-                <Tooltip title={!open?item.text:undefined} placement='right-start'>
-                <ListItem
-                  disablePadding
-                  sx={{
-                    display: 'block',
-                    '.Mui-selected': {
-                      bgcolor: '#f3f2fe',
-                      '.MuiListItemIcon-root': {
-                        color: '#0b90dc',
-                      },
-                      '.MuiTypography-root': {
-                        color: '#0b90dc',
-                      },
-                    },
-                  }}
+                <Tooltip
+                  title={!open ? item.text : undefined}
+                  placement="right-start"
                 >
-                  <ListItemButton
-                    selected={location.pathname == item.path}
+                  <ListItem
+                    disablePadding
                     sx={{
-                      minHeight: 48,
-                      justifyContent: open ? 'initial' : 'center',
-                      px: 2.5,
-                      borderRadius: '6px',
+                      display: 'block',
+                      '.Mui-selected': {
+                        bgcolor: '#f3f2fe',
+                        '.MuiListItemIcon-root': {
+                          color: '#0b90dc',
+                        },
+                        '.MuiTypography-root': {
+                          color: '#0b90dc',
+                        },
+                      },
                     }}
                   >
-                    <ListItemIcon
+                    <ListItemButton
+                      selected={location.pathname == item.path}
                       sx={{
-                        minWidth: 0,
-                        mr: open ? 1 : 'auto',
-                        justifyContent: 'center',
+                        minHeight: 48,
+                        justifyContent: open ? 'initial' : 'center',
+                        px: 2.5,
+                        borderRadius: '6px',
                       }}
                     >
-                      {item.icon}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={item.text}
-                      sx={{
-                        opacity: open ? 1 : 0,
-                        fontSize: 15,
-                        textTransform: 'capitalize',
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 1 : 'auto',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={item.text}
+                        sx={{
+                          opacity: open ? 1 : 0,
+                          fontSize: 15,
+                          textTransform: 'capitalize',
+                        }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
                 </Tooltip>
               </NavLink>
             )

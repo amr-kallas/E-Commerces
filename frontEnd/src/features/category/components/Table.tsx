@@ -1,5 +1,5 @@
 import TableHeader from './TableHeader'
-import Tables from '../../../components/table/Table'
+import Tables from '@components/table/Table'
 import {
   Box,
   IconButton,
@@ -14,28 +14,32 @@ import {
 import { keys, queries } from '../api/queries'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import useEventSearchParams from '../../../hooks/useEventSearchParams'
+import useEventSearchParams from '@hooks/useEventSearchParams'
 import { useQueryClient } from '@tanstack/react-query'
-import NoData from '../../../components/feedback/NoData'
+import NoData from '@components/feedback/NoData'
 import { categoryBody } from '../api/type'
 import { useTranslation } from 'react-i18next'
-import { useSnackbarContext } from '../../../context/SnackbarContext'
-import { useState } from 'react'
-import PaginationTable from '../../../components/table/PaginationTable'
-import useQuerySearchParams from '../../../hooks/useQuerySeachParams'
-import Search from '../../../components/inputs/Search'
-import SearchDate from '../../../components/inputs/SearchDate'
+import { useSnackbarContext } from '@context/SnackbarContext'
+import { useEffect, useState } from 'react'
+import PaginationTable from '@components/table/PaginationTable'
+import useQuerySearchParams from '@hooks/useQuerySeachParams'
+import Search from '@components/inputs/Search'
+import SearchDate from '@components/inputs/SearchDate'
 const TableCategory = () => {
   const { t } = useTranslation('category')
   const { q, date } = useQuerySearchParams()
   const snackbar = useSnackbarContext()
   const [page, setPage] = useState(0)
+  const [total, setTotal] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(3)
   const { edit } = useEventSearchParams()
   const { data, isLoading } = queries.useAll({
     limit: rowsPerPage,
     page: page + 1,
   })
+  useEffect(() => {
+    if (data?.total) setTotal(data.total)
+  }, [data?.total])
   const reversedData = Array.isArray(data?.data)
     ? [...data?.data].reverse()
     : []
@@ -135,7 +139,7 @@ const TableCategory = () => {
                 setPage={setPage}
                 rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
-                rows={data?.total ?? 0}
+                rows={total ?? 0}
               />
             </TableRow>
           </TableFooter>

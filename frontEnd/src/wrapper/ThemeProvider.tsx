@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@emotion/react'
-import theme from '../constants/theme'
+import theme from '@constants/theme'
 import { useTranslation } from 'react-i18next'
 
 const MaterialTheme = ({children}:{children:React.ReactNode}) => {

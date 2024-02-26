@@ -12,9 +12,9 @@ import {
   SelectChangeEvent,
 } from '@mui/material'
 import UserMenu from './UserMenu'
-import { changeLanguage } from '../../../lib/i18n'
+import { changeLanguage } from '@lib/i18n'
 import { useTranslation } from 'react-i18next'
-import { useLanguageContext } from '../../../context/LanguageContext'
+import { useLanguageContext } from '@context/LanguageContext'
 const drawerWidth = 240
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean

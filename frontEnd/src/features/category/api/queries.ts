@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import API from './api'
 import { createQueryKeys } from '@lukemorales/query-key-factory'
-import { Paginate } from '../../../utils/type'
+import { Paginate } from '@utils/type'
 export const keys = createQueryKeys('category', {
   getAll: ({ limit, page }: Paginate) => ({
     queryFn: () => API.getAll({ limit, page }),

@@ -6,10 +6,10 @@ import {
   Typography,
   Slide,
 } from '@mui/material'
-import greenland from '../../../../assets/geranimo-WJkc3xZjSXw-unsplash.jpg'
+import greenland from '@assets/geranimo-WJkc3xZjSXw-unsplash.jpg'
 import NameInput from '../NameInput'
 import PasswordInput from '../PasswordInput'
-import Submit from '../../../../components/buttons/Submit'
+import Submit from '@components/buttons/Submit'
 import { useForm } from 'react-hook-form'
 import userLoginSchema, { loginDefault } from './validation'
 import { z } from 'zod'
@@ -18,7 +18,7 @@ import { queries } from '../../api/queries'
 import { loginBody } from '../../api/type'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import Storage from '../../../../utils/storage'
+import Storage from '@utils/storage'
 import GoogleButton from '../GoogleButton'
 import { useTranslation } from 'react-i18next'
 

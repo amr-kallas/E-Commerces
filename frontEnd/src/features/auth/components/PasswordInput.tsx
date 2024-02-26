@@ -1,4 +1,4 @@
-import { TextField, TextFieldProps } from "../../../components/inputs/TextField";
+import { TextField, TextFieldProps } from "@components/inputs/TextField";
 import { VisibilityOff } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { IconButton, InputAdornment } from "@mui/material";

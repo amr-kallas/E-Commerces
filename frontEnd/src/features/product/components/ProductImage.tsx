@@ -6,11 +6,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import Progress from '../../../components/feedback/Progress'
+import Progress from '@components/feedback/Progress'
 import CancelIcon from '@mui/icons-material/Cancel'
 import UploadIcon from '@mui/icons-material/Upload'
 import { queries, keys } from '../api/queries'
-import { useProgressContext } from '../../../context/ProgressContext'
+import { useProgressContext } from '@context/ProgressContext'
 import { ChangeEvent, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { ImgProduct } from '../api/type'

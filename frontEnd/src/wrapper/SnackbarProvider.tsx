@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import SnackbarContext, { snackbarProps } from '../context/SnackbarContext'
-import Snackbar from '../components/feedback/Snackbar'
+import SnackbarContext, { snackbarProps } from '@context/SnackbarContext'
+import Snackbar from '@components/feedback/Snackbar'
 
 const SnackbarProvider = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState(false)

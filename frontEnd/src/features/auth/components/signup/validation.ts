@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { userBody } from "../../api/type";
-import { emailSchema, passwordSchema } from "../../../../utils/validation";
+import { emailSchema, passwordSchema } from "@utils/validation";
 
 export const signupDefault:userBody={
     name:"",

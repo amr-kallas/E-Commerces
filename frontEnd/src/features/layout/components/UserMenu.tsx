@@ -1,8 +1,8 @@
 import { Box, Button, ListItemIcon, Menu, MenuItem } from '@mui/material'
 import Logout from '@mui/icons-material/Logout'
-import { queries } from '../../user/api/queries'
+import { queries } from '@features/user/api/queries'
 import { useState } from 'react'
-import logout from '../../user/components/Logout'
+import logout from '@features/user/components/Logout'
 
 const UserMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)

@@ -1,6 +1,6 @@
 import ax from "axios";
-import { API_BASE_URL } from "../constants/domain";
-import Storage from "../utils/storage";
+import { API_BASE_URL } from "@constants/domain";
+import Storage from "@utils/storage";
 let token = Storage.getToken();
 window.addEventListener("tokenChange",()=>{
     token=Storage.getToken()

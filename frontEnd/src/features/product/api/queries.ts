@@ -1,7 +1,7 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory'
 import API from './api'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Paginate } from '../../../utils/type'
+import { Paginate } from '@utils/type'
 
 export const keys = createQueryKeys('product', {
   getAll: ({ limit, page }: Paginate) => ({
