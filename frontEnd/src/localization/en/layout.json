@@ -5,5 +5,7 @@
     "category":"Category",
     "product":"Product",
     "ecommerce":"E-Commerce",
-    "dashbord":"Dashbord"
+    "dashbord":"Dashbord",
+    "search":"Search...",
+    "logout":"Logout"
 }

@@ -1,8 +1,8 @@
 import { Box, Fab } from '@mui/material'
-import TableCategory from '@features/category/components/Table'
+import TableCategory from '@dashbord/features/category/components/Table'
 import AddIcon from '@mui/icons-material/Add'
 import useEventSearchParams from '@hooks/useEventSearchParams'
-import { AddCategory,EditCategory } from '@features/category'
+import { AddCategory, EditCategory } from '@dashbord/features/category'
 
 const Category = () => {
   const { add } = useEventSearchParams()

@@ -5,7 +5,9 @@ import SearchIcon from '@mui/icons-material/Search'
 import useQuerySearchParams from '@hooks/useQuerySeachParams'
 import { useEffect, useState } from 'react'
 import useDebounce from '@hooks/ useDebounce'
+import { useTranslation } from 'react-i18next'
 const Search = () => {
+  const {t}=useTranslation('layout')
   const { setQueryParam } = useQuerySearchParams()
   const [searchInput, setSearchInput] = useState('')
   const debounceSearch = useDebounce(searchInput)
@@ -19,7 +21,7 @@ const Search = () => {
     <form style={{ display: 'flex', alignItems: 'center' }}>
       <TextField
         variant="outlined"
-        placeholder="Search..."
+        placeholder={t('search')}
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         size="small"

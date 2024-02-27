@@ -12,7 +12,6 @@ const SearchDate = () => {
       <TextField
         variant="outlined"
         type="date"
-        placeholder="Search..."
         onChange={(e) => setDateInput(e.target.value)}
         size="small"
         sx={{

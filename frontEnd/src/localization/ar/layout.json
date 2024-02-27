@@ -5,5 +5,8 @@
     "category":"الصنف",
     "product":"المنتج",
     "ecommerce":"متجر الكتروني",
-    "dashbord":"لوحة التحكم"
+    "dashbord":"لوحة التحكم",
+    "search":"البحث...",
+    "logout":"تسجيل الخروج"
+
 }

@@ -16,6 +16,8 @@ export default defineConfig({
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@wrapper': path.resolve(__dirname, 'src/wrapper'),
+      '@dashbord': path.resolve(__dirname, 'src/dashbord'),
+      '@website': path.resolve(__dirname, 'src/website'),
     },
   },
   plugins: [react()],

@@ -1,4 +1,4 @@
-import { queries } from '@features/user/api/queries'
+import { queries } from '@dashbord/features/user/api/queries'
 import Storage from '@utils/storage'
 import { Navigate, Outlet } from 'react-router-dom'
 import SomethingWentWrong from '../feedback/SomethingWentWrong'
@@ -8,7 +8,7 @@ type role = {
 const Auth = ({ AllowedRole }: role) => {
   const { data, isError, isLoading } = queries.useMe()
   const token = Storage.getToken()
-  if (isLoading) return ;
+  if (isLoading) return
   if (token) {
     if (!isError) {
       if (AllowedRole.includes(data?.role)) return <Outlet />

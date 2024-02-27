@@ -7,17 +7,19 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@assets/*":["src/assets/*"],
+      "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
       "@constants/*": ["src/constants/*"],
       "@context/*": ["src/context/*"],
-      "@features/*": ["src/features/*"],
+      "@features/*": ["src/dashbord/features/*"],
       "@hooks/*": ["src/hooks/*"],
       "@lib/*": ["src/lib/*"],
       "@localization/*": ["src/localization/*"],
       "@pages/*": ["src/pages/*"],
       "@utils/*": ["src/utils/*"],
-      "@wrapper/*": ["src/wrapper/*"]
+      "@wrapper/*": ["src/wrapper/*"],
+      "@dashbord/*": ["src/dashbord/*"],
+      "@website/*": ["src/website/*"],
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
