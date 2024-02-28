@@ -1,7 +1,6 @@
 import { Product } from '../../api/type'
-import {  queries as productQuery } from '../../api/queries'
+import { queries as productQuery } from '../../api/queries'
 export const productDetails = (product: Product) => {
-    
   return {
     category: product.category,
     title: product.title,
@@ -11,9 +10,9 @@ export const productDetails = (product: Product) => {
     About: product.About,
   }
 }
-export const cancelImg=(ids:any)=>{
+export const cancelImg = (ids: any) => {
   const DeleteImg = productQuery.useDeleteImg()
-  ids.forEach((id:number) => {
+  ids.forEach((id: number) => {
     DeleteImg.mutateAsync(String(id), {
       onError: (error) => {
         console.log(error)

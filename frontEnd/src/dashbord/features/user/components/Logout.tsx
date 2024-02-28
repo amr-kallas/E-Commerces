@@ -10,7 +10,7 @@ const logout = () => {
     Storage.removeToken()
     navigate('/login')
   }
-  return {LogoutUser}
+  return { LogoutUser }
 }
 
 export default logout

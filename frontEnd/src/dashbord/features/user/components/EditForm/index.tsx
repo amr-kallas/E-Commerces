@@ -25,7 +25,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import SomethingWentWrong from '@components/feedback/SomethingWentWrong'
-import { User } from '../../api/type'
+import { EditUser } from '../../api/type'
 import { useTranslation } from 'react-i18next'
 import { useSnackbarContext } from '@context/SnackbarContext'
 
@@ -50,7 +50,7 @@ export const EditForm = () => {
     if (data) reset(data)
   }, [data])
 
-  const onSubmit = async (body: User) => {
+  const onSubmit = async (body: EditUser) => {
     edit.mutate(
       { id, body },
       {

@@ -22,7 +22,6 @@ type imgHelpers = {
   url: ImgProduct[] | undefined
   deletedImg: (id: string) => void
 }
-
 const ProductImage = ({
   name,
   error,
@@ -44,6 +43,7 @@ const ProductImage = ({
       setUploadProduct((prevFiles: any) => [...prevFiles, ...files])
     }
   }
+  
   const handleDelete = (id: number) => {
     let imgID = ids[id]
     DeleteImg.mutate(imgID, {
@@ -171,6 +171,7 @@ const ProductImage = ({
                 <Progress value={percentage[index]?.num ?? 0} />
               </Box>
               <IconButton
+              disabled={!ids[index]}
                 sx={{
                   position: 'absolute',
                   right: 0,
@@ -178,7 +179,7 @@ const ProductImage = ({
                 }}
                 onClick={() => handleDelete(index)}
               >
-                <CancelIcon fontSize="small" color="error" />
+                <CancelIcon fontSize="small" color={ids[index]?'error':'action'} />
               </IconButton>
             </Stack>
           ))}

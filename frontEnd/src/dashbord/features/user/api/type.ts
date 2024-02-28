@@ -11,14 +11,23 @@ export type User = {
 export type GetUser = {
   id: string
 } & User
-export type EditForm = {
-  body: User
-  id: string
-}
+
 export type AllUser<T> = {
   data: T[]
 } & PaginateResponse
 export type GetMe = GetUser
 export type AddUser = {
   password: string
-} & User
+  name: string
+  email: string
+  role: string
+}
+export type EditUser = {
+  name: string
+  email: string
+  role: string
+}
+export type EditForm = {
+  body: EditUser
+  id: string
+}

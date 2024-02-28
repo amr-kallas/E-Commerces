@@ -58,27 +58,32 @@ const Appbar = ({ open, setOpen }: AppBarDialog) => {
           alignItems: 'center',
         }}
       >
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 1.5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ fontWeight: 'bold', fontSize: 24 }}
-          >
-            {t('dashbord')}
-          </Typography>
-        <Stack direction="row" spacing={1.2} alignItems="center" marginLeft='auto'>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          edge="start"
+          sx={{
+            marginRight: 1.5,
+            ...(open && { display: 'none' }),
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ fontWeight: 'bold', fontSize: 24 }}
+        >
+          {t('dashbord')}
+        </Typography>
+        <Stack
+          direction="row"
+          spacing={1.2}
+          alignItems="center"
+          marginLeft="auto"
+        >
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"

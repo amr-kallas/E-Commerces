@@ -112,7 +112,6 @@ const AddForm = () => {
             <Select name="role" control={control} label="role" message={null}>
               <MenuItem value={'1995'}>Admin</MenuItem>
               <MenuItem value={'2001'}>User</MenuItem>
-              <MenuItem value={'1996'}>Writter</MenuItem>
               <MenuItem value={'1999'}>Product Manager</MenuItem>
             </Select>
           </FormControl>

@@ -8,7 +8,7 @@ export const keys = createQueryKeys('product', {
     queryFn: () => API.getAll({ limit, page }),
     queryKey: [limit, page],
   }),
-  getAllCategories:{
+  getAllCategories: {
     queryFn: API.getAllCategories,
     queryKey: [''],
   },

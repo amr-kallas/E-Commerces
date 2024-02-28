@@ -10,7 +10,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }))
 
@@ -21,7 +20,7 @@ export const Layout = () => {
     <Box sx={{ display: 'flex' }}>
       <Appbar open={open} setOpen={setOpen} />
       <Sidebar open={open} setOpen={setOpen} />
-      <Box component="main" sx={{ flexGrow: 1, p: 3,overflowX:'auto' }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, overflowX: 'auto' }}>
         <DrawerHeader />
         <Outlet />
       </Box>

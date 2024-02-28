@@ -34,6 +34,7 @@ const EditProduct = () => {
   const uploadImg = useUploadImg()
   const snackbar = useSnackbarContext()
   const { data: productData, isSuccess } = productQuery.useProduct(id)
+  console.log(productData)
   const { data: categoryData } = productQuery.useAllCategories()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
@@ -45,7 +46,7 @@ const EditProduct = () => {
     resolver: zodResolver(schemaEditProduct),
   })
   const disabledInput = watch('category')
-  const { setIds, ids } = useProgressContext()
+  const { setIds, ids,setPercentage,indexRef } = useProgressContext()
   const DeleteImg = productQuery.useDeleteImg()
   const [deletedImg, setDeletedImg] = useState<string[]>([])
   const idsRef = useRef(ids)
@@ -72,8 +73,10 @@ const EditProduct = () => {
     }
     setDeletedImg([])
     clearSearchParams()
+    setPercentage([])
     setIds([])
     uniqeKey.current = 0
+    indexRef.current = -1
   }
   useEffect(() => {
     uniqeKey.current += 1

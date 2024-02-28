@@ -27,7 +27,7 @@ export default createBrowserRouter(
         <Route path="register" element={<Signup />} />
         <Route path="login" element={<Login />} />
       </Route>
-      <Route element={<Auth AllowedRole={['1995', '1996', '1999']} />}>
+      <Route element={<Auth AllowedRole={['1995', '1999']} />}>
         <Route element={<Layout />}>
           <Route element={<Auth AllowedRole={['1995']} />}>
             <Route path="users" element={<User />} />

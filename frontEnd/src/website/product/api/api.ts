@@ -7,5 +7,9 @@ const API = {
     const { data } = await axios.get<Product[]>(API_ROUTES.PRODUCT.LATEST_SALE)
     return data
   },
+  topRatedSale: async () => {
+    const { data } = await axios.get<Product[]>(API_ROUTES.PRODUCT.TOP_RATED)
+    return data
+  },
 }
 export default API

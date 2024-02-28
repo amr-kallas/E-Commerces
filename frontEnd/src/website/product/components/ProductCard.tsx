@@ -30,9 +30,9 @@ const ProductCard = ({product}:{product:Product}) => {
           <Box>
             <Rating
               name="read-only"
-              value={3}
+              value={Number(product.rating)}
               readOnly
-              precision={0.5}
+              precision={0.1}
               sx={{
                 svg: {
                   width: 18,

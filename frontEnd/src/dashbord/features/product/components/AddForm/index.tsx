@@ -47,7 +47,7 @@ const AddProduct = () => {
   const { isActive, clearSearchParams } = useAddSearchParams()
   const [sendReq, setSendReq] = useState(false)
   const [id, setId] = useState('')
-  const { setPercentage, indexRef } = useProgressContext()
+  const { setPercentage, indexRef, setIds } = useProgressContext()
   const disabledInput = watch('category')
   const uploadImg = useUploadImg()
   const handleClose = () => {
@@ -55,6 +55,7 @@ const AddProduct = () => {
     reset()
     setSendReq(false)
     setPercentage([])
+    setIds([])
     setValue('image', undefined)
     indexRef.current = -1
   }

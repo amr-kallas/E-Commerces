@@ -1,11 +1,11 @@
 import { z } from 'zod'
-export type product={
-  category:number | string,
-  title:string,
-  description:string
-  price:number
-  discount:number,
-  About:string,
+export type product = {
+  category: number | string
+  title: string
+  description: string
+  price: number
+  discount: number
+  About: string
 }
 export const defaultProductValue = {
   category: '',
@@ -23,5 +23,4 @@ export const schemaEditProduct = z.object({
   price: z.coerce.number().positive(),
   discount: z.coerce.number().nonnegative(),
   About: z.string().min(5),
-
 })

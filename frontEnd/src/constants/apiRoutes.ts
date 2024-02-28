@@ -30,6 +30,7 @@ let API_ROUTES = {
     ADD_IMG: 'product-img/add',
     SEARCH: 'product/search',
     LATEST_SALE: 'latest-sale',
+    TOP_RATED:'top-rated',
     GET: (id: string) => `product/${id}`,
     EDIT: (id: string) => `product/edit/${id}`,
     DELETE: (id: string) => `product/${id}`,

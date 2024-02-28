@@ -7,7 +7,6 @@ type UploadImageProps = {
 const useUploadImg = () => {
   const { setPercentage, indexRef, setIds } = useProgressContext()
   const addImg = queries.useAddImg()
-
   const uploadImage = async ({ imgs, id }: UploadImageProps) => {
     let c = 0
     for (const [index, element] of imgs.entries()) {

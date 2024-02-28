@@ -14,7 +14,7 @@ type imgHelpers = {
   name: string
   error: string | undefined
   multiple: boolean
-  onUpload: (files: string[] | File | File[]) => void
+  onUpload: (files:  File | File[]) => void
   cancel: () => void
   url: string | undefined
   disabled: Boolean
