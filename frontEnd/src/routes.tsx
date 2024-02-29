@@ -11,9 +11,10 @@ import { Category, Product, User } from './pages'
 import Error404 from '@components/feedback/Error404'
 import SomethingWentWrong from '@components/feedback/SomethingWentWrong'
 import i18n from '@lib/i18n'
-import { LayoutWebsite } from '@website/layout'
+// import { LayoutWebsite } from '@website/layout'
 import { Categories } from '@website/category'
 const Layout = lazy(() => import('@dashbord/features/layout'))
+const LayoutWebsite = lazy(() => import('@website/layout'))
 
 export default createBrowserRouter(
   createRoutesFromElements(

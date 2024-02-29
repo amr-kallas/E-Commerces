@@ -11,8 +11,13 @@ export const keys = createQueryKeys('webSiteProduct', {
     queryFn: API.topRatedSale,
     queryKey: [''],
   },
+  latestProduct: {
+    queryFn: API.latestProduct,
+    queryKey: [''],
+  },
 })
 export const queries = {
   useLatestSale: () => useQuery(keys.latestSale),
   useTopRated: () => useQuery(keys.topRated),
+  useLatestProduct: () => useQuery(keys.latestProduct),
 }

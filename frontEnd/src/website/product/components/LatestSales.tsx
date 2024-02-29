@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from '@mui/material'
-import ProductCard from '../ProductCard'
-import { queries } from '../../api/queries'
-import Loading from '../Loading'
+import ProductCard from './ProductCard'
+import { queries } from '../api/queries'
+import Loading from './Loading'
 
 const ShowProduct = () => {
   const { data, isLoading } = queries.useLatestSale()
@@ -23,6 +23,9 @@ const ShowProduct = () => {
         ))}
         {isLoading && (
           <>
+            <Loading />
+            <Loading />
+            <Loading />
             <Loading />
             <Loading />
             <Loading />

@@ -1,1 +1,2 @@
-export {default as LayoutWebsite} from "./components/Layout"
+import  LayoutWebsite  from './components/Layout'
+export default LayoutWebsite

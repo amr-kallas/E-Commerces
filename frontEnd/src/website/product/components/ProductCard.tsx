@@ -8,13 +8,24 @@ import { Box, Rating, Stack } from '@mui/material'
 import LocalGroceryStoreOutlinedIcon from '@mui/icons-material/LocalGroceryStoreOutlined'
 import { Product } from '../api/type'
 
-const ProductCard = ({product}:{product:Product}) => {
+const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Card>
-      <CardMedia component="img" height="194" image={product.images[0].image} alt="Paella dish" />
+      <CardMedia
+        component="img"
+        height="194"
+        image={product.images[0].image}
+        alt="Paella dish"
+      />
       <CardContent>
         <Typography variant="h6">{product.title}</Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            wordBreak: 'break-word',
+          }}
+        >
           {product.description}
         </Typography>
       </CardContent>
@@ -44,15 +55,17 @@ const ProductCard = ({product}:{product:Product}) => {
               <Typography variant="body1" color="primary">
                 {product.price}$
               </Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: '#777',
-                  textDecoration: 'line-through',
-                }}
-              >
-                {product.discount}$
-              </Typography>
+              {product.discount != '0' && (
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: '#777',
+                    textDecoration: 'line-through',
+                  }}
+                >
+                  {product.discount}$
+                </Typography>
+              )}
             </Stack>
           </Box>
           <IconButton color="primary">

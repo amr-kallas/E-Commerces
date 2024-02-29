@@ -14,7 +14,12 @@ const TopRated = () => {
         border: `1px solid ${theme.palette.primary.main}`,
         maxWidth: 1,
         flex: isSmallScreen ? 1 : isMediumScreen ? 0.7 : 0.5,
+        height: 'fit-content',
       }}
+      data-aos="fade-right"
+      data-aos-easing="ease-in-sine"
+      data-aos-duration="1500"
+      data-aos-once="true"
     >
       <Typography
         variant="h4"

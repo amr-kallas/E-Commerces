@@ -11,5 +11,9 @@ const API = {
     const { data } = await axios.get<Product[]>(API_ROUTES.PRODUCT.TOP_RATED)
     return data
   },
+  latestProduct: async () => {
+    const { data } = await axios.get<Product[]>(API_ROUTES.PRODUCT.LATEST)
+    return data
+  },
 }
 export default API

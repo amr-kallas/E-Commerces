@@ -31,6 +31,7 @@ let API_ROUTES = {
     SEARCH: 'product/search',
     LATEST_SALE: 'latest-sale',
     TOP_RATED:'top-rated',
+    LATEST:'latest',
     GET: (id: string) => `product/${id}`,
     EDIT: (id: string) => `product/edit/${id}`,
     DELETE: (id: string) => `product/${id}`,
