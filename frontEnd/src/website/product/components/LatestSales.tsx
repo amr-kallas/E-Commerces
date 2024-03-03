@@ -6,10 +6,37 @@ import Loading from './Loading'
 const ShowProduct = () => {
   const { data, isLoading } = queries.useLatestSale()
   return (
-    <Container sx={{ mt: 2 }}>
-      <Typography variant="h5" fontWeight="bold">
-        Latest Sale Product
-      </Typography>
+    <Container>
+      <Box
+        textAlign="center"
+        sx={{
+          width: '70%',
+          m: 'auto',
+          my: 8,
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            color: 'rgb(18, 48, 38)',
+            fontWeight: 'bold',
+            fontSize: '3rem',
+          }}
+        >
+          On Sale Now
+        </Typography>
+        <Typography
+          sx={{
+            color: 'rgb(18 48 38 / 75%)',
+            fontSize: 22,
+            lineHieght: 30,
+            mt: 2,
+          }}
+        >
+          Select products up to 30% off. Weekend Boots and Terrus Clogs will not
+          be restocked until spring 2024. Get yours before they're gone!
+        </Typography>
+      </Box>
       <Box
         sx={{
           display: 'grid',

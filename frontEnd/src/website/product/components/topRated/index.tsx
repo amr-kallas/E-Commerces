@@ -1,47 +1,43 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
-import Card from './Card'
+import { Box, Typography } from '@mui/material'
 import { queries } from '@website/product/api/queries'
-import Loading from './Loading'
+import Slider from './Slider'
 
 const TopRated = () => {
-  const theme = useTheme()
-  const isMediumScreen = useMediaQuery(theme.breakpoints.down('md'))
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const { data, isLoading } = queries.useTopRated()
   return (
-    <Box
-      sx={{
-        border: `1px solid ${theme.palette.primary.main}`,
-        maxWidth: 1,
-        flex: isSmallScreen ? 1 : isMediumScreen ? 0.7 : 0.5,
-        height: 'fit-content',
-      }}
-      data-aos="fade-right"
-      data-aos-easing="ease-in-sine"
-      data-aos-duration="1500"
-      data-aos-once="true"
-    >
-      <Typography
-        variant="h4"
+    <Box>
+      <Box
+        textAlign="center"
         sx={{
-          bgcolor: theme.palette.primary.main,
-          p: 3,
-          textAlign: 'center',
-          color: 'white',
+          width: '70%',
+          m: 'auto',
+          my: 8,
         }}
       >
-        Top Rated
-      </Typography>
-      {isLoading && (
-        <>
-          <Loading />
-          <Loading />
-          <Loading />
-        </>
-      )}
-      {data?.map((item) => (
-        <Card key={item.id} product={item} />
-      ))}
+        <Typography
+          variant="h2"
+          sx={{
+            color: 'rgb(18, 48, 38)',
+            fontWeight: 'bold',
+            fontSize: '3rem',
+          }}
+        >
+          Top Rated
+        </Typography>
+        <Typography
+          sx={{
+            color: 'rgb(18 48 38 / 75%)',
+            fontSize: 22,
+            lineHieght: 30,
+            mt: 2,
+          }}
+        >
+          Socially and Environmentally Progressive Outdoor Footwear That Helps
+          You #BeOutside
+        </Typography>
+      </Box>
+      {isLoading && <Slider product={undefined} skeleton={isLoading} />}
+      {data && <Slider product={data} skeleton={undefined} />}
     </Box>
   )
 }

@@ -1,11 +1,9 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { queries } from '../api/queries'
 import ProductCard from './ProductCard'
 import Loading from './Loading'
 
 const LatestProducts = () => {
-  const theme = useTheme()
-  const isMediumScreen = useMediaQuery(theme.breakpoints.down('md'))
   const { data, isLoading } = queries.useLatestProduct()
   return (
     <Box
@@ -14,26 +12,44 @@ const LatestProducts = () => {
       data-aos-easing="ease-in-sine"
       data-aos-duration="1500"
       data-aos-once="true"
+      sx={{
+        overflow: 'hidden',
+      }}
     >
-      <Typography
-        variant="h4"
+      <Box
+        textAlign="center"
         sx={{
-          mt: isMediumScreen ? 5 : 0,
-          textAlign: isMediumScreen ? 'center' : 'left',
-          fontWeight: 'bold',
-          background: '#1976d2',
-          color: 'white',
-          padding: '16px',
-          width: 'fit-content',
-          marginInline: 'auto',
+          width: '70%',
+          m: 'auto',
+          mb:8
         }}
       >
-        Latest Products
-      </Typography>
+        <Typography
+          variant="h2"
+          sx={{
+            color: 'rgb(18, 48, 38)',
+            fontWeight: 'bold',
+            fontSize: '3rem',
+          }}
+        >
+          Latest Products
+        </Typography>
+        <Typography
+          sx={{
+            color: 'rgb(18 48 38 / 75%)',
+            fontSize: 22,
+            lineHieght: 30,
+            mt: 2,
+          }}
+        >
+          Walking groups, community groups or employee gifting - get in contact
+          with us to get your discount on all bulk purchases.
+        </Typography>
+      </Box>
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
           gap: '10px',
           my: 4,
         }}
