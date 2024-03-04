@@ -1,9 +1,10 @@
-import { Box, Container, Typography } from '@mui/material'
+import { Box, Container, useTheme, Typography } from '@mui/material'
 import ProductCard from './ProductCard'
 import { queries } from '../api/queries'
 import Loading from './Loading'
 
 const ShowProduct = () => {
+  const theme = useTheme()
   const { data, isLoading } = queries.useLatestSale()
   return (
     <Container>
@@ -18,7 +19,7 @@ const ShowProduct = () => {
         <Typography
           variant="h2"
           sx={{
-            color: 'rgb(18, 48, 38)',
+            color: theme.palette.secondary.main,
             fontWeight: 'bold',
             fontSize: '3rem',
           }}

@@ -3,7 +3,7 @@ import { Product } from '@website/product/api/type'
 import { useEffect, useRef, useState } from 'react'
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Button, IconButton, Stack, Typography, useTheme } from '@mui/material'
 import Loading from './Loading'
 type SliderProps =
   | {
@@ -15,6 +15,7 @@ type SliderProps =
       skeleton: true
     }
 const Slider = ({ product, skeleton }: SliderProps) => {
+  const theme=useTheme()
   const ref = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   const sliderPosition = useMotionValue(0)
@@ -60,6 +61,7 @@ const Slider = ({ product, skeleton }: SliderProps) => {
         >
           {product?.map((item) => (
             <Box
+            key={item.id}
               sx={{
                 '&:hover .image2': {
                   opacity: '1 !important',
@@ -128,8 +130,8 @@ const Slider = ({ product, skeleton }: SliderProps) => {
                     textTransform: 'capitalize',
                     fontSize: '1rem',
                     p: 1,
-                    borderColor: 'rgb(18 48 38)',
-                    color: 'rgb(18 48 38)',
+                    borderColor: theme.palette.secondary.main,
+                    color: theme.palette.secondary.main,
                   }}
                 >
                   Choose Option

@@ -1,8 +1,9 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, useTheme } from '@mui/material'
 import { queries } from '@website/product/api/queries'
 import Slider from './Slider'
 
 const TopRated = () => {
+  const theme=useTheme()
   const { data, isLoading } = queries.useTopRated()
   return (
     <Box>
@@ -17,7 +18,7 @@ const TopRated = () => {
         <Typography
           variant="h2"
           sx={{
-            color: 'rgb(18, 48, 38)',
+            color: theme.palette.secondary.main,
             fontWeight: 'bold',
             fontSize: '3rem',
           }}

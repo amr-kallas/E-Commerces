@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material'
 import HomeHero from '@assets/HomepageHero.webp'
 const Home = () => {
   const theme = useTheme()
@@ -14,7 +14,7 @@ const Home = () => {
         sx={{
           position: isSmallScreen ? 'relative' : 'absolute',
           inset: 0,
-          background:"#f3f3f3"
+          background: '#f3f3f3',
         }}
       >
         <img src={HomeHero} alt="" style={{ width: '100%', height: '40rem' }} />
@@ -27,8 +27,8 @@ const Home = () => {
           transform: isSmallScreen ? 'none' : 'translate(-50%, -50%)',
           textAlign: 'center',
           width: 1,
-          p:'2rem',
-          background:isSmallScreen ?'#f3f3f3':'none'
+          p: '2rem',
+          background: isSmallScreen ? '#f3f3f3' : 'none',
         }}
       >
         <Typography
@@ -43,12 +43,28 @@ const Home = () => {
         <Typography
           variant="h2"
           sx={{
-            color: isSmallScreen ? 'rgb(18, 48, 38)' : 'white',
+            color: isSmallScreen ? theme.palette.secondary.main : 'white',
             fontWeight: 'bold',
           }}
         >
           Get Up To 40% Off Now
         </Typography>
+        <Button
+          sx={{
+            textTransform: 'capitalize',
+            background: isSmallScreen ? theme.palette.secondary.main : 'white',
+            padding: '8px 24px',
+            marginTop: '16px',
+            color: isSmallScreen ? 'white' : 'black',
+            '&:hover': {
+              background: isSmallScreen
+                ? theme.palette.secondary.main
+                : 'white',
+            },
+          }}
+        >
+          Shop sale
+        </Button>
       </Box>
     </Box>
   )

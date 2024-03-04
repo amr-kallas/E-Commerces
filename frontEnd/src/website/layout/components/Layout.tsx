@@ -6,6 +6,7 @@ import TopRated from '@website/product/components/topRated'
 import LatestProducts from '@website/product/components/LatestProducts'
 import Home from './Home'
 import Contact from './Contact'
+import Footer from './Footer'
 
 const Layout = () => {
   return (
@@ -19,6 +20,7 @@ const Layout = () => {
         <LatestProducts />
       </Container>
       <Contact />
+      <Footer/>
     </Box>
   )
 }
