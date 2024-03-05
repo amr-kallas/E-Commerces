@@ -3,7 +3,14 @@ import { Product } from '@website/product/api/type'
 import { useEffect, useRef, useState } from 'react'
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import { Box, Button, IconButton, Stack, Typography, useTheme } from '@mui/material'
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material'
 import Loading from './Loading'
 type SliderProps =
   | {
@@ -15,16 +22,28 @@ type SliderProps =
       skeleton: true
     }
 const Slider = ({ product, skeleton }: SliderProps) => {
-  const theme=useTheme()
+  const theme = useTheme()
   const ref = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   const sliderPosition = useMotionValue(0)
   useEffect(() => {
-    if (ref.current) setWidth(ref.current.scrollWidth - ref.current.offsetWidth)
-  }, [width, ref.current])
+    const updateWidth = () => {
+      if (ref.current) {
+        const offsetWidth = ref.current.offsetWidth
+        setWidth(1580 - offsetWidth)
+      }
+    }
+    updateWidth()
+
+    window.addEventListener('resize', updateWidth)
+
+    return () => window.removeEventListener('resize', updateWidth)
+  }, [])
+
   const handleLeftArrowClick = () => {
     const newPosition =
       sliderPosition.get() < 0 ? sliderPosition.get() + 100 : 0
+
     animate(sliderPosition, newPosition, { duration: 0.5 })
   }
   const handleRightArrowClick = () => {
@@ -49,7 +68,7 @@ const Slider = ({ product, skeleton }: SliderProps) => {
       <motion.div
         style={{
           overflow: 'hidden',
-          cursor: 'grap',
+          cursor: 'grab',
         }}
         ref={ref}
       >
@@ -61,7 +80,7 @@ const Slider = ({ product, skeleton }: SliderProps) => {
         >
           {product?.map((item) => (
             <Box
-            key={item.id}
+              key={item.id}
               sx={{
                 '&:hover .image2': {
                   opacity: '1 !important',

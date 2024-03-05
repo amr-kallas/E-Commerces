@@ -34,7 +34,6 @@ const EditProduct = () => {
   const uploadImg = useUploadImg()
   const snackbar = useSnackbarContext()
   const { data: productData, isSuccess } = productQuery.useProduct(id)
-  console.log(productData)
   const { data: categoryData } = productQuery.useAllCategories()
   const edit = productQuery.useEdit()
   const queryClient = useQueryClient()
@@ -151,6 +150,7 @@ const EditProduct = () => {
               control={control}
               label="Category"
               message={i18n.t('validation:required')}
+              variant='outlined'
             >
               {categoryData?.map((item) => (
                 <MenuItem key={item.id} value={item.id}>
